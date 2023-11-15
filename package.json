@@ -1,0 +1,54 @@
+{
+  "name": "scichart-react",
+  "version": "1.0.0",
+  "description": "React wrapper for SciChart JS",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run buildJs && npm run buildBrowserBundle && npm run updateJson && npm run copyToLib",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "tsc": "tsc --watch",
+    "relink": "cd lib && npm link",
+    "buildJs": "rimraf lib && tsc",
+    "generateGlobalExportsModule": "ts-node generate-exports-file.ts",
+    "buildBrowserBundle": "echo aa",
+    "updateJson": "run-script-os",
+    "updateJson:nix": "cp package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={\"\"typescript\"\": \"\"^4.4.4\"\"}\"",
+    "updateJson:windows": "copy package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={\"\"typescript\"\": \"\"^4.4.4\"\"}\"",
+    "copyToLib": "copy-files-from-to --config copy-files-from-to.json",
+    "publishPublic": "cd lib && npm publish"
+  
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "@storybook/addon-essentials": "^7.5.3",
+    "@storybook/addon-interactions": "^7.5.3",
+    "@storybook/addon-links": "^7.5.3",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.3",
+    "@storybook/react": "^7.5.3",
+    "@storybook/react-webpack5": "^7.5.3",
+    "@storybook/testing-library": "^0.2.2",
+    "@types/react": "^18.2.37",
+    "copy-files-from-to": "^3.9.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "json": "^11.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.5",
+    "run-script-os": "^1.1.6",
+    "scichart": "^3.2.516",
+    "storybook": "^7.5.3",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "scichart": ">=3.2.516"
+  }
+}

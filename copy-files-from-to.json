@@ -1,0 +1,15 @@
+{
+    "copyFilesSettings": {
+        "whenFileExists": "overwrite"
+    },
+    "copyFiles": [
+        {
+            "from": "./packageNpm.json",
+            "to": "./lib/package.json"
+        },
+        {
+            "from": "./README_NPM.md",
+            "to": "./lib/README.md"
+        }
+    ]
+}

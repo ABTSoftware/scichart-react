@@ -1,2 +1,2 @@
-export { SciChart } from "./SciChart";
+export { SciChartReact } from "./SciChart";
 export { SciChartSurfaceContext } from "./SciChartSurfaceContext";

@@ -97,4 +97,4 @@ function SciChartComponent<
     );
 }
 
-export const SciChart = SciChartComponent;
+export const SciChartReact = SciChartComponent;

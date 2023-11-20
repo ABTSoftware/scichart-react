@@ -1,6 +1,7 @@
-// TODO decide on proper naming
-import { useRef, useState, useEffect, } from "react";
-import { ISciChartSurfaceBase} from "scichart";
+"use client";
+
+import { useRef, useState, useEffect } from "react";
+import { ISciChartSurfaceBase, SciChartSurface } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
@@ -9,8 +10,7 @@ function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 >(props: TChartComponentProps<TSurface, TInitResult>): JSX.Element {
-    const { initChart, config, fallback, onInit, innerContainerProps, ...divElementProps } =
-        props ;
+    const { initChart, config, fallback, onInit, innerContainerProps, ...divElementProps } = props;
 
     if ((!initChart && !config) || (initChart && config)) {
         throw new Error(`Only one of "initChart" or "config" props is required!`);
@@ -55,6 +55,7 @@ function SciChartComponent<
 
         const performCleanup = () => {
             sciChartSurfaceRef.current!.delete();
+            // Redundant cleanup which causes issue in StrictMode
             // sciChartSurfaceRef.current = undefined;
             // initResultRef.current = undefined;
         };

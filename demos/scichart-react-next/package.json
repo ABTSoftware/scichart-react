@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "copyWasm": "copy-files-from-to --config copy-files-from-to.json",
+    "dev": "npm run copyWasm && next dev",
+    "build": "npm run copyWasm && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "copy-files-from-to": "^3.9.0",
     "next": "14.0.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "scichart": "^3.2.516",
+    "scichart-react": "file:../../lib"
   },
   "devDependencies": {
     "@types/node": "^20",

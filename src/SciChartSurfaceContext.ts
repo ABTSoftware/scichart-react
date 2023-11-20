@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { createContext } from 'react';
-import { ISciChartSurfaceBase } from 'scichart';
-import { IInitResult } from './types';
+import { createContext } from "react";
+import { ISciChartSurfaceBase } from "scichart";
+import { IInitResult } from "./types";
 
 export const SciChartSurfaceContext = createContext<IInitResult<ISciChartSurfaceBase> | null>(null);

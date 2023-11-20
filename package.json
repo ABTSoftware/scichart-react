@@ -11,13 +11,12 @@
     "relink": "cd lib && npm link",
     "buildJs": "rimraf lib && tsc",
     "generateGlobalExportsModule": "ts-node generate-exports-file.ts",
-    "buildBrowserBundle": "echo aa",
+    "buildBrowserBundle": "echo Not Implemented!",
     "updateJson": "run-script-os",
-    "updateJson:nix": "cp package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={\"\"typescript\"\": \"\"^4.4.4\"\"}\"",
-    "updateJson:windows": "copy package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={\"\"typescript\"\": \"\"^4.4.4\"\"}\"",
+    "updateJson:nix": "cp package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
+    "updateJson:windows": "copy package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
     "copyToLib": "copy-files-from-to --config copy-files-from-to.json",
     "publishPublic": "cd lib && npm publish"
-  
   },
   "author": "",
   "license": "MIT",

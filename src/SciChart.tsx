@@ -6,6 +6,12 @@ import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
 
+// use base URL to resolve WASM module
+SciChartSurface.configure({
+    wasmUrl: "/scichart2d.wasm",
+    dataUrl: "/scichart2d.data"
+});
+
 function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
@@ -29,11 +35,6 @@ function SciChartComponent<
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
-        // use base URL to resolve WASM module
-        SciChartSurface.configure({
-            wasmUrl: "/scichart2d.wasm",
-            dataUrl: "/scichart2d.data"
-        });
 
         const initializationFunction = initChart
             ? (initChart as TInitFunction<TSurface, TInitResult>)

@@ -29,6 +29,12 @@ function SciChartComponent<
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
+        // use base URL to resolve WASM module
+        SciChartSurface.configure({
+            wasmUrl: "/scichart2d.wasm",
+            dataUrl: "/scichart2d.data"
+        });
+
         const initializationFunction = initChart
             ? (initChart as TInitFunction<TSurface, TInitResult>)
             : createChartFromConfig<TSurface>(config);

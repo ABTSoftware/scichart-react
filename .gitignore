@@ -1,5 +1,10 @@
 /lib
-**/node_modules
+/node_modules
+/demos/react18/*/build
+/demos/react18/basic/node_modules
+/demos/react18/cra/node_modules
+/demos/react18/cra-pwa/node_modules
+/demos/react16/node_modules
 packageNPM.json
 scichart2d.data
 scichart2d.wasm

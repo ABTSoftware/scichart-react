@@ -1,0 +1,28 @@
+{
+    "name": "scichart-react16-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "webpack --mode production",
+        "start": "ts-node server",
+        "dev": "webpack-dev-server --mode development",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@types/react": "^16",
+        "@types/react-dom": "^16",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "scichart": "^3.2.516",
+        "scichart-react": "file:../../lib",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2",
+        "webpack": "^5.59.0",
+        "webpack-cli": "^5.0.1",
+        "webpack-dev-server": "^4.11.1"
+    }
+}

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "copyWasm": "copy-files-from-to --config copy-files-from-to.json",
-    "dev": "npm run copyWasm && next dev",
+    "dev": "npm run copyWasm && next dev --turbo",
     "build": "npm run copyWasm && next build",
     "start": "next start",
     "lint": "next lint"

@@ -1,3 +1,5 @@
 /lib
-/node_modules
+**/node_modules
 packageNPM.json
+scichart2d.data
+scichart2d.wasm

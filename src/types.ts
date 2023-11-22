@@ -44,4 +44,3 @@ type TChartComponentPropsIntersection<
     TSurface extends ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface>
 > = TChartComponentPropsWithInit<TSurface, TInitResult> & TChartComponentPropsWithConfig<TSurface>;
-

@@ -1,6 +1,6 @@
 {
   "name": "scichart-react",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "React wrapper for SciChart JS",
   "main": "lib/index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "updateJson:nix": "cp package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
     "updateJson:windows": "copy package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
     "copyToLib": "copy-files-from-to --config copy-files-from-to.json",
+    "prettier": "prettier src/**/*.{js,ts,tsx} --write",
     "publishPublic": "cd lib && npm publish"
   },
   "author": "",

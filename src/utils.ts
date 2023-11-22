@@ -45,4 +45,3 @@ export function createChartFromConfig<TSurface extends ISciChartSurfaceBase>(con
         }
     };
 }
-

@@ -35,7 +35,6 @@ function SciChartComponent<
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
-
         const initializationFunction = initChart
             ? (initChart as TInitFunction<TSurface, TInitResult>)
             : createChartFromConfig<TSurface>(config);

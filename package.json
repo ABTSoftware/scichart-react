@@ -2,7 +2,9 @@
     "name": "scichart-react",
     "version": "0.1.0",
     "description": "React wrapper for SciChart JS",
+    "homepage": "https://www.scichart.com",
     "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "scripts": {
         "build": "npm run buildJs && npm run buildBrowserBundle && npm run updateJson && npm run copyToLib",
         "storybook": "storybook dev -p 6006",
@@ -21,8 +23,37 @@
         "publishPublic": "cd lib && npm publish",
         "prepare": "husky install"
     },
-    "author": "",
+    "author": "SciChart Ltd",
     "license": "MIT",
+    "keywords": [
+        "Chart",
+        "Charts",
+        "Data",
+        "Graph",
+        "Graphs",
+        "Plot",
+        "Plotting",
+        "DataVisualization",
+        "WebGL",
+        "Realtime",
+        "Webassembly",
+        "Data",
+        "Dataviz",
+        "Dashboard",
+        "Visualization",
+        "3D",
+        "Fast",
+        "Fastest",
+        "Best",
+        "BigData",
+        "Performance",
+        "React"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ABTSoftware/scichart-react"
+    },
+    "bugs": "https://github.com/ABTSoftware/scichart-react/issues",
     "devDependencies": {
         "@babel/preset-env": "^7.23.3",
         "@babel/preset-react": "^7.23.3",

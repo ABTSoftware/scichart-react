@@ -16,7 +16,7 @@ function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 >(props: TChartComponentProps<TSurface, TInitResult>): JSX.Element {
-    const { initChart, config, fallback, onInit, innerContainerProps, ...divElementProps } = props;
+    const { initChart, config, fallback, onInit, onDelete, innerContainerProps, ...divElementProps } = props;
 
     if ((!initChart && !config) || (initChart && config)) {
         throw new Error(`Only one of "initChart" or "config" props is required!`);
@@ -60,6 +60,9 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = () => {
+            if (onDelete) {
+                onDelete(initResultRef.current as TInitResult);
+            }
             sciChartSurfaceRef.current!.delete();
             // Redundant cleanup which causes issue in StrictMode
             // sciChartSurfaceRef.current = undefined;

@@ -3,8 +3,8 @@
     "version": "0.1.0",
     "description": "React wrapper for SciChart JS",
     "homepage": "https://www.scichart.com",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "build": "npm run buildJs && npm run buildBrowserBundle && npm run updateJson && npm run copyToLib",
         "storybook": "storybook dev -p 6006",

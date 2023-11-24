@@ -11,6 +11,7 @@ export type TInitFunction<TSurface extends ISciChartSurfaceBase, TInitResult ext
 
 type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
+/** @ignore */
 export interface IChartComponentPropsCore<
     TSurface extends ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
@@ -21,6 +22,7 @@ export interface IChartComponentPropsCore<
     innerContainerProps?: TDivProps;
 }
 
+/** @ignore */
 export type TChartComponentPropsWithInit<
     TSurface extends ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface>

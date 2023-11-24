@@ -6,7 +6,7 @@
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {
-        "build": "npm run buildJs && npm run buildBrowserBundle && npm run updateJson && npm run copyToLib",
+        "build": "npm run generateGlobalExportsModule && npm run buildJs && npm run updateJson && npm run copyToLib",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "tsc": "tsc --watch",
@@ -80,6 +80,7 @@
         "scichart": "^3.2.516",
         "storybook": "^7.5.3",
         "storybook-dark-mode": "^3.0.1",
+        "ts-node": "^10.9.1",
         "typescript": "^5.2.2",
         "webpack": "^5.89.0",
         "webpack-cli": "^5.1.4"

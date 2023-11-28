@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { ISciChartSurfaceBase, SciChartSurface } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
+import { SciChartGroupContext } from "./SciChartGroupContext";
 
 // use base URL to resolve WASM module
 SciChartSurface.configure({
@@ -72,8 +73,11 @@ function SciChartComponent<
         return () => {
             // check if chart is already initialized or wait init to finish before deleting it
             sciChartSurfaceRef.current ? performCleanup() : initPromise.then(performCleanup);
+            groupContext?.removeChartFromGroup(chartRoot);
         };
     }, []);
+
+    const groupContext = useContext(SciChartGroupContext);
 
     useEffect(() => {
         if (isInitialized && isMountedRef.current && chartRoot) {
@@ -84,6 +88,8 @@ function SciChartComponent<
                 onInit(initResultRef.current as TInitResult);
             }
         }
+
+        groupContext?.addChartToGroup(chartRoot, isInitialized);
     }, [isInitialized]);
 
     const mergedInnerContainerProps = { style: { height: "100%", width: "100%" }, ...innerContainerProps };

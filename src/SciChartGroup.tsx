@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState, JSX } from "react";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { IInitResult } from "./types";
 
@@ -7,7 +7,7 @@ export type TSciChartGroupProps = PropsWithChildren<{
     onDelete?: (chartInitResults: IInitResult[]) => void;
 }>;
 
-export const SciChartGroup = (props: TSciChartGroupProps) => {
+export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
     const { onInit, onDelete } = props;
 
     const [groupState, setGroupState] = useState<{

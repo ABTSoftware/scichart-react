@@ -1,4 +1,6 @@
-import { ChangeEventHandler, MouseEventHandler, PropsWithChildren, useState } from "react";
+"use client";
+
+import { ChangeEventHandler, MouseEventHandler, PropsWithChildren, useState, JSX } from "react";
 import { SciChartSurface, MemoryUsageHelper } from "scichart";
 
 /**
@@ -6,7 +8,7 @@ import { SciChartSurface, MemoryUsageHelper } from "scichart";
  * Rendering the component enables Memory Debug Mode and adds extra UI elements to allow easily mount/unmount the child components
  *  @remarks Find more info at [Memory Leak Debugging docs](https://www.scichart.com/documentation/js/current/MemoryLeakDebugging.html)
  */
-export function SciChartMemoryDebugWrapper(props: PropsWithChildren) {
+export function SciChartMemoryDebugWrapper(props: PropsWithChildren<any>): JSX.Element {
     SciChartSurface.autoDisposeWasmContext = true;
     SciChartSurface.wasmContextDisposeTimeout = 0;
     MemoryUsageHelper.isMemoryUsageDebugEnabled = true;

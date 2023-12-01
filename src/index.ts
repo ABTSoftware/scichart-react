@@ -4,6 +4,7 @@ export { TSciChartGroupProps } from "./SciChartGroup";
 export { SciChartGroup } from "./SciChartGroup";
 export { SciChartGroupContext } from "./SciChartGroupContext";
 export { SciChartMemoryDebugWrapper } from "./SciChartMemoryDebugWrapper";
+export { SciChartNestedOverview } from "./SciChartOverview";
 export { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 export { IInitResult } from "./types";
 export { TInitFunction } from "./types";

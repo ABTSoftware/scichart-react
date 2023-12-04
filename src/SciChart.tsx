@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useContext } from "react";
-import { ISciChartSurfaceBase, SciChartSurface } from "scichart";
+import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
@@ -11,6 +11,11 @@ import { SciChartGroupContext } from "./SciChartGroupContext";
 SciChartSurface.configure({
     wasmUrl: "/scichart2d.wasm",
     dataUrl: "/scichart2d.data"
+});
+
+SciChart3DSurface.configure({
+    wasmUrl: "/scichart3d.wasm",
+    dataUrl: "/scichart3d.data"
 });
 
 function SciChartComponent<

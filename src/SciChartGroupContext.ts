@@ -10,4 +10,5 @@ type TSciChartGroupContext = {
     removeChartFromGroup: (chart: any) => void;
 };
 
+/** The context provided within a {@link SciChartGroup} */
 export const SciChartGroupContext = createContext<TSciChartGroupContext | undefined>(undefined);

@@ -7,6 +7,10 @@ export type TSciChartGroupProps = PropsWithChildren<{
     onDelete?: (chartInitResults: IInitResult[]) => void;
 }>;
 
+/**
+ * Provides a common context for multiple wrapped {@link SciChartReact} elements.
+ * Accepts callbacks used after all of chart within group are initialized and when they are unmounted.
+ */
 export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
     const { onInit, onDelete } = props;
 

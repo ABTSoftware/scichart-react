@@ -111,4 +111,9 @@ function SciChartComponent<
     );
 }
 
+/**
+ * The component for rendering a chart surface {@link ISciChartSurfaceBase}
+ * @param props {@link TChartComponentProps}
+ * @returns a React wrapper component that contains a chart
+ */
 export const SciChartReact = SciChartComponent;

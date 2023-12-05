@@ -6,6 +6,10 @@ import { IChartComponentPropsCore, IInitResult } from "./types";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { SciChartReact } from "./SciChart";
 
+/**
+ * A component that creates a {@link SciChartOverview} for a chart within the parent {@link SciChartReact}
+ * @remarks Should be rendered as a child of {@link SciChartReact}
+ */
 export const SciChartNestedOverview = (
     props: IChartComponentPropsCore<SciChartSurface, IInitResult<SciChartSurface>> & { options?: IOverviewOptions }
 ): JSX.Element => {

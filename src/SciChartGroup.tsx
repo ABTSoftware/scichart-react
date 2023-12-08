@@ -16,13 +16,13 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
 
     const [groupState, setGroupState] = useState<{
         groupInitialized: boolean;
-        charts: Map<any, { isInitialized: boolean; initResult?: IInitResult }>;
+        charts: Map<any, { isInitialized: boolean; initResult: IInitResult | null }>;
     }>({
         groupInitialized: false,
         charts: new Map()
     });
 
-    const addChartToGroup = (chart: any, isInitialized: boolean, initResult?: IInitResult) => {
+    const addChartToGroup = (chart: any, isInitialized: boolean, initResult: IInitResult | null) => {
         groupState.charts.set(chart, { isInitialized, initResult });
         const groupInitialized = Array.from(groupState.charts.values()).every(({ isInitialized }) => isInitialized);
         setGroupState({ groupInitialized, charts: groupState.charts });

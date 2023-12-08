@@ -94,7 +94,7 @@ function SciChartComponent<
             }
         }
 
-        groupContext?.addChartToGroup(chartRoot, isInitialized);
+        groupContext?.addChartToGroup(chartRoot, isInitialized, initResultRef.current);
     }, [isInitialized]);
 
     const mergedInnerContainerProps = { style: { height: "100%", width: "100%" }, ...innerContainerProps };

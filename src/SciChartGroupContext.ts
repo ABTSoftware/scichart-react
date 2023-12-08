@@ -5,8 +5,8 @@ import { IInitResult } from "./types";
 
 type TSciChartGroupContext = {
     groupInitialized: boolean;
-    charts: Map<any, { isInitialized: boolean; initResult?: IInitResult }>;
-    addChartToGroup: (chart: any, isInitialized: boolean, initResult?: IInitResult) => void;
+    charts: Map<any, { isInitialized: boolean; initResult: IInitResult | null }>;
+    addChartToGroup: (chart: any, isInitialized: boolean, initResult: IInitResult | null) => void;
     removeChartFromGroup: (chart: any) => void;
 };
 

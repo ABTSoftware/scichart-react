@@ -20,7 +20,7 @@
         "copyToLib": "copy-files-from-to --config copy-files-from-to.json",
         "prettier": "prettier src/**/*.{js,ts,tsx} --write",
         "pretty-quick": "pretty-quick --staged",
-        "publishPublic": "cd lib && npm publish",
+        "publishPublic": "npm version patch && npm run build && cd lib && npm publish",
         "prepare": "husky install"
     },
     "author": "SciChart Ltd",

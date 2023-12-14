@@ -1,16 +1,18 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { SciChartReact } from "..";
-import {
-    EAxisType,
-    EChart2DModifierType,
-    ELabelProviderType,
-    EPaletteProviderType,
-    EPointMarkerType,
-    ESeriesType,
-    SciChartSurface,
-    TSurfaceDefinition
-} from "scichart";
+import ChartWithConfigSrcCode from "!!raw-loader!./DocExamples/ChartWithConfig.tsx";
+import ChartWithInitFunctionSrcCode from "!!raw-loader!./DocExamples/ChartWithInitFunction.tsx";
+import ChartWithFallbackSrcCode from "!!raw-loader!./DocExamples/ChartWithConfig.tsx";
+import ChartWithInitCallbackSrcCode from "!!raw-loader!./DocExamples/ChartWithInitCallback.tsx";
+import ChartWithNestedComponentsSrcCode from "!!raw-loader!./DocExamples/ChartWithNestedComponents.tsx";
+import { ChartWithConfig as ChartWithConfigRenderer } from "./DocExamples/ChartWithConfig";
+import { ChartWithInitFunction as ChartWithInitFunctionRenderer } from "./DocExamples/ChartWithInitFunction";
+import { ChartWithFallback as ChartWithFallbackRenderer } from "./DocExamples/ChartWithFallback";
+import { ChartWithInitCallback as ChartWithInitCallbackRenderer } from "./DocExamples/ChartWithInitCallback";
+import { ChartWithNestedComponents as ChartWithNestedComponentsRenderer } from "./DocExamples/ChartWithNestedComponents";
+import { SciChartSurface } from "scichart";
+import { SciChartReact } from "../SciChart";
+
 SciChartSurface.useWasmFromCDN();
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
@@ -31,111 +33,30 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof SciChartReact>;
 
-const config: TSurfaceDefinition = {
-    surface: { theme: { type: "DarkV2", axisTitleColor: "#96ccfa", sciChartBackground: "#0c0136" } },
-    series: {
-        type: ESeriesType.LineSeries,
-        options: {
-            pointMarker: { type: EPointMarkerType.Ellipse, options: { width: 9, height: 9 } },
-            paletteProvider: {
-                type: EPaletteProviderType.DataPointSelection,
-                options: { stroke: undefined, fill: "white" }
-            }
-        },
-        xyData: { xValues: [1, 2, 3, 4], yValues: [1, 4, 7, 3], metadata: { isSelected: false } }
-    },
-    modifiers: [
-        {
-            type: EChart2DModifierType.DataPointSelection,
-            options: { allowClickSelect: true, allowDragSelect: true }
-        },
-        { type: EChart2DModifierType.MouseWheelZoom }
-    ]
-};
-
 // !!! Using "render" Story approach since the "args" one has issues with the component unmounting
 
 export const ChartWithConfig: Story = {
-    render: () => (
-        <SciChartReact
-            config={config}
-            style={{
-                width: 600,
-                height: 200
-            }}
-        />
-    )
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithConfigSrcCode } } },
+    render: ChartWithConfigRenderer
 };
 
-// TODO
-// export const ChartWithInitFunction: Story = {
-//     render: () => (
-//         <SciChartReact
-//             config={config}
-//             style={{
-//                 width: 600,
-//                 height: 200
-//             }}
-//         />
-//     )
-// };
+export const ChartWithInitFunction: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithInitFunctionSrcCode } } },
+    render: ChartWithInitFunctionRenderer
+};
 
-// export const ChartWithConfig: Story = {
-//     args: {
-//         config,
-//         style: {
-//             width: 600,
-//             height: 200
-//         }
-//     }
-// };
+export const ChartWithFallback: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithFallbackSrcCode } } },
+    render: ChartWithFallbackRenderer
+};
 
-// export const ChartWithInitFunction: Story = {
-//     args: {
-//         config,
-//         style: {
-//             width: 600,
-//             height: 200
-//         }
-//     }
-// };
+export const ChartWithInitCallback: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithInitCallbackSrcCode } } },
+    render: ChartWithInitCallbackRenderer
+};
 
-// export const ChartWithFallback: Story = {
-//     args: {
-//         config,
-//         style: {
-//             width: 600,
-//             height: 200
-//         }
-//     }
-// };
-
-// export const ChartWithInitCallback: Story = {
-//     args: {
-//         config,
-//         style: {
-//             width: 600,
-//             height: 200
-//         }
-//     }
-// };
-
-// export const ChartStyling: Story = {
-//     args: {
-//         config,
-//         style: {
-//             width: 600,
-//             height: 200
-//         }
-//     }
-// };
-
-// export const ChartWithNestedComponents: Story = {
-//     args: {
-//         config,
-//         style: {
-//             width: 600,
-//             height: 200
-//         }
-//     }
-// };
+export const ChartWithNestedComponents: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithNestedComponentsSrcCode } } },
+    // render: ChartWithNestedComponentsRenderer
+    render: ChartWithNestedComponentsRenderer
+};

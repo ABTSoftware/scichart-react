@@ -1,5 +1,7 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
+import merge from "webpack-merge";
 const CopyPlugin = require("copy-webpack-plugin");
+const path = require("path");
 
 const config: StorybookConfig = {
     stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -17,13 +19,23 @@ const config: StorybookConfig = {
     docs: {
         autodocs: "tag"
     },
-    async webpackFinal(config, { configType }) {
+    async webpackFinal(webpackConfig, { configType }) {
         if (configType === "DEVELOPMENT") {
             // Modify config for development
         }
         if (configType === "PRODUCTION") {
             // Modify config for production
         }
+        const customizedWebpackConfig = merge(
+            {
+                resolve: {
+                    alias: {
+                        "scichart-react": path.resolve(__dirname, "../src/")
+                    }
+                }
+            },
+            webpackConfig
+        );
 
         // config.plugins?.push(
         //     new CopyPlugin({
@@ -37,7 +49,7 @@ const config: StorybookConfig = {
         //     })
         // );
 
-        return config;
+        return customizedWebpackConfig;
     }
 };
 export default config;

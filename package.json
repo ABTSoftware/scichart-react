@@ -9,6 +9,8 @@
         "build": "npm run generateGlobalExportsModule && npm run buildJs && npm run updateJson && npm run copyToLib",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
+        "storybook-docs": "storybook dev --docs",
+        "build-storybook-docs": "storybook build --docs",
         "tsc": "tsc --watch",
         "relink": "cd lib && npm link",
         "buildJs": "rimraf lib && tsc",
@@ -61,7 +63,6 @@
         "@storybook/addon-essentials": "^7.5.3",
         "@storybook/addon-interactions": "^7.5.3",
         "@storybook/addon-links": "^7.5.3",
-        "@storybook/addon-onboarding": "^1.0.8",
         "@storybook/blocks": "^7.5.3",
         "@storybook/react": "^7.5.3",
         "@storybook/react-webpack5": "^7.5.3",
@@ -73,6 +74,7 @@
         "json": "^11.0.0",
         "prettier": "^2.3.1",
         "pretty-quick": "^3.1.1",
+        "raw-loader": "^4.0.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "rimraf": "^5.0.5",
@@ -83,7 +85,8 @@
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2",
         "webpack": "^5.89.0",
-        "webpack-cli": "^5.1.4"
+        "webpack-cli": "^5.1.4",
+        "webpack-merge": "^5.10.0"
     },
     "peerDependencies": {
         "react": ">=16.8.0",

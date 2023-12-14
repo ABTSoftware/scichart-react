@@ -1,5 +1,6 @@
 /lib
 /node_modules
+/storybook-static
 /demos/react18/*/build
 /demos/react18/basic/node_modules
 /demos/react18/cra/node_modules

@@ -25,8 +25,9 @@ export const ChartWithConfig = () => (
             ]
         }}
         style={{
-            width: "100%",
-            height: "300px"
+            aspectRatio: 2,
+            minWidth: "600px",
+            minHeight: "300px"
         }}
     />
 );

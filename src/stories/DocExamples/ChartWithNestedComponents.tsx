@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
     SciChartSurface,
     NumericAxis,
@@ -5,20 +6,19 @@ import {
     XyDataSeries,
     ZoomPanModifier,
     MouseWheelZoomModifier,
-    ZoomExtentsModifier
+    ZoomExtentsModifier,
+    SciChartJSDarkTheme,
+    SciChartJSLightTheme
 } from "scichart";
-import { SciChartReact, SciChartNestedOverview } from "scichart-react";
+import { SciChartReact, SciChartSurfaceContext } from "scichart-react";
 
 export const ChartWithNestedComponents = () => (
     <SciChartReact
         initChart={async rootElement => {
             const { sciChartSurface, wasmContext } = await SciChartSurface.create(rootElement);
 
-            const xAxis = new NumericAxis(wasmContext);
-            const yAxis = new NumericAxis(wasmContext);
-
-            sciChartSurface.xAxes.add(xAxis);
-            sciChartSurface.yAxes.add(yAxis);
+            sciChartSurface.xAxes.add(new NumericAxis(wasmContext));
+            sciChartSurface.yAxes.add(new NumericAxis(wasmContext));
 
             sciChartSurface.renderableSeries.add(
                 new SplineMountainRenderableSeries(wasmContext, {
@@ -39,14 +39,33 @@ export const ChartWithNestedComponents = () => (
                 new ZoomExtentsModifier()
             );
 
-            return { sciChartSurface };
+            const toggleChartTheme = () => {
+                sciChartSurface.applyTheme(
+                    sciChartSurface.themeProvider.isLightBackground
+                        ? new SciChartJSDarkTheme()
+                        : new SciChartJSLightTheme()
+                );
+            };
+
+            return { sciChartSurface, toggleChartTheme };
         }}
         style={{
-            width: "100%",
-            height: "300px"
+            aspectRatio: 2,
+            minWidth: "600px",
+            minHeight: "300px"
         }}
         innerContainerProps={{ style: { height: "80%" } }}
     >
-        <SciChartNestedOverview style={{ height: "20%" }} />
+        {/* The child components will be rendered only after the surface initialization */}
+        <ToggleThemeButton />
     </SciChartReact>
 );
+
+const ToggleThemeButton = () => {
+    // get the resolved result of initChart
+    const initResult = useContext(SciChartSurfaceContext);
+    const handleClick = () => {
+        initResult.toggleChartTheme();
+    };
+    return <input type="button" onClick={handleClick} value="Toggle Chart Theme"></input>;
+};

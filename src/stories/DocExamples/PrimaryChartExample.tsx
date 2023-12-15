@@ -1,32 +1,33 @@
+import React, { useContext } from "react";
 import {
-    SciChartSurface,
-    NumericAxis,
-    EAutoRange,
-    NumberRange,
-    SplineMountainRenderableSeries,
     XyDataSeries,
     MountainAnimation,
+    EAutoRange,
+    NumberRange,
+    NumericAxis,
+    SciChartSurface,
+    SplineMountainRenderableSeries,
     easing
 } from "scichart";
-import { SciChartReact } from "scichart-react";
+import { SciChartReact, SciChartSurfaceContext } from "scichart-react";
 
-export const ChartWithInitCallback = () => (
+export const PrimaryChartExample = () => (
     <SciChartReact
+        fallback={fallbackComponent}
         initChart={async rootElement => {
             const { sciChartSurface, wasmContext } = await SciChartSurface.create(rootElement);
 
-            sciChartSurface.xAxes.add(
-                new NumericAxis(wasmContext, {
-                    autoRange: EAutoRange.Never,
-                    visibleRange: new NumberRange(0, 9)
-                })
-            );
-            sciChartSurface.yAxes.add(
-                new NumericAxis(wasmContext, {
-                    autoRange: EAutoRange.Never,
-                    visibleRange: new NumberRange(0, 12)
-                })
-            );
+            const xAxis = new NumericAxis(wasmContext, {
+                autoRange: EAutoRange.Never,
+                visibleRange: new NumberRange(0, 9)
+            });
+            const yAxis = new NumericAxis(wasmContext, {
+                autoRange: EAutoRange.Never,
+                visibleRange: new NumberRange(0, 12)
+            });
+
+            sciChartSurface.xAxes.add(xAxis);
+            sciChartSurface.yAxes.add(yAxis);
 
             const mountainSeries = new SplineMountainRenderableSeries(wasmContext, {
                 dataSeries: new XyDataSeries(wasmContext, {
@@ -91,5 +92,50 @@ export const ChartWithInitCallback = () => (
             minWidth: "600px",
             minHeight: "300px"
         }}
-    />
+    >
+        <div style={{ display: "flex", justifyContent: "center" }}>
+            <StartButton />
+            <StopButton />
+        </div>
+    </SciChartReact>
+);
+
+const StartButton = () => {
+    const initResult = useContext(SciChartSurfaceContext);
+    const handleClick = () => {
+        initResult.startUpdate();
+    };
+    return <input type="button" onClick={handleClick} value="Start Animation"></input>;
+};
+
+const StopButton = () => {
+    const initResult = useContext(SciChartSurfaceContext);
+    const handleClick = () => {
+        initResult.stopUpdate();
+    };
+    return <input type="button" onClick={handleClick} value="Stop Animation"></input>;
+};
+
+const fallbackComponent = (
+    <div
+        style={{
+            aspectRatio: 2,
+            minWidth: "600px",
+            minHeight: "300px",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#242529",
+            top: 0,
+            left: 0,
+            width: 600,
+            height: 200,
+            fontSize: 30,
+            color: "grey",
+            textAlign: "center",
+            verticalAlign: "middle",
+            justifyContent: "stretch"
+        }}
+    >
+        <div style={{ flex: "auto" }}> Loading...</div>
+    </div>
 );

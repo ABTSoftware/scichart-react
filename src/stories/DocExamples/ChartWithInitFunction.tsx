@@ -14,11 +14,8 @@ export const ChartWithInitFunction = () => (
         initChart={async rootElement => {
             const { sciChartSurface, wasmContext } = await SciChartSurface.create(rootElement);
 
-            const xAxis = new NumericAxis(wasmContext);
-            const yAxis = new NumericAxis(wasmContext);
-
-            sciChartSurface.xAxes.add(xAxis);
-            sciChartSurface.yAxes.add(yAxis);
+            sciChartSurface.xAxes.add(new NumericAxis(wasmContext));
+            sciChartSurface.yAxes.add(new NumericAxis(wasmContext));
 
             sciChartSurface.renderableSeries.add(
                 new SplineMountainRenderableSeries(wasmContext, {
@@ -42,8 +39,9 @@ export const ChartWithInitFunction = () => (
             return { sciChartSurface };
         }}
         style={{
-            width: "100%",
-            height: "300px"
+            aspectRatio: 2,
+            minWidth: "600px",
+            minHeight: "300px"
         }}
     />
 );

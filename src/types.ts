@@ -6,7 +6,11 @@ export interface IInitResult<TSurface extends ISciChartSurfaceBase = ISciChartSu
     sciChartSurface: TSurface;
 }
 
-/** Describes the core type of a chart initialization function */
+/**
+ * Describes the type of a chart initialization function
+ * @param rootElement the internal element that should be used to create a chart
+ * @returns a Promise with the initialization result object containing the created surface reference as `sciChartSurface` property
+ */
 export type TInitFunction<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>> = (
     rootElement: string | HTMLDivElement
 ) => Promise<TInitResult>;
@@ -33,6 +37,9 @@ export type TChartComponentPropsWithInit<
     TSurface extends ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface>
 > = IChartComponentPropsCore<TSurface, TInitResult> & {
+    /**
+     * An initialization function which should return surface instance created on the provided root element.
+     */
     initChart: TInitFunction<TSurface, TInitResult>;
     config?: never;
 };
@@ -42,6 +49,9 @@ type TChartComponentPropsWithConfig<TSurface extends ISciChartSurfaceBase> = ICh
     IInitResult<TSurface>
 > & {
     initChart?: never;
+    /**
+     * A string with chart definition or configuration object acceptable by SciChart Builder API
+     */
     config: string | TSurfaceDefinition;
 };
 

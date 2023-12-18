@@ -76,9 +76,9 @@ function SciChartComponent<
         };
 
         return () => {
+            groupContext?.removeChartFromGroup(chartRoot);
             // check if chart is already initialized or wait init to finish before deleting it
             sciChartSurfaceRef.current ? performCleanup() : initPromise.then(performCleanup);
-            groupContext?.removeChartFromGroup(chartRoot);
         };
     }, []);
 

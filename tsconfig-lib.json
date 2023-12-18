@@ -28,10 +28,8 @@
         "module": "commonjs" /* Specify what module code is generated. */,
         // "rootDir": "./",                                  /* Specify the root folder within your source files. */
         // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
-        "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
-        "paths": {
-            "scichart-react": ["./src"]
-        } /* Specify a set of entries that re-map imports to additional lookup locations. */,
+        // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
+        // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
         // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
         "typeRoots": [
             "./src/types",
@@ -88,7 +86,7 @@
 
         /* Type Checking */
         "strict": true /* Enable all strict type-checking options. */,
-        "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+        // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
         // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
         // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
         // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
@@ -111,5 +109,6 @@
         // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
         "skipLibCheck": true /* Skip type checking all .d.ts files. */
     },
-    "exclude": ["node_modules"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "src/stories", ".storybook"]
 }

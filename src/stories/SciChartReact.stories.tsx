@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import PrimaryChartExampleSrcCode from "!!raw-loader!./DocExamples/PrimaryChartExample.tsx";
 import ChartWithConfigSrcCode from "!!raw-loader!./DocExamples/ChartWithConfig.tsx";

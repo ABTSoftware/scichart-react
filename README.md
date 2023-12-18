@@ -1,12 +1,3 @@
-// TODO
-controls
-description
-required/optional
-remove padding
-
-usage with typescript
-3d charts
-
 # SciChart.React - Official React Component Wrapper for SciChart.js: High Performance [JavaScript Chart Library](https://www.scichart.com/javascript-chart-features)
 
 SciChart.React requires core [SciChart.js](https://www.npmjs.com/package/scichart) package to work and uses it as a peer dependency.
@@ -15,9 +6,9 @@ The SciChartReact itself is MIT licensed, find the core library licensing info a
 
 ## What does SciChart.React do?
 
--   Neatly wraps up the lifecycle of SciChart.js into a React component to ensure proper initialisation and memory cleanup.
--   Provides a number of ways to configure a chart (via JSON config or initialization function)
--   Can be used to create complex dashboards linking multiple charts (demos are coming soon!)
+- Neatly wraps up the lifecycle of  SciChart.js into a React component to ensure proper initialisation and memory cleanup.
+- Provides a number of ways to configure a chart (via JSON config or initialization function)
+- Can be used to create complex dashboards linking multiple charts (demos are coming soon!)
 
 ## Getting Started
 
@@ -178,25 +169,3 @@ function App() {
 -   [Community forums](https://scichart.com/questions)
 -   [Stackoverflow tag](https://stackoverflow.com/tags/scichart)
 -   [Contact Us (Technical support or sales)](https://scichart.com/contact-us)
-
-### Project idea
-
-SciChart.js has some prerequisites and specific behavior when working with. A wrapper component for a specific framework, provides a boilerplate with the required setup and simplifies the usage of the core library within the .
-
-There are several points to consider:
-
--   a chart may require a root `div` element to be present in the DOM tree at the moment of initialization
--   surfaces should not reference the same root element
--   chart initialization is an asynchronous process (refer to [SciChartSurface.create]()/[SciChartSurface.createSingle]()/[SciChart3DSurface.create]()/[SciChart3DSurface.createSingle](), [SciChartPieSurface.create]() )
--   chart disposal should be managed explicitly and should be handled properly considering async initialization
--   appropriate usage of the chart lifecycle, which could consist of multiple stages: (WASM initialization) -> surface initialization -> chart setup (series, annotations, animations).
-    To achieve a smooth drawing, it is important to properly control the order of code execution for chart setup, data fetching, displaying fallback, and the chart rendering itself.
--   Handling React.StrictMode
--   React component fallback
--   Context shared with nested elements
-
--   Overview
--   Group
--   MemoryDebugWrapper
-
--

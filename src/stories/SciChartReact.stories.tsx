@@ -1,20 +1,29 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import PrimaryChartExampleSrcCode from "!!raw-loader!./DocExamples/PrimaryChartExample.tsx";
-import ChartWithConfigSrcCode from "!!raw-loader!./DocExamples/ChartWithConfig.tsx";
-import ChartWithInitFunctionSrcCode from "!!raw-loader!./DocExamples/ChartWithInitFunction.tsx";
-import ChartWithFallbackSrcCode from "!!raw-loader!./DocExamples/ChartWithFallback.tsx";
-import ChartWithInitCallbackSrcCode from "!!raw-loader!./DocExamples/ChartWithInitCallback.tsx";
-import ChartWithNestedComponentsSrcCode from "!!raw-loader!./DocExamples/ChartWithNestedComponents.tsx";
+import PrimaryChartExampleSrcCode from "!!raw-loader!./DocExamples/PrimaryChartExample";
+import ChartWithConfigSrcCode from "!!raw-loader!./DocExamples/ChartWithConfig";
+import ChartWithInitFunctionSrcCode from "!!raw-loader!./DocExamples/ChartWithInitFunction";
+import ChartWithFallbackSrcCode from "!!raw-loader!./DocExamples/ChartWithFallback";
+import ChartWithInitCallbackSrcCode from "!!raw-loader!./DocExamples/ChartWithInitCallback";
+import ChartWithNestedComponentsSrcCode from "!!raw-loader!./DocExamples/ChartWithNestedComponents";
+import ChartUsageWithTypescriptSrcCode from "!!raw-loader!./DocExamples/ChartUsageWithTypescript";
+import ChartWith3dSurfaceSrcCode from "!!raw-loader!./DocExamples/ChartWith3dSurface";
+import ChartWithPieSurfaceSrcCode from "!!raw-loader!./DocExamples/ChartWithPieSurface";
 import { PrimaryChartExample as PrimaryChartExampleRenderer } from "./DocExamples/PrimaryChartExample";
 import { ChartWithConfig as ChartWithConfigRenderer } from "./DocExamples/ChartWithConfig";
 import { ChartWithInitFunction as ChartWithInitFunctionRenderer } from "./DocExamples/ChartWithInitFunction";
 import { ChartWithFallback as ChartWithFallbackRenderer } from "./DocExamples/ChartWithFallback";
 import { ChartWithInitCallback as ChartWithInitCallbackRenderer } from "./DocExamples/ChartWithInitCallback";
 import { ChartWithNestedComponents as ChartWithNestedComponentsRenderer } from "./DocExamples/ChartWithNestedComponents";
-import { SciChartSurface } from "scichart";
+import { ChartUsageWithTypescript as ChartUsageWithTypescriptRenderer } from "./DocExamples/ChartUsageWithTypescript";
+import { ChartWith3dSurface as ChartWith3dSurfaceRenderer } from "./DocExamples/ChartWith3dSurface";
+import { ChartWithPieSurface as ChartWithPieSurfaceRenderer } from "./DocExamples/ChartWithPieSurface";
+import { SciChart3DSurface, SciChartSurface } from "scichart";
 import { SciChartReact } from "../SciChart";
 import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
+
 SciChartSurface.useWasmFromCDN();
+SciChart3DSurface.useWasmFromCDN();
+
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
     title: "Example/SciChartReact",
@@ -89,4 +98,37 @@ export const ChartWithInitCallback: Story = {
 export const ChartWithNestedComponents: Story = {
     parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithNestedComponentsSrcCode } } },
     render: ChartWithNestedComponentsRenderer
+};
+
+/**
+ * SciChartReact defines a generic function-component that accepts type parameters specifying:
+ * - the returned surface type (`TSurface`)
+ * - a type of an object returned by the initialization function (`TInitResult`)
+ *
+ * The `TInitResult` can be applied to:
+ * - params of callbacks
+ * - `SciChartSurfaceContext` value
+ */
+export const ChartUsageWithTypescript: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartUsageWithTypescriptSrcCode } } },
+    render: ChartUsageWithTypescriptRenderer
+};
+
+/**
+ * Creating a 3D chart with an init function is similar to the 2D chart initialization.
+ * Currently 3D charts do not support initialization via config.
+ */
+export const ChartWith3dSurface: Story = {
+    name: "Chart with 3D Surface",
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWith3dSurfaceSrcCode } } },
+    render: ChartWith3dSurfaceRenderer
+};
+
+/**
+ * Creating a Pie chart uses the same approach.
+ * Pie Charts are supported by config definition.
+ */
+export const ChartWithPieSurface: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithPieSurfaceSrcCode } } },
+    render: ChartWithPieSurfaceRenderer
 };

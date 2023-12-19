@@ -11,6 +11,7 @@ import { SciChartReact } from "scichart-react";
 
 export const ChartWithInitFunction = () => (
     <SciChartReact
+        // init function should use the `rootElement` param in an appropriate `create` method and then return an object with the surface reference
         initChart={async rootElement => {
             const { sciChartSurface, wasmContext } = await SciChartSurface.create(rootElement);
 
@@ -36,6 +37,7 @@ export const ChartWithInitFunction = () => (
                 new ZoomExtentsModifier()
             );
 
+            // the returned result should contain at least a reference to the created surface
             return { sciChartSurface };
         }}
         style={{

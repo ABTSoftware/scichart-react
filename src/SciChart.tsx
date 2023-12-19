@@ -76,9 +76,9 @@ function SciChartComponent<
         };
 
         return () => {
+            groupContext?.removeChartFromGroup(chartRoot);
             // check if chart is already initialized or wait init to finish before deleting it
             sciChartSurfaceRef.current ? performCleanup() : initPromise.then(performCleanup);
-            groupContext?.removeChartFromGroup(chartRoot);
         };
     }, []);
 
@@ -112,7 +112,9 @@ function SciChartComponent<
 }
 
 /**
- * The component for rendering a chart surface {@link ISciChartSurfaceBase}
+ * The component for rendering a chart surface.
+ * There are 2 ways to setup a chart.
+ * It requires a chart configuration object passed via `config` or an initialization function passed via `initChart`
  * @param props {@link TChartComponentProps}
  * @returns a React wrapper component that contains a chart
  */

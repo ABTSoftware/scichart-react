@@ -45,19 +45,28 @@ function SciChartComponent<
             ? (initChart as TInitFunction<TSurface, TInitResult>)
             : createChartFromConfig<TSurface>(config);
 
-        const runInit = async () => {
-            return initializationFunction(chartRoot as HTMLDivElement).then(initResult => {
-                if (!initResult.sciChartSurface) {
-                    throw new Error(
-                        `"initChart" function should resolve to an object with "sciChartSurface" property ({ sciChartSurface })`
-                    );
-                }
-                sciChartSurfaceRef.current = initResult.sciChartSurface as TSurface;
-                initResultRef.current = initResult as TInitResult;
+        // marks if destructor called for the current effect
+        let isCancelled = false;
 
-                setIsInitialized(true);
+        const runInit = async (): Promise<IInitResult<TSurface>> => {
+            return new Promise((resolve, reject) => {
+                return initializationFunction(chartRoot as HTMLDivElement)
+                    .then(initResult => {
+                        if (!initResult.sciChartSurface) {
+                            throw new Error(
+                                `"initChart" function should resolve to an object with "sciChartSurface" property ({ sciChartSurface })`
+                            );
+                        }
+                        sciChartSurfaceRef.current = initResult.sciChartSurface as TSurface;
+                        initResultRef.current = initResult as TInitResult;
 
-                return initResult;
+                        if (!isCancelled) {
+                            setIsInitialized(true);
+                        }
+
+                        resolve(initResult);
+                    })
+                    .catch(reject);
             });
         };
 
@@ -66,7 +75,7 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = () => {
-            if (onDelete) {
+            if (isInitialized && onDelete) {
                 onDelete(initResultRef.current as TInitResult);
             }
             sciChartSurfaceRef.current!.delete();
@@ -76,6 +85,7 @@ function SciChartComponent<
         };
 
         return () => {
+            isCancelled = true;
             groupContext?.removeChartFromGroup(chartRoot);
             // check if chart is already initialized or wait init to finish before deleting it
             sciChartSurfaceRef.current ? performCleanup() : initPromise.then(performCleanup);

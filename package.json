@@ -14,7 +14,7 @@
         "dev-docs-server": "ts-node --project tsconfig-server.json ./src/stories/server/index.ts",
         "tsc": "tsc --watch",
         "relink": "cd lib && npm link",
-        "buildJs": "rimraf lib && tsc --build tsconfig-lib.json",
+        "buildJs": "rimraf lib && tsc --build tsconfig.json",
         "generateGlobalExportsModule": "ts-node generate-exports-file.ts",
         "buildBrowserBundle": "echo Not Implemented!",
         "updateJson": "run-script-os",

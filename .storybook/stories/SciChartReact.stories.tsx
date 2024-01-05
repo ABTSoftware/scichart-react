@@ -18,7 +18,7 @@ import { ChartUsageWithTypescript as ChartUsageWithTypescriptRenderer } from "./
 import { ChartWith3dSurface as ChartWith3dSurfaceRenderer } from "./DocExamples/ChartWith3dSurface";
 import { ChartWithPieSurface as ChartWithPieSurfaceRenderer } from "./DocExamples/ChartWithPieSurface";
 import { SciChart3DSurface, SciChartSurface } from "scichart";
-import { SciChartReact } from "../SciChart";
+import { SciChartReact } from "../../src/SciChart";
 import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
 
 SciChartSurface.useWasmFromCDN();

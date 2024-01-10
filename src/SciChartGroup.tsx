@@ -43,7 +43,7 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
             ) as IInitResult[];
             onInit(initResults);
         }
-    }, [onInit, groupState.groupInitialized]);
+    }, [groupState.groupInitialized]);
 
     useEffect(() => {
         if (onDelete && groupState.groupInitialized) {
@@ -55,7 +55,7 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
                 onDelete(initResults);
             };
         }
-    }, [onDelete, groupState.groupInitialized]);
+    }, [groupState.groupInitialized]);
 
     return <SciChartGroupContext.Provider value={contextState}>{props.children}</SciChartGroupContext.Provider>;
 };

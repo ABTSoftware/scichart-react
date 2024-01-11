@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+"use client";
+
+import { useEffect, useRef, JSX } from "react";
 import { DefaultSciChartLoader, SciChartSurfaceBase } from "scichart";
 
-export const DefaultFallback = () => {
+export const DefaultFallback = (): JSX.Element => {
     const rootRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

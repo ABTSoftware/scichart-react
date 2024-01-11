@@ -62,9 +62,4 @@ export type TChartComponentProps<
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 > = TChartComponentPropsWithInit<TSurface, TInitResult> | TChartComponentPropsWithConfig<TSurface>;
 
-type TChartComponentPropsIntersection<
-    TSurface extends ISciChartSurfaceBase,
-    TInitResult extends IInitResult<TSurface>
-> = TChartComponentPropsWithInit<TSurface, TInitResult> & TChartComponentPropsWithConfig<TSurface>;
-
 export type TResolvedReturnType<TFunc extends (...args: any) => any> = Awaited<ReturnType<TFunc>>;

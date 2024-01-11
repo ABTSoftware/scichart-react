@@ -12,9 +12,10 @@ import { SciChartReact } from "./SciChart";
  */
 export const SciChartNestedOverview = (
     props: IChartComponentPropsCore<SciChartSurface, IInitResult<SciChartSurface>> & { options?: IOverviewOptions }
-): JSX.Element => {
+): JSX.Element | null => {
     const { options, ...chartComponentProps } = props;
-    const parentSurface = useContext(SciChartSurfaceContext)!.sciChartSurface as SciChartSurface;
+    const initResult = useContext(SciChartSurfaceContext);
+    const parentSurface = initResult?.sciChartSurface as SciChartSurface;
     const overviewRef = useRef<SciChartOverview | null>(null);
     const overviewCreatePromiseRef = useRef<Promise<SciChartOverview> | null>(null);
 
@@ -25,7 +26,7 @@ export const SciChartNestedOverview = (
         return { sciChartSurface: overview.overviewSciChartSurface };
     };
 
-    return (
+    return parentSurface ? (
         <SciChartReact
             {...chartComponentProps}
             initChart={initChart}
@@ -33,5 +34,5 @@ export const SciChartNestedOverview = (
                 overviewRef.current!.delete();
             }}
         />
-    );
+    ) : null;
 };

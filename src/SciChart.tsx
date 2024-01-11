@@ -6,6 +6,8 @@ import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
+import { DefaultFallback } from "./DefaultFallback";
+import { conflictingConfigsMessage, wrongInitResultMessage } from "./constants";
 
 // use base URL to resolve WASM module
 SciChartSurface.configure({
@@ -25,7 +27,7 @@ function SciChartComponent<
     const { initChart, config, fallback, onInit, onDelete, innerContainerProps, ...divElementProps } = props;
 
     if ((!initChart && !config) || (initChart && config)) {
-        throw new Error(`Only one of "initChart" or "config" props is required!`);
+        throw new Error(conflictingConfigsMessage);
     }
 
     const [divElementId] = useState(divElementProps.id);
@@ -41,6 +43,9 @@ function SciChartComponent<
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
+        const rootElement = innerContainerRef.current;
+        rootElement!.appendChild(chartRoot as Node);
+
         const initializationFunction = initChart
             ? (initChart as TInitFunction<TSurface, TInitResult>)
             : createChartFromConfig<TSurface>(config);
@@ -48,14 +53,12 @@ function SciChartComponent<
         // marks if destructor called for the current effect
         let isCancelled = false;
 
-        const runInit = async (): Promise<IInitResult<TSurface>> => {
-            return new Promise((resolve, reject) => {
-                return initializationFunction(chartRoot as HTMLDivElement)
+        const runInit = async (): Promise<IInitResult<TSurface>> =>
+            new Promise((resolve, reject) =>
+                initializationFunction(chartRoot as HTMLDivElement)
                     .then(initResult => {
                         if (!initResult.sciChartSurface) {
-                            throw new Error(
-                                `"initChart" function should resolve to an object with "sciChartSurface" property ({ sciChartSurface })`
-                            );
+                            throw new Error(wrongInitResultMessage);
                         }
                         sciChartSurfaceRef.current = initResult.sciChartSurface as TSurface;
                         initResultRef.current = initResult as TInitResult;
@@ -66,9 +69,8 @@ function SciChartComponent<
 
                         resolve(initResult);
                     })
-                    .catch(reject);
-            });
-        };
+                    .catch(reject)
+            );
 
         // workaround to handle StrictMode
         const initPromise = initPromiseRef.current ? initPromiseRef.current.then(runInit) : runInit();
@@ -79,9 +81,6 @@ function SciChartComponent<
                 onDelete(initResultRef.current as TInitResult);
             }
             sciChartSurfaceRef.current!.delete();
-            // Redundant cleanup which causes issue in StrictMode
-            // sciChartSurfaceRef.current = undefined;
-            // initResultRef.current = undefined;
         };
 
         return () => {
@@ -96,9 +95,6 @@ function SciChartComponent<
 
     useEffect(() => {
         if (isInitialized && isMountedRef.current && chartRoot) {
-            const rootElement = innerContainerRef.current;
-            rootElement!.appendChild(chartRoot);
-
             if (onInit) {
                 onInit(initResultRef.current as TInitResult);
             }
@@ -107,17 +103,29 @@ function SciChartComponent<
         groupContext?.addChartToGroup(chartRoot, isInitialized, initResultRef.current);
     }, [isInitialized]);
 
-    const mergedInnerContainerProps = { style: { height: "100%", width: "100%" }, ...innerContainerProps };
+    const mergedInnerContainerProps = {
+        ...innerContainerProps,
+        style: { height: "100%", width: "100%", ...innerContainerProps?.style }
+    };
 
-    return isInitialized ? (
+    return (
         <SciChartSurfaceContext.Provider value={initResultRef.current}>
-            <div {...divElementProps}>
-                <div {...mergedInnerContainerProps} ref={innerContainerRef} id={divElementId}></div>
-                {props.children}
+            <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
+                <>
+                    <div {...mergedInnerContainerProps} ref={innerContainerRef} id={divElementId} />
+                    {isInitialized ? props.children : null}
+                </>
+                {!isInitialized ? (
+                    fallback ? (
+                        <div style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0 }}>
+                            {fallback}
+                        </div>
+                    ) : (
+                        <DefaultFallback />
+                    )
+                ) : null}
             </div>
         </SciChartSurfaceContext.Provider>
-    ) : (
-        <>{fallback}</> ?? null
     );
 }
 

@@ -5,7 +5,7 @@ import { Statement } from "typescript";
 
 const IGNORE_DIRS: string[] = ["src/stories"];
 
-const IGNORE_FILES: string[] = ["src/index.ts", "src/utils.ts"];
+const IGNORE_FILES: string[] = ["src/index.ts", "src/utils.ts", "src/constants.ts"];
 
 const IGNORE_FILE_NAMES: string[] = [];
 

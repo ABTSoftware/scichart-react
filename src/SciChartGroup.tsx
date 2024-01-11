@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren, useEffect, useState, JSX } from "react";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { IInitResult } from "./types";

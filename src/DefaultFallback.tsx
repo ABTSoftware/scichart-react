@@ -26,6 +26,7 @@ export const DefaultFallback = (): JSX.Element => {
                 width: "100%",
                 top: 0,
                 left: 0,
+                textAlign: "center",
                 background: SciChartSurfaceBase.DEFAULT_THEME.sciChartBackground
             }}
         />

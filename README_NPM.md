@@ -39,6 +39,8 @@ SciChart3DSurface.configure({
 
 ### Using
 
+**<span style="color: black;background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">For detailed examples of all provided components check out [Docs](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs).</span>**
+
 There are two ways to setup `SciChartReact`.
 The component requires one of `config` or `initChart` properties to create a chart.
 
@@ -155,7 +157,8 @@ function App() {
 
 -   [Tutorials](https://www.scichart.com/documentation/js/current/webframe.html#Tutorial%2001%20-%20Setting%20up%20a%20Project%20with%20SciChart.js.html)
 -   [Getting Started Guide](https://scichart.com/getting-started/scichart-javascript/)
--   [Documentation](https://www.scichart.com/documentation/js/current/webframe.html)
+-   [SciChart.JS Documentation](https://www.scichart.com/documentation/js/current/webframe.html)
+-   [SciChart.React Documentation](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 -   [CodePen, JSFiddle support](https://www.scichart.com/blog/codepen-codesandbox-and-jsfiddle-support-in-scichart-js/)
 
 ### Support

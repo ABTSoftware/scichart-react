@@ -26,13 +26,17 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
 
     const addChartToGroup = (chart: any, isInitialized: boolean, initResult: IInitResult | null) => {
         groupState.charts.set(chart, { isInitialized, initResult });
-        const groupInitialized = Array.from(groupState.charts.values()).every(({ isInitialized }) => isInitialized);
+        const groupInitialized =
+            groupState.charts.size > 0 &&
+            Array.from(groupState.charts.values()).every(({ isInitialized }) => isInitialized);
         setGroupState({ groupInitialized, charts: groupState.charts });
     };
 
     const removeChartFromGroup = (chart: any) => {
         groupState.charts.delete(chart);
-        const groupInitialized = Array.from(groupState.charts.values()).every(({ isInitialized }) => isInitialized);
+        const groupInitialized =
+            groupState.charts.size > 0 &&
+            Array.from(groupState.charts.values()).every(({ isInitialized }) => isInitialized);
         setGroupState({ groupInitialized, charts: groupState.charts });
     };
 

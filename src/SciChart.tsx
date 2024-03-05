@@ -115,7 +115,9 @@ function SciChartComponent<
                 </>
                 {!isInitialized ? (
                     fallback ? (
-                        <div style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0 }}>
+                        <div
+                            style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0, zIndex: 12 }}
+                        >
                             {fallback}
                         </div>
                     ) : (

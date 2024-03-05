@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext } from "react";
-import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface } from "scichart";
+import { useRef, useState, useEffect, useContext, JSX } from "react";
+import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface, generateGuid } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
@@ -37,71 +37,69 @@ function SciChartComponent<
 
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
     const initResultRef = useRef<TInitResult | null>(null);
-    const sciChartSurfaceRef = useRef<TSurface>();
 
     const [isInitialized, setIsInitialized] = useState(false);
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
+        // generate guid to distinguish between effect calls in StrictMode
+        const chartId = generateGuid();
+        groupContext?.addChartToGroup(chartId, false, null);
+
         const rootElement = innerContainerRef.current;
         rootElement!.appendChild(chartRoot as Node);
 
         const initializationFunction = initChart
-            ? (initChart as TInitFunction<TSurface, TInitResult>)
-            : createChartFromConfig<TSurface>(config);
+            ? initChart
+            : (createChartFromConfig<TSurface>(config) as TInitFunction<TSurface, TInitResult>);
 
-        // marks if destructor called for the current effect
-        let isCancelled = false;
+        let cancelled = false;
 
-        const runInit = async (): Promise<IInitResult<TSurface>> =>
-            new Promise((resolve, reject) =>
+        const runInit = async (): Promise<TInitResult> =>
+            new Promise((resolve, reject) => {
                 initializationFunction(chartRoot as HTMLDivElement)
                     .then(initResult => {
                         if (!initResult.sciChartSurface) {
                             throw new Error(wrongInitResultMessage);
                         }
-                        sciChartSurfaceRef.current = initResult.sciChartSurface as TSurface;
-                        initResultRef.current = initResult as TInitResult;
 
-                        if (!isCancelled) {
+                        // check if the component was unmounted before init finished
+                        if (isMountedRef.current && chartRoot) {
+                            initResultRef.current = initResult;
+                            groupContext?.addChartToGroup(chartId, true, initResult);
                             setIsInitialized(true);
+
+                            if (onInit) {
+                                onInit(initResult);
+                            }
+                        } else {
+                            cancelled = true;
                         }
 
                         resolve(initResult);
                     })
-                    .catch(reject)
-            );
+                    .catch(reject);
+            });
 
         // workaround to handle StrictMode
         const initPromise = initPromiseRef.current ? initPromiseRef.current.then(runInit) : runInit();
         initPromiseRef.current = initPromise;
 
-        const performCleanup = () => {
-            if (isInitialized && onDelete) {
-                onDelete(initResultRef.current as TInitResult);
+        const performCleanup = (initResult: TInitResult) => {
+            if (!cancelled && onDelete) {
+                onDelete(initResult);
             }
-            sciChartSurfaceRef.current!.delete();
+            groupContext?.removeChartFromGroup(chartId);
+            initResult.sciChartSurface!.delete();
         };
 
         return () => {
-            isCancelled = true;
-            groupContext?.removeChartFromGroup(chartRoot);
-            // check if chart is already initialized or wait init to finish before deleting it
-            sciChartSurfaceRef.current ? performCleanup() : initPromise.then(performCleanup);
+            // wait for init to finish before deleting it
+            initPromise.then(performCleanup);
         };
     }, []);
 
     const groupContext = useContext(SciChartGroupContext);
-
-    useEffect(() => {
-        if (isInitialized && isMountedRef.current && chartRoot) {
-            if (onInit) {
-                onInit(initResultRef.current as TInitResult);
-            }
-        }
-
-        groupContext?.addChartToGroup(chartRoot, isInitialized, initResultRef.current);
-    }, [isInitialized]);
 
     const mergedInnerContainerProps = {
         ...innerContainerProps,

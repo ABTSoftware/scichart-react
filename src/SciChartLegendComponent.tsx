@@ -21,6 +21,10 @@ export const SciChartNestedLegend = (props: ISciChartNestedLegendProps): JSX.Ele
         });
 
         parentSurface.chartModifiers.add(legendModifier);
+
+        return () => {
+            parentSurface.chartModifiers.remove(legendModifier, true);
+        };
     }, [parentSurface]);
 
     return <div {...divProps} ref={legendPlacementDivRef}></div>;

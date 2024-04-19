@@ -26,6 +26,7 @@
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "@vercel/webpack-asset-relocator-loader": "^1.7.3",
+        "copy-webpack-plugin": "^12.0.2",
         "css-loader": "^6.11.0",
         "electron": "30.0.1",
         "eslint": "^8.57.0",
@@ -46,6 +47,8 @@
     "dependencies": {
         "electron-squirrel-startup": "^1.0.0",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "scichart": "^3.2.516",
+        "scichart-react": "latest"
     }
 }

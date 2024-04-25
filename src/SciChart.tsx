@@ -36,9 +36,8 @@ function SciChartComponent<
     const innerContainerRef = useRef<HTMLDivElement>(null);
 
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
-    const initResultRef = useRef<TInitResult | null>(null);
 
-    const [isInitialized, setIsInitialized] = useState(false);
+    const [initResult, setInitResult] = useState<TInitResult | null>(null);
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
@@ -58,25 +57,23 @@ function SciChartComponent<
         const runInit = async (): Promise<TInitResult> =>
             new Promise((resolve, reject) => {
                 initializationFunction(chartRoot as HTMLDivElement)
-                    .then(initResult => {
-                        if (!initResult.sciChartSurface) {
+                    .then(result => {
+                        if (!result.sciChartSurface) {
                             throw new Error(wrongInitResultMessage);
                         }
-
                         // check if the component was unmounted before init finished
                         if (isMountedRef.current && chartRoot) {
-                            initResultRef.current = initResult;
-                            groupContext?.addChartToGroup(chartId, true, initResult);
-                            setIsInitialized(true);
+                            groupContext?.addChartToGroup(chartId, true, result);
+                            setInitResult(result);
 
                             if (onInit) {
-                                onInit(initResult);
+                                onInit(result);
                             }
                         } else {
                             cancelled = true;
                         }
 
-                        resolve(initResult);
+                        resolve(result);
                     })
                     .catch(reject);
             });
@@ -107,13 +104,13 @@ function SciChartComponent<
     };
 
     return (
-        <SciChartSurfaceContext.Provider value={initResultRef.current}>
+        <SciChartSurfaceContext.Provider value={initResult}>
             <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
                 <>
                     <div {...mergedInnerContainerProps} ref={innerContainerRef} id={divElementId} />
-                    {isInitialized ? props.children : null}
+                    {initResult ? props.children : null}
                 </>
-                {!isInitialized ? (
+                {!initResult ? (
                     fallback ? (
                         <div
                             style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0, zIndex: 12 }}

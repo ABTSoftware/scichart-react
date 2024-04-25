@@ -16,7 +16,8 @@ export type TInitFunction<
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 > = (rootElement: string | HTMLDivElement) => Promise<TInitResult>;
 
-type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+/** @ignore */
+export type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 /** @ignore */
 export interface IChartComponentPropsCore<

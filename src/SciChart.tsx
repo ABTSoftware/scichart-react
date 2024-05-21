@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext, JSX } from "react";
+import { useRef, useState, useEffect, useContext, JSX, CSSProperties } from "react";
 import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface, generateGuid } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
@@ -29,8 +29,6 @@ function SciChartComponent<
     if ((!initChart && !config) || (initChart && config)) {
         throw new Error(conflictingConfigsMessage);
     }
-
-    const [divElementId] = useState(divElementProps.id);
 
     const isMountedRef = useIsMountedRef();
     const innerContainerRef = useRef<HTMLDivElement>(null);
@@ -103,20 +101,25 @@ function SciChartComponent<
         style: { height: "100%", width: "100%", ...innerContainerProps?.style }
     };
 
+    const fallbackWrapperStyle: CSSProperties = {
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        top: 0,
+        left: 0,
+        zIndex: 12
+    };
+
     return (
         <SciChartSurfaceContext.Provider value={initResult}>
             <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
                 <>
-                    <div {...mergedInnerContainerProps} ref={innerContainerRef} id={divElementId} />
+                    <div {...mergedInnerContainerProps} ref={innerContainerRef} />
                     {initResult ? props.children : null}
                 </>
                 {!initResult ? (
                     fallback ? (
-                        <div
-                            style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0, zIndex: 12 }}
-                        >
-                            {fallback}
-                        </div>
+                        <div style={fallbackWrapperStyle}>{fallback}</div>
                     ) : (
                         <DefaultFallback />
                     )

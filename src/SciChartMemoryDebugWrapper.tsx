@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, MouseEventHandler, PropsWithChildren, useState, JSX } from "react";
+import { ChangeEventHandler, MouseEventHandler, PropsWithChildren, useState, JSX, useCallback } from "react";
 import { SciChartSurface, MemoryUsageHelper } from "scichart";
 
 /**
@@ -9,9 +9,11 @@ import { SciChartSurface, MemoryUsageHelper } from "scichart";
  * @remarks Find more info at [Memory Leak Debugging docs](https://www.scichart.com/documentation/js/current/MemoryLeakDebugging.html)
  */
 export function SciChartMemoryDebugWrapper(props: PropsWithChildren<any>): JSX.Element {
-    SciChartSurface.autoDisposeWasmContext = true;
-    SciChartSurface.wasmContextDisposeTimeout = 0;
-    MemoryUsageHelper.isMemoryUsageDebugEnabled = true;
+    useState(() => {
+        MemoryUsageHelper.isMemoryUsageDebugEnabled = true;
+        SciChartSurface.autoDisposeWasmContext = true;
+        SciChartSurface.wasmContextDisposeTimeout = 0;
+    });
 
     const [drawChart, setDrawChart] = useState(false);
 

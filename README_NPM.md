@@ -4,6 +4,8 @@ SciChart.React requires core [SciChart.js](https://www.npmjs.com/package/scichar
 
 The SciChartReact itself is MIT licensed, find the core library licensing info at [https://www.scichart.com/licensing-scichart-js/](https://www.scichart.com/licensing-scichart-js/).
 
+:ledger: [Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
+
 ## Getting Started
 
 ### Prerequisites
@@ -166,6 +168,8 @@ function App() {
 ### Features & benefits
 
 -   Learn about [features of SciChart.js](https://scichart.com/javascript-chart-features) here
+
+-   [SciChartReact Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 
 ### Onboarding
 

@@ -34,8 +34,9 @@ function SciChartComponent<
     const innerContainerRef = useRef<HTMLDivElement>(null);
 
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
+    const initResultRef = useRef<TInitResult | null>(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
-    const [initResult, setInitResult] = useState<TInitResult | null>(null);
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
@@ -62,7 +63,8 @@ function SciChartComponent<
                         // check if the component was unmounted before init finished
                         if (isMountedRef.current && chartRoot) {
                             groupContext?.addChartToGroup(chartId, true, result);
-                            setInitResult(result);
+                            initResultRef.current = result;
+                            setIsInitialized(true);
 
                             if (onInit) {
                                 onInit(result);
@@ -84,6 +86,10 @@ function SciChartComponent<
             if (!cancelled && onDelete) {
                 onDelete(initResult);
             }
+
+            initResultRef.current = null;
+            setIsInitialized(false);
+
             groupContext?.removeChartFromGroup(chartId);
             initResult.sciChartSurface!.delete();
         };
@@ -111,13 +117,13 @@ function SciChartComponent<
     };
 
     return (
-        <SciChartSurfaceContext.Provider value={initResult}>
+        <SciChartSurfaceContext.Provider value={initResultRef.current}>
             <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
                 <>
                     <div {...mergedInnerContainerProps} ref={innerContainerRef} />
-                    {initResult ? props.children : null}
+                    {isInitialized ? props.children : null}
                 </>
-                {!initResult ? (
+                {!isInitialized ? (
                     fallback ? (
                         <div style={fallbackWrapperStyle}>{fallback}</div>
                     ) : (

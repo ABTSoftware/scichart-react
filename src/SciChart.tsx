@@ -54,28 +54,24 @@ function SciChartComponent<
         let cancelled = false;
 
         const runInit = async (): Promise<TInitResult> =>
-            new Promise((resolve, reject) => {
-                initializationFunction(chartRoot as HTMLDivElement)
-                    .then(result => {
-                        if (!result.sciChartSurface) {
-                            throw new Error(wrongInitResultMessage);
-                        }
-                        // check if the component was unmounted before init finished
-                        if (isMountedRef.current && chartRoot) {
-                            groupContext?.addChartToGroup(chartId, true, result);
-                            initResultRef.current = result;
-                            setIsInitialized(true);
+            initializationFunction(chartRoot as HTMLDivElement).then(result => {
+                if (!result.sciChartSurface) {
+                    throw new Error(wrongInitResultMessage);
+                }
+                // check if the component was unmounted before init finished
+                if (isMountedRef.current && chartRoot) {
+                    groupContext?.addChartToGroup(chartId, true, result);
+                    initResultRef.current = result;
+                    setIsInitialized(true);
 
-                            if (onInit) {
-                                onInit(result);
-                            }
-                        } else {
-                            cancelled = true;
-                        }
+                    if (onInit) {
+                        onInit(result);
+                    }
+                } else {
+                    cancelled = true;
+                }
 
-                        resolve(result);
-                    })
-                    .catch(reject);
+                return result;
             });
 
         // workaround to handle StrictMode

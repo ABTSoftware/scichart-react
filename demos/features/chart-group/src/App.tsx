@@ -2,6 +2,7 @@ import {
     EAutoRange,
     EAxisType,
     EThemeProviderType,
+    FastLineRenderableSeries,
     NumberRange,
     SciChartDefaults,
     SciChartSurface,
@@ -15,7 +16,7 @@ import "./styles.css";
 // SciChart core lib requires asynchronously loaded WASM module.
 // It could be loaded from CDN or by specified path.
 // check out SciChart.JS Docs for configuration info
-SciChartSurface.useWasmFromCDN();
+SciChartSurface.loadWasmFromCDN();
 SciChartDefaults.performanceWarnings = false;
 
 export function App() {
@@ -29,12 +30,18 @@ export function App() {
                     console.log("Group onDelete", initResults);
                 }}
             >
-                <SciChartReact<SciChartSurface>
+                <SciChartReact<SciChartSurface, TResolvedReturnType<typeof chartInitializationFunction>>
                     style={{ width: 600, height: 300 }}
                     fallback={<div className="fallback">Data fetching & Chart Initialization in progress</div>}
                     initChart={chartInitializationFunction}
                     onInit={(initResult: TResolvedReturnType<typeof chartInitializationFunction>) => {
                         console.log("Chart 1 onInit");
+
+                        const token = setInterval(initResult.updateData, 500);
+                        return () => {
+                            console.log("Chart 1 destructor for onInit");
+                            clearInterval(token);
+                        };
                     }}
                     onDelete={(initResult: TResolvedReturnType<typeof chartInitializationFunction>) => {
                         console.log("Chart 1 onDelete");
@@ -65,13 +72,13 @@ const chartInitializationFunction = async (rootElement: string | HTMLDivElement)
             xAxes: {
                 type: EAxisType.NumericAxis,
                 options: {
-                    autoRange: EAutoRange.Once,
+                    autoRange: EAutoRange.Always,
                     growBy: new NumberRange(0.2, 0.2)
                 }
             },
             yAxes: {
                 type: EAxisType.NumericAxis,
-                options: { autoRange: EAutoRange.Never }
+                options: { autoRange: EAutoRange.Always }
             },
             surface: {
                 theme: { type: EThemeProviderType.Dark },
@@ -85,27 +92,42 @@ const chartInitializationFunction = async (rootElement: string | HTMLDivElement)
         return sciChartSurface;
     };
 
+    const generateData = (offset: number) => {
+        const xValues = Array.from(Array(20).keys()).map(x => x + offset);
+        const yValues = xValues.map(() => Math.abs(Math.random() * 10));
+        return { xValues, yValues };
+    };
+
     // a function that simulates an async data fetching
-    const getData = async () => {
+    const getData = async (offset: number = 0) => {
         await new Promise(resolve => {
             setTimeout(() => resolve({}), 1500);
         });
 
-        return { xValues: [0, 1, 2, 3, 4], yValues: [3, 6, 1, 5, 2] };
+        return generateData(offset);
     };
 
     const [sciChartSurface, data] = await Promise.all([createChart(), getData()]);
 
     const wasmContext = sciChartSurface.webAssemblyContext2D;
-
+    const dataSeries = new XyDataSeries(wasmContext, {
+        fifoCapacity: 100,
+        ...data
+    });
     sciChartSurface.renderableSeries.add(
-        new XyScatterRenderableSeries(wasmContext, {
-            dataSeries: new XyDataSeries(wasmContext, {
-                ...data
-            }),
+        new FastLineRenderableSeries(wasmContext, {
+            dataSeries,
             strokeThickness: 4,
             stroke: "#216939"
         })
     );
-    return { sciChartSurface };
+
+    let lastX = data.xValues.length;
+    const updateData = () => {
+        const { xValues, yValues } = generateData(lastX);
+        dataSeries.appendRange(xValues, yValues);
+        lastX += xValues.length;
+    };
+
+    return { sciChartSurface, updateData };
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext, JSX } from "react";
+import { useRef, useState, useEffect, useContext, JSX, CSSProperties } from "react";
 import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface, generateGuid } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
@@ -30,14 +30,13 @@ function SciChartComponent<
         throw new Error(conflictingConfigsMessage);
     }
 
-    const [divElementId] = useState(divElementProps.id);
-
     const isMountedRef = useIsMountedRef();
     const innerContainerRef = useRef<HTMLDivElement>(null);
 
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
+    const initResultRef = useRef<TInitResult | null>(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
-    const [initResult, setInitResult] = useState<TInitResult | null>(null);
     const [chartRoot] = useState(createChartRoot);
 
     useEffect(() => {
@@ -55,27 +54,24 @@ function SciChartComponent<
         let cancelled = false;
 
         const runInit = async (): Promise<TInitResult> =>
-            new Promise((resolve, reject) => {
-                initializationFunction(chartRoot as HTMLDivElement)
-                    .then(result => {
-                        if (!result.sciChartSurface) {
-                            throw new Error(wrongInitResultMessage);
-                        }
-                        // check if the component was unmounted before init finished
-                        if (isMountedRef.current && chartRoot) {
-                            groupContext?.addChartToGroup(chartId, true, result);
-                            setInitResult(result);
+            initializationFunction(chartRoot as HTMLDivElement).then(result => {
+                if (!result.sciChartSurface) {
+                    throw new Error(wrongInitResultMessage);
+                }
+                // check if the component was unmounted before init finished
+                if (isMountedRef.current && chartRoot) {
+                    groupContext?.addChartToGroup(chartId, true, result);
+                    initResultRef.current = result;
+                    setIsInitialized(true);
 
-                            if (onInit) {
-                                onInit(result);
-                            }
-                        } else {
-                            cancelled = true;
-                        }
+                    if (onInit) {
+                        onInit(result);
+                    }
+                } else {
+                    cancelled = true;
+                }
 
-                        resolve(result);
-                    })
-                    .catch(reject);
+                return result;
             });
 
         // workaround to handle StrictMode
@@ -86,6 +82,10 @@ function SciChartComponent<
             if (!cancelled && onDelete) {
                 onDelete(initResult);
             }
+
+            initResultRef.current = null;
+            setIsInitialized(false);
+
             groupContext?.removeChartFromGroup(chartId);
             initResult.sciChartSurface!.delete();
         };
@@ -103,20 +103,25 @@ function SciChartComponent<
         style: { height: "100%", width: "100%", ...innerContainerProps?.style }
     };
 
+    const fallbackWrapperStyle: CSSProperties = {
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        top: 0,
+        left: 0,
+        zIndex: 12
+    };
+
     return (
-        <SciChartSurfaceContext.Provider value={initResult}>
+        <SciChartSurfaceContext.Provider value={initResultRef.current}>
             <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
                 <>
-                    <div {...mergedInnerContainerProps} ref={innerContainerRef} id={divElementId} />
-                    {initResult ? props.children : null}
+                    <div {...mergedInnerContainerProps} ref={innerContainerRef} />
+                    {isInitialized ? props.children : null}
                 </>
-                {!initResult ? (
+                {!isInitialized ? (
                     fallback ? (
-                        <div
-                            style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0, zIndex: 12 }}
-                        >
-                            {fallback}
-                        </div>
+                        <div style={fallbackWrapperStyle}>{fallback}</div>
                     ) : (
                         <DefaultFallback />
                     )

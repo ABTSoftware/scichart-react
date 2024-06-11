@@ -4,6 +4,8 @@ SciChart.React requires core [SciChart.js](https://www.npmjs.com/package/scichar
 
 The SciChartReact itself is MIT licensed, find the core library licensing info at [https://www.scichart.com/licensing-scichart-js/](https://www.scichart.com/licensing-scichart-js/).
 
+:ledger: [Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
+
 ## Getting Started
 
 ### Prerequisites
@@ -23,7 +25,7 @@ SciChart.js requires additional WASM modules to work (`scichart2d.wasm` + `scich
 The library will try to fetch the appropriate files asynchronously during runtime.
 Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/current/Deploying%20Wasm%20or%20WebAssembly%20and%20Data%20Files%20with%20your%20app.html)
 
-By default SciChartReact applies the following configuration:
+**Notice that by default SciChartReact applies the following configuration:**
 
 ```typescript
 SciChartSurface.configure({
@@ -34,6 +36,20 @@ SciChartSurface.configure({
 SciChart3DSurface.configure({
     wasmUrl: "/scichart3d.wasm",
     dataUrl: "/scichart3d.data"
+});
+```
+
+**which is different from the core library configuration:**
+
+```typescript
+SciChartSurface.configure({
+    wasmUrl: undefined,
+    dataUrl: undefined
+});
+
+SciChart3DSurface.configure({
+    wasmUrl: undefined,
+    dataUrl: undefined
 });
 ```
 
@@ -152,6 +168,8 @@ function App() {
 ### Features & benefits
 
 -   Learn about [features of SciChart.js](https://scichart.com/javascript-chart-features) here
+
+-   [SciChartReact Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 
 ### Onboarding
 

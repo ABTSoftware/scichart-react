@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useContext, JSX, CSSProperties } from "react";
 import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface, generateGuid } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
-import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
+import { IInitResult, TChartComponentProps, TCleanupCallback, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { DefaultFallback } from "./DefaultFallback";
@@ -39,6 +39,8 @@ function SciChartComponent<
 
     const [chartRoot] = useState(createChartRoot);
 
+    const cleanupCallbackRef = useRef<TCleanupCallback | void>();
+
     useEffect(() => {
         // generate guid to distinguish between effect calls in StrictMode
         const chartId = generateGuid();
@@ -65,7 +67,7 @@ function SciChartComponent<
                     setIsInitialized(true);
 
                     if (onInit) {
-                        onInit(result);
+                        cleanupCallbackRef.current = onInit(result);
                     }
                 } else {
                     cancelled = true;
@@ -79,6 +81,11 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = (initResult: TInitResult) => {
+            if (!cancelled && cleanupCallbackRef.current) {
+                cleanupCallbackRef.current();
+                cleanupCallbackRef.current = undefined;
+            }
+
             if (!cancelled && onDelete) {
                 onDelete(initResult);
             }

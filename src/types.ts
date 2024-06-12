@@ -16,7 +16,11 @@ export type TInitFunction<
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 > = (rootElement: string | HTMLDivElement) => Promise<TInitResult>;
 
-type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+/** @ignore */
+export type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+
+/** @ignore */
+export type TCleanupCallback = () => void;
 
 /** @ignore */
 export interface IChartComponentPropsCore<
@@ -26,7 +30,7 @@ export interface IChartComponentPropsCore<
     /** a component that would be rendered while the chart is being initialized */
     fallback?: ReactNode | undefined;
     /** a callback function used after the chart is initialized */
-    onInit?: (initResult: TInitResult) => void;
+    onInit?: (initResult: TInitResult) => TCleanupCallback | void;
     /** a callback function used when the component with initialized chart is unmounted */
     onDelete?: (initResult: TInitResult) => void;
     /** props passed to the inner container of the chart */

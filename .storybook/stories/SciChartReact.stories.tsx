@@ -8,6 +8,7 @@ import ChartWithNestedComponentsSrcCode from "!!raw-loader!./DocExamples/ChartWi
 import ChartUsageWithTypescriptSrcCode from "!!raw-loader!./DocExamples/ChartUsageWithTypescript";
 import ChartWith3dSurfaceSrcCode from "!!raw-loader!./DocExamples/ChartWith3dSurface";
 import ChartWithPieSurfaceSrcCode from "!!raw-loader!./DocExamples/ChartWithPieSurface";
+import ChartWrapperStylingSrcCode from "!!raw-loader!./DocExamples/ChartWrapperStyling";
 import { PrimaryChartExample as PrimaryChartExampleRenderer } from "./DocExamples/PrimaryChartExample";
 import { ChartWithConfig as ChartWithConfigRenderer } from "./DocExamples/ChartWithConfig";
 import { ChartWithInitFunction as ChartWithInitFunctionRenderer } from "./DocExamples/ChartWithInitFunction";
@@ -17,6 +18,7 @@ import { ChartWithNestedComponents as ChartWithNestedComponentsRenderer } from "
 import { ChartUsageWithTypescript as ChartUsageWithTypescriptRenderer } from "./DocExamples/ChartUsageWithTypescript";
 import { ChartWith3dSurface as ChartWith3dSurfaceRenderer } from "./DocExamples/ChartWith3dSurface";
 import { ChartWithPieSurface as ChartWithPieSurfaceRenderer } from "./DocExamples/ChartWithPieSurface";
+import { ChartWrapperStyling as ChartWrapperStylingRenderer } from "./DocExamples/ChartWrapperStyling";
 import { SciChart3DSurface, SciChartSurface } from "scichart";
 import { SciChartReact } from "../../src/SciChart";
 import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
@@ -78,10 +80,29 @@ export const ChartWithInitFunction: Story = {
 
 /**
  * A component provided via `fallback` prop is rendered while the initialization is in progress.
+ * If no fallback provided, the chart will use a default one.
  */
 export const ChartWithFallback: Story = {
     parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWithFallbackSrcCode } } },
     render: ChartWithFallbackRenderer
+};
+
+/**
+ * To properly apply sizing and positioning to the component (or any CSS styles) consider these implementation details:
+ * - SciChartReact uses several HTML elements over the basic ones required for SciChart.JS.
+ * - The inner component tree looks like following
+ *   - **outer**: the component propagates it props to this container element.
+ *   - **inner**: rendered within `outer` container; its default styles could be overridden using the `innerContainerProps`
+ *   - **rootElement**: an element created implicitly within the `inner` container and then passed to the chart initialization function;
+ *     SciChart adds other required drawing layers to this element;
+ *     It could  be accessed by ref via `sciChartSurface.domChartRoot`.
+ *   - **children**: elements passed via children props rendered within `outer` container; These elements are provided with `SciChartSurfaceContext`.
+ *   - **fallback**: rendered within `outer` container; it is displayed over the `inner` container and `children` during initialization.
+ * - consider passing `disableAspect` option when creating a chart to prevent the default sizing applied by SciChart.
+ */
+export const ChartWrapperStyling: Story = {
+    parameters: { docs: { source: { type: "dynamic", language: "tsx", code: ChartWrapperStylingSrcCode } } },
+    render: ChartWrapperStylingRenderer
 };
 
 /**

@@ -25,7 +25,7 @@ SciChart.js requires additional WASM modules to work (`scichart2d.wasm` + `scich
 The library will try to fetch the appropriate files asynchronously during runtime.
 Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/current/Deploying%20Wasm%20or%20WebAssembly%20and%20Data%20Files%20with%20your%20app.html)
 
-By default SciChartReact applies the following configuration:
+**Notice that by default SciChartReact applies the following configuration:**
 
 ```typescript
 SciChartSurface.configure({
@@ -36,6 +36,20 @@ SciChartSurface.configure({
 SciChart3DSurface.configure({
     wasmUrl: "/scichart3d.wasm",
     dataUrl: "/scichart3d.data"
+});
+```
+
+**which is different from the core library configuration:**
+
+```typescript
+SciChartSurface.configure({
+    wasmUrl: undefined,
+    dataUrl: undefined
+});
+
+SciChart3DSurface.configure({
+    wasmUrl: undefined,
+    dataUrl: undefined
 });
 ```
 

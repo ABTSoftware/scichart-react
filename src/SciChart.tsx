@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext, JSX } from "react";
+import { useRef, useState, useEffect, useContext, JSX, CSSProperties } from "react";
 import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface, generateGuid } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
-import { IInitResult, TChartComponentProps, TInitFunction } from "./types";
+import { IInitResult, TChartComponentProps, TCleanupCallback, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { DefaultFallback } from "./DefaultFallback";
@@ -30,16 +30,16 @@ function SciChartComponent<
         throw new Error(conflictingConfigsMessage);
     }
 
-    const [divElementId] = useState(divElementProps.id);
-
     const isMountedRef = useIsMountedRef();
     const innerContainerRef = useRef<HTMLDivElement>(null);
 
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
     const initResultRef = useRef<TInitResult | null>(null);
-
     const [isInitialized, setIsInitialized] = useState(false);
+
     const [chartRoot] = useState(createChartRoot);
+
+    const cleanupCallbackRef = useRef<TCleanupCallback | void>();
 
     useEffect(() => {
         // generate guid to distinguish between effect calls in StrictMode
@@ -56,29 +56,24 @@ function SciChartComponent<
         let cancelled = false;
 
         const runInit = async (): Promise<TInitResult> =>
-            new Promise((resolve, reject) => {
-                initializationFunction(chartRoot as HTMLDivElement)
-                    .then(initResult => {
-                        if (!initResult.sciChartSurface) {
-                            throw new Error(wrongInitResultMessage);
-                        }
+            initializationFunction(chartRoot as HTMLDivElement).then(result => {
+                if (!result.sciChartSurface) {
+                    throw new Error(wrongInitResultMessage);
+                }
+                // check if the component was unmounted before init finished
+                if (isMountedRef.current && chartRoot) {
+                    groupContext?.addChartToGroup(chartId, true, result);
+                    initResultRef.current = result;
+                    setIsInitialized(true);
 
-                        // check if the component was unmounted before init finished
-                        if (isMountedRef.current && chartRoot) {
-                            initResultRef.current = initResult;
-                            groupContext?.addChartToGroup(chartId, true, initResult);
-                            setIsInitialized(true);
+                    if (onInit) {
+                        cleanupCallbackRef.current = onInit(result);
+                    }
+                } else {
+                    cancelled = true;
+                }
 
-                            if (onInit) {
-                                onInit(initResult);
-                            }
-                        } else {
-                            cancelled = true;
-                        }
-
-                        resolve(initResult);
-                    })
-                    .catch(reject);
+                return result;
             });
 
         // workaround to handle StrictMode
@@ -86,9 +81,18 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = (initResult: TInitResult) => {
+            if (!cancelled && cleanupCallbackRef.current) {
+                cleanupCallbackRef.current();
+                cleanupCallbackRef.current = undefined;
+            }
+
             if (!cancelled && onDelete) {
                 onDelete(initResult);
             }
+
+            initResultRef.current = null;
+            setIsInitialized(false);
+
             groupContext?.removeChartFromGroup(chartId);
             initResult.sciChartSurface!.delete();
         };
@@ -106,20 +110,25 @@ function SciChartComponent<
         style: { height: "100%", width: "100%", ...innerContainerProps?.style }
     };
 
+    const fallbackWrapperStyle: CSSProperties = {
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        top: 0,
+        left: 0,
+        zIndex: 12
+    };
+
     return (
         <SciChartSurfaceContext.Provider value={initResultRef.current}>
             <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
                 <>
-                    <div {...mergedInnerContainerProps} ref={innerContainerRef} id={divElementId} />
+                    <div {...mergedInnerContainerProps} ref={innerContainerRef} />
                     {isInitialized ? props.children : null}
                 </>
                 {!isInitialized ? (
                     fallback ? (
-                        <div
-                            style={{ position: "absolute", height: "100%", width: "100%", top: 0, left: 0, zIndex: 12 }}
-                        >
-                            {fallback}
-                        </div>
+                        <div style={fallbackWrapperStyle}>{fallback}</div>
                     ) : (
                         <DefaultFallback />
                     )

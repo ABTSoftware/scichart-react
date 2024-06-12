@@ -4,6 +4,8 @@ export { SciChartReact } from "./SciChart";
 export { TSciChartGroupProps } from "./SciChartGroup";
 export { SciChartGroup } from "./SciChartGroup";
 export { SciChartGroupContext } from "./SciChartGroupContext";
+export { ISciChartNestedLegendProps } from "./SciChartLegendComponent";
+export { SciChartNestedLegend } from "./SciChartLegendComponent";
 export { SciChartMemoryDebugWrapper } from "./SciChartMemoryDebugWrapper";
 export { SciChartNestedOverview } from "./SciChartOverview";
 export { SciChartSurfaceContext } from "./SciChartSurfaceContext";

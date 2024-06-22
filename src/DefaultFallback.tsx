@@ -7,12 +7,13 @@ export const DefaultFallback = (): JSX.Element => {
     const rootRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const rootElement = rootRef.current as HTMLDivElement;
         const loader = new DefaultSciChartLoader();
-        const loaderDiv = loader.addChartLoader(rootRef.current as HTMLDivElement, SciChartSurfaceBase.DEFAULT_THEME);
+        const loaderDiv = loader.addChartLoader(rootElement, SciChartSurfaceBase.DEFAULT_THEME);
 
         return () => {
-            if (rootRef.current) {
-                loader.removeChartLoader(rootRef.current as HTMLDivElement, loaderDiv);
+            if (rootElement) {
+                loader.removeChartLoader(rootElement, loaderDiv);
             }
         };
     }, []);

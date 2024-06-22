@@ -37,8 +37,6 @@ function SciChartComponent<
     const initResultRef = useRef<TInitResult | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    const [chartRoot] = useState(createChartRoot);
-
     const cleanupCallbackRef = useRef<TCleanupCallback | void>();
 
     useEffect(() => {
@@ -47,6 +45,8 @@ function SciChartComponent<
         groupContext?.addChartToGroup(chartId, false, null);
 
         const rootElement = innerContainerRef.current;
+
+        const chartRoot = createChartRoot();
         rootElement!.appendChild(chartRoot as Node);
 
         const initializationFunction = initChart
@@ -98,6 +98,7 @@ function SciChartComponent<
         };
 
         return () => {
+            rootElement!.removeChild(chartRoot as Node);
             // wait for init to finish before deleting it
             initPromise.then(performCleanup);
         };

@@ -37,8 +37,6 @@ function SciChartComponent<
     const initResultRef = useRef<TInitResult | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    const cleanupCallbackRef = useRef<TCleanupCallback | void>();
-
     useEffect(() => {
         // generate guid to distinguish between effect calls in StrictMode
         const chartId = generateGuid();
@@ -54,7 +52,7 @@ function SciChartComponent<
             : (createChartFromConfig<TSurface>(config) as TInitFunction<TSurface, TInitResult>);
 
         let cancelled = false;
-
+        let cleanupCallback: void | (() => void);
         const runInit = async (): Promise<TInitResult> =>
             initializationFunction(chartRoot as HTMLDivElement).then(result => {
                 if (!result.sciChartSurface) {
@@ -67,7 +65,7 @@ function SciChartComponent<
                     setIsInitialized(true);
 
                     if (onInit) {
-                        cleanupCallbackRef.current = onInit(result);
+                        cleanupCallback = onInit(result);
                     }
                 } else {
                     cancelled = true;
@@ -81,9 +79,9 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = (initResult: TInitResult) => {
-            if (!cancelled && cleanupCallbackRef.current) {
-                cleanupCallbackRef.current();
-                cleanupCallbackRef.current = undefined;
+            if (!cancelled && cleanupCallback) {
+                cleanupCallback();
+                cleanupCallback = undefined;
             }
 
             if (!cancelled && onDelete) {

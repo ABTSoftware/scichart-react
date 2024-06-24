@@ -16,12 +16,7 @@ export const useIsMountedRef = () => {
 };
 
 export const createChartRoot = () => {
-    // check if SSR
-    if (typeof window === "undefined") {
-        return null;
-    }
-
-    const internalRootElement = document.createElement("div") as HTMLDivElement;
+    const internalRootElement = document.createElement("div");
     // generate or provide a unique root element id to avoid chart rendering collisions
     internalRootElement.id = `chart-root-${generateGuid()}`;
     internalRootElement.style.width = "100%";

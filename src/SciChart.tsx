@@ -20,15 +20,43 @@ SciChart3DSurface.configure({
     dataUrl: "/scichart3d.data"
 });
 
+function validateArgs<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>>(
+    props: TChartComponentProps<TSurface, TInitResult>
+) {
+    const { initChart, config } = props;
+
+    if ((!initChart && !config) || (initChart && config)) {
+        throw new Error(conflictingConfigsMessage);
+    }
+}
+
+function validateResult<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>>(
+    result: TInitResult
+) {
+    if (!result.sciChartSurface) {
+        throw new Error(wrongInitResultMessage);
+    }
+    return result;
+}
+
+function getInitFunction<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>>(
+    props: TChartComponentProps<TSurface, TInitResult>
+) {
+    const { initChart, config } = props;
+
+    const initializationFunction = initChart
+        ? initChart
+        : (createChartFromConfig<TSurface>(config) as TInitFunction<TSurface, TInitResult>);
+    return (rootElement: HTMLDivElement) => initializationFunction(rootElement).then(validateResult);
+}
+
 function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 >(props: TChartComponentProps<TSurface, TInitResult>): JSX.Element {
     const { initChart, config, fallback, onInit, onDelete, innerContainerProps, ...divElementProps } = props;
 
-    if ((!initChart && !config) || (initChart && config)) {
-        throw new Error(conflictingConfigsMessage);
-    }
+    validateArgs(props);
 
     const isMountedRef = useIsMountedRef();
     const innerContainerRef = useRef<HTMLDivElement>(null);
@@ -45,34 +73,30 @@ function SciChartComponent<
         const rootElement = innerContainerRef.current;
 
         const chartRoot = createChartRoot();
-        rootElement!.appendChild(chartRoot as Node);
+        rootElement!.appendChild(chartRoot);
 
-        const initializationFunction = initChart
-            ? initChart
-            : (createChartFromConfig<TSurface>(config) as TInitFunction<TSurface, TInitResult>);
+        const initializationFunction = getInitFunction(props);
 
         let cancelled = false;
         let cleanupCallback: void | (() => void);
-        const runInit = async (): Promise<TInitResult> =>
-            initializationFunction(chartRoot as HTMLDivElement).then(result => {
-                if (!result.sciChartSurface) {
-                    throw new Error(wrongInitResultMessage);
-                }
-                // check if the component was unmounted before init finished
-                if (isMountedRef.current && chartRoot) {
-                    groupContext?.addChartToGroup(chartId, true, result);
-                    initResultRef.current = result;
-                    setIsInitialized(true);
+        const runInit = async () => {
+            const result = await initializationFunction(chartRoot);
 
-                    if (onInit) {
-                        cleanupCallback = onInit(result);
-                    }
-                } else {
-                    cancelled = true;
-                }
+            // check if the component was unmounted before init finished
+            if (isMountedRef.current) {
+                groupContext?.addChartToGroup(chartId, true, result);
+                initResultRef.current = result;
+                setIsInitialized(true);
 
-                return result;
-            });
+                if (onInit) {
+                    cleanupCallback = onInit(result);
+                }
+            } else {
+                cancelled = true;
+            }
+
+            return result;
+        };
 
         // workaround to handle StrictMode
         const initPromise = initPromiseRef.current ? initPromiseRef.current.then(runInit) : runInit();
@@ -84,8 +108,8 @@ function SciChartComponent<
                 cleanupCallback = undefined;
             }
 
-            if (!cancelled && onDelete) {
-                onDelete(initResult);
+            if (!cancelled) {
+                onDelete?.(initResult);
             }
 
             initResultRef.current = null;
@@ -96,7 +120,7 @@ function SciChartComponent<
         };
 
         return () => {
-            rootElement!.removeChild(chartRoot as Node);
+            rootElement!.removeChild(chartRoot);
             // wait for init to finish before deleting it
             initPromise.then(performCleanup);
         };

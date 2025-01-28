@@ -16,7 +16,7 @@
         "@types/react-dom": "^16",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "scichart": "^3.2.516",
+        "scichart": "^3.5.711",
         "scichart-react": "file:../../lib",
         "ts-loader": "^9.5.1",
         "ts-node": "^10.9.1",

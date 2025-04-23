@@ -11,13 +11,11 @@ import { conflictingConfigsMessage, wrongInitResultMessage } from "./constants";
 
 // use base URL to resolve WASM module
 SciChartSurface.configure({
-    wasmUrl: "/scichart2d.wasm",
-    dataUrl: "/scichart2d.data"
+    wasmUrl: "/scichart2d.wasm"
 });
 
 SciChart3DSurface.configure({
-    wasmUrl: "/scichart3d.wasm",
-    dataUrl: "/scichart3d.data"
+    wasmUrl: "/scichart3d.wasm"
 });
 
 function SciChartComponent<

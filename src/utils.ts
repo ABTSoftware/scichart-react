@@ -31,7 +31,7 @@ export const createChartRoot = () => {
 
 export function createChartFromConfig<TSurface extends ISciChartSurfaceBase>(config: string | TSurfaceDefinition) {
     return async (chartRoot: string | HTMLDivElement) => {
-        // Potentially should return 2D, 3D, or Pie Chart
+        // @ts-ignore Potentially should return 2D, 3D, or Pie Chart
         const chart = (await chartBuilder.buildChart(chartRoot, config)) as any;
         if ("sciChartSurface" in chart) {
             // 2D Chart

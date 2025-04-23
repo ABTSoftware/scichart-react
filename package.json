@@ -1,6 +1,6 @@
 {
     "name": "scichart-react",
-    "version": "0.1.9",
+    "version": "0.2.0-beta.1",
     "description": "React wrapper for SciChart JS",
     "homepage": "https://www.scichart.com",
     "main": "index.js",
@@ -80,7 +80,7 @@
         "react-dom": "^18.2.0",
         "rimraf": "^5.0.5",
         "run-script-os": "^1.1.6",
-        "scichart": "^3.5.711",
+        "scichart": "^4.0.0-beta.707",
         "storybook": "^7.5.3",
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2",
@@ -90,6 +90,6 @@
     },
     "peerDependencies": {
         "react": ">=16.8.0",
-        "scichart": ">=3.2.516"
+        "scichart": ">=4.0.0"
     }
 }

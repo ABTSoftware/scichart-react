@@ -83,7 +83,7 @@
         "react-dom": "^18.2.0",
         "rimraf": "^5.0.5",
         "run-script-os": "^1.1.6",
-        "scichart": "^3.3.592",
+        "scichart": "^3.5.711",
         "storybook": "^7.5.3",
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2",

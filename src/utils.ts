@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
-import { generateGuid, ISciChartSurfaceBase, TSurfaceDefinition, chartBuilder } from "scichart";
-import { IInitResult } from "./types";
+import { generateGuid, ISciChartSurfaceBase, TSurfaceDefinition, chartBuilder, SciChart3DSurface, ESciChartSurfaceType, ISciChart3DDefinition, SciChartPieSurface, ISciChartPieDefinition, ISciChart2DDefinition, SciChartSurface, SciChartPolarSurface } from "scichart";
+import { TInitFunction } from "./types";
 
 export const useIsMountedRef = () => {
     const isMountedRef = useRef(false);
@@ -24,10 +24,13 @@ export const createChartRoot = () => {
     return internalRootElement;
 };
 
-export function createChartFromConfig<TSurface extends ISciChartSurfaceBase>(config: string | TSurfaceDefinition) {
+export function createChartFromConfig<TSurface extends ISciChartSurfaceBase>(
+    config: string | TSurfaceDefinition
+): TInitFunction<TSurface> {
     return async (chartRoot: string | HTMLDivElement) => {
         // Potentially should return 2D, 3D, or Pie Chart
-        const chart = (await chartBuilder.buildChart(chartRoot, config)) as any;
+        // TODO add better type handling
+        const chart = (await chartBuilder.buildChart(chartRoot, config as string)) as any;
         if ("sciChartSurface" in chart) {
             // 2D Chart
             return { sciChartSurface: chart.sciChartSurface as TSurface };

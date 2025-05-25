@@ -1,6 +1,6 @@
 {
     "name": "scichart-react",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "description": "React wrapper for SciChart JS",
     "homepage": "https://www.scichart.com",
     "main": "index.js",

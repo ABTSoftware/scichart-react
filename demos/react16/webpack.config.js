@@ -19,7 +19,7 @@ module.exports = {
         extensions: [".js", ".ts", ".tsx"],
         alias: {
             react: path.resolve("./node_modules/react"),
-            scichart: path.resolve("./node_modules/scichart")
+            scichart: path.resolve("../../node_modules/scichart")
         }
     },
     output: {
@@ -30,10 +30,10 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "src/index.html", to: "" },
-                { from: "node_modules/scichart/_wasm/scichart2d.data", to: "" },
-                { from: "node_modules/scichart/_wasm/scichart2d.wasm", to: "" },
-                { from: "node_modules/scichart/_wasm/scichart3d.data", to: "" },
-                { from: "node_modules/scichart/_wasm/scichart3d.wasm", to: "" }
+                // { from: "node_modules/scichart/_wasm/scichart2d.data", to: "" },
+                // { from: "node_modules/scichart/_wasm/scichart2d.wasm", to: "" },
+                // { from: "node_modules/scichart/_wasm/scichart3d.data", to: "" },
+                // { from: "node_modules/scichart/_wasm/scichart3d.wasm", to: "" }
             ]
         })
     ]

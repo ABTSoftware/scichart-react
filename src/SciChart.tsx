@@ -56,7 +56,8 @@ function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 >(props: TChartComponentProps<TSurface, TInitResult>): JSX.Element {
-    const { initChart, config, fallback, onInit, onDelete, innerContainerProps, ...divElementProps } = props;
+    const { initChart, config, fallback, onInit, onDelete, onInitError, innerContainerProps, ...divElementProps } =
+        props;
 
     validateArgs(props);
 
@@ -82,22 +83,31 @@ function SciChartComponent<
         let cancelled = false;
         let cleanupCallback: void | (() => void);
         const runInit = async () => {
-            const result = await initializationFunction(chartRoot);
+            try {
+                const result = await initializationFunction(chartRoot);
 
-            // check if the component was unmounted before init finished
-            if (isMountedRef.current) {
-                groupContext?.addChartToGroup(chartId, true, result);
-                initResultRef.current = result;
-                setIsInitialized(true);
+                // check if the component was unmounted before init finished
+                if (isMountedRef.current) {
+                    groupContext?.addChartToGroup(chartId, true, result);
+                    initResultRef.current = result;
+                    setIsInitialized(true);
 
-                if (onInit) {
-                    cleanupCallback = onInit(result);
+                    if (onInit) {
+                        cleanupCallback = onInit(result);
+                    }
+                } else {
+                    cancelled = true;
                 }
-            } else {
-                cancelled = true;
-            }
 
-            return result;
+                return result;
+            } catch (error: any) {
+                if (onInitError) {
+                    onInitError(error);
+                }
+
+                groupContext?.notifyError(error);
+                throw error;
+            }
         };
 
         // workaround to handle StrictMode
@@ -114,8 +124,11 @@ function SciChartComponent<
                 onDelete?.(initResult);
             }
 
-            initResultRef.current = null;
-            setIsInitialized(false);
+            // TODO check if this is needed at all
+            if (isMountedRef.current) {
+                initResultRef.current = null;
+                setIsInitialized(false);
+            }
 
             groupContext?.removeChartFromGroup(chartId);
             initResult.sciChartSurface!.delete();

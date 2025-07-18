@@ -7,6 +7,7 @@ import { IInitResult } from "./types";
 export type TSciChartGroupProps = PropsWithChildren<{
     onInit?: (chartInitResults: IInitResult[]) => void;
     onDelete?: (chartInitResults: IInitResult[]) => void;
+    onError?: (error: any) => void;
 }>;
 
 /**
@@ -40,7 +41,11 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
         setGroupState({ groupInitialized, charts: groupState.charts });
     };
 
-    const contextState = { ...groupState, addChartToGroup, removeChartFromGroup };
+    const notifyError = (error: any) => {
+        return props?.onError?.(error);
+    }
+
+    const contextState = { ...groupState, addChartToGroup, removeChartFromGroup, notifyError };
 
     useEffect(() => {
         if (onInit && groupState.groupInitialized) {

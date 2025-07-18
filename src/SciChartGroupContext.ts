@@ -8,6 +8,7 @@ type TSciChartGroupContext = {
     charts: Map<any, { isInitialized: boolean; initResult: IInitResult | null }>;
     addChartToGroup: (chart: any, isInitialized: boolean, initResult: IInitResult | null) => void;
     removeChartFromGroup: (chart: any) => void;
+    notifyError: (error: any) => void;
 };
 
 /** The context provided within a {@link SciChartGroup} */

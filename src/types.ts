@@ -33,6 +33,8 @@ export interface IChartComponentPropsCore<
     onInit?: (initResult: TInitResult) => TCleanupCallback | void;
     /** a callback function used when the component with initialized chart is unmounted */
     onDelete?: (initResult: TInitResult) => void;
+    /** a callback function used when the initialization function has thrown an error */
+    onInitError?: (err?: any) => void;
     /** props passed to the inner container of the chart */
     innerContainerProps?: TDivProps;
 }

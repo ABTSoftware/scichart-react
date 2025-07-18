@@ -124,8 +124,11 @@ function SciChartComponent<
                 onDelete?.(initResult);
             }
 
-            initResultRef.current = null;
-            setIsInitialized(false);
+            // TODO check if this is needed at all
+            if (isMountedRef.current) {
+                initResultRef.current = null;
+                setIsInitialized(false);
+            }
 
             groupContext?.removeChartFromGroup(chartId);
             initResult.sciChartSurface!.delete();

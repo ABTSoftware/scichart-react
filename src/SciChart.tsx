@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useContext, JSX, CSSProperties } from "react";
-import { ISciChartSurfaceBase, SciChart3DSurface, SciChartSurface, generateGuid } from "scichart";
+import { ISciChartSurfaceBase, SciChart3DSurface, SciChartDefaults, SciChartSurface, generateGuid } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TCleanupCallback, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
@@ -21,6 +21,12 @@ SciChart3DSurface.configure({
     // @ts-ignore the breaking change in v4 - data file is not required
     dataUrl: "/scichart3d.data"
 });
+
+// @ts-ignore this flag is not available in some versions
+SciChartDefaults.defaultLoader = false;
+
+// @ts-ignore this flag is not available in some versions
+SciChartDefaults.disableAspect = true;
 
 function validateArgs<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>>(
     props: TChartComponentProps<TSurface, TInitResult>

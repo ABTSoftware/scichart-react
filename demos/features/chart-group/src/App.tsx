@@ -10,7 +10,7 @@ import {
     XyScatterRenderableSeries,
     chartBuilder
 } from "scichart";
-import { IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
+import { ChartGroupLoader, IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
 import "./styles.css";
 
 // SciChart core lib requires asynchronously loaded WASM module.
@@ -22,13 +22,13 @@ SciChartDefaults.performanceWarnings = false;
 export function App() {
     return (
         <div className="App">
-            <SciChartGroup
+            <ChartGroupLoader
                 onInit={(initResults: IInitResult[]) => {
                     console.log("Group onInit", initResults);
                 }}
-                onDelete={(initResults: IInitResult[]) => {
-                    console.log("Group onDelete", initResults);
-                }}
+                // onDelete={(initResults: IInitResult[]) => {
+                //     console.log("Group onDelete", initResults);
+                // }}
             >
                 <SciChartReact<SciChartSurface, TResolvedReturnType<typeof chartInitializationFunction>>
                     style={{ width: 600, height: 300 }}
@@ -59,7 +59,7 @@ export function App() {
                         console.log("Chart 2 onDelete");
                     }}
                 />
-            </SciChartGroup>
+            </ChartGroupLoader>
         </div>
     );
 }

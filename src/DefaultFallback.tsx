@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, JSX } from "react";
+import { useEffect, useRef, JSX, CSSProperties } from "react";
 import { DefaultSciChartLoader, SciChartSurfaceBase } from "scichart";
 
 export const DefaultFallback = (): JSX.Element => {
@@ -32,4 +32,15 @@ export const DefaultFallback = (): JSX.Element => {
             }}
         />
     );
+};
+
+
+/** @ignore */
+export const fallbackWrapperStyle: CSSProperties = {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: 0,
+    left: 0,
+    zIndex: 12
 };

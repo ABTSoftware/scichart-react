@@ -6,7 +6,7 @@ import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentProps, TCleanupCallback, TInitFunction } from "./types";
 import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
-import { DefaultFallback } from "./DefaultFallback";
+import { DefaultFallback, fallbackWrapperStyle } from "./DefaultFallback";
 import { conflictingConfigsMessage, wrongInitResultMessage } from "./constants";
 
 // use base URL to resolve WASM module
@@ -154,14 +154,7 @@ function SciChartComponent<
         style: { height: "100%", width: "100%", ...innerContainerProps?.style }
     };
 
-    const fallbackWrapperStyle: CSSProperties = {
-        position: "absolute",
-        height: "100%",
-        width: "100%",
-        top: 0,
-        left: 0,
-        zIndex: 12
-    };
+
 
     return (
         <SciChartSurfaceContext.Provider value={initResultRef.current}>

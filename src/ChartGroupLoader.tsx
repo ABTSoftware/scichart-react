@@ -7,12 +7,12 @@ type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElemen
 type TChartGroupLoaderProps = TDivProps & {
     fallback?: ReactNode | undefined;
     onInit?: (chartInitResults: IInitResult[]) => void;
-    onError?: (error: any) => void;
+    onInitError?: (error: any) => void;
 };
 
 /** The purpose of this component is to hide UI behind a spinner until the charts within it are initialized */
 export const ChartGroupLoader = (props: TChartGroupLoaderProps): JSX.Element => {
-    const { fallback, onInit, onError, ...divProps } = props;
+    const { fallback, onInit, onInitError, ...divProps } = props;
     const [isInitialized, setIsInitialized] = useState(false);
 
     return (
@@ -21,7 +21,7 @@ export const ChartGroupLoader = (props: TChartGroupLoaderProps): JSX.Element => 
                 props.onInit?.(chartInitResults);
                 setIsInitialized(true);
             }}
-            onError={onError}
+            onInitError={onInitError}
         >
             <div {...divProps}>
                 {props.children}

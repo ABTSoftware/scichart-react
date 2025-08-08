@@ -93,6 +93,6 @@
     },
     "peerDependencies": {
         "react": ">=16.8.0",
-        "scichart": ">=4.0.0-beta"
+        "scichart": ">=4.0.828"
     }
 }

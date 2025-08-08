@@ -25,6 +25,7 @@
         "prettier": "prettier src/**/*.{js,ts,tsx} --write",
         "pretty-quick": "pretty-quick --staged",
         "publishPublic": "npm version patch && npm run build && cd lib && npm publish",
+        "publishBeta": "npm version prepatch --preid=beta && npm run build && cd lib && npm publish --tag beta",
         "prepare": "husky install"
     },
     "author": "SciChart Ltd",

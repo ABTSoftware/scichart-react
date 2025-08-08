@@ -26,6 +26,9 @@ export function App() {
                 onInit={(initResults: IInitResult[]) => {
                     console.log("Group onInit", initResults);
                 }}
+                onError={(initResults: any) => {
+                    console.log("Group error", initResults);
+                }}
                 // onDelete={(initResults: IInitResult[]) => {
                 //     console.log("Group onDelete", initResults);
                 // }}
@@ -36,7 +39,7 @@ export function App() {
                     initChart={chartInitializationFunction}
                     onInit={(initResult: TResolvedReturnType<typeof chartInitializationFunction>) => {
                         console.log("Chart 1 onInit");
-
+                        // throw new Error("err")
                         const token = setInterval(initResult.updateData, 500);
                         return () => {
                             console.log("Chart 1 destructor for onInit");

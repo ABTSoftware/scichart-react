@@ -4,7 +4,11 @@ const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 const config: StorybookConfig = {
-    stories: ["./stories/SciChartReact.stories.tsx", "./stories/**/*.mdx", "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+    stories: [
+        "./stories/SciChartReact.stories.tsx",
+        "./stories/**/*.mdx",
+        "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+    ],
     addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
     staticDirs: ["./public"],
     framework: {
@@ -36,10 +40,7 @@ const config: StorybookConfig = {
         //     new CopyPlugin({
         //         patterns: [
         //             { from: "src/index.html", to: "" },
-        //             { from: "node_modules/scichart/_wasm/scichart2d.data", to: "" },
-        //             { from: "node_modules/scichart/_wasm/scichart2d.wasm", to: "" },
-        //             { from: "node_modules/scichart/_wasm/scichart3d.data", to: "" },
-        //             { from: "node_modules/scichart/_wasm/scichart3d.wasm", to: "" }
+        //             { from: "node_modules/scichart/_wasm/scichart.wasm", to: "" }
         //         ]
         //     })
         // );

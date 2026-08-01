@@ -9,7 +9,7 @@ import { SciChartReact } from "../../src/SciChart";
 // SciChartSurface.loadWasmFromCDN();
 // SciChartSurface.loadWasmFromCDN();
 SciChartSurface.useWasmFromCDN();
-SciChart3DSurface.useWasmFromCDN();
+SciChartSurface.useWasmFromCDN();
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {

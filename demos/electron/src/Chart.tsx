@@ -2,8 +2,7 @@ import { SciChartReact } from "scichart-react";
 
 // By default SciChartReact uses the following to configure how WASM module dependencies are resolved
 // SciChartSurface.configure({
-//     wasmUrl: "/scichart2d.wasm",
-//     dataUrl: "/scichart2d.data"
+//     wasmUrl: "/scichart.wasm"
 // });
 //
 // or you can load the WASM files from CDN by changing the config

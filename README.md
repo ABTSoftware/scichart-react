@@ -6,9 +6,9 @@ The SciChartReact itself is MIT licensed, find the core library licensing info a
 
 ## What does SciChart.React do?
 
-- Neatly wraps up the lifecycle of  SciChart.js into a React component to ensure proper initialisation and memory cleanup.
-- Provides a number of ways to configure a chart (via JSON config or initialization function)
-- Can be used to create complex dashboards linking multiple charts (demos are coming soon!)
+-   Neatly wraps up the lifecycle of SciChart.js into a React component to ensure proper initialisation and memory cleanup.
+-   Provides a number of ways to configure a chart (via JSON config or initialization function)
+-   Can be used to create complex dashboards linking multiple charts (demos are coming soon!)
 
 ## Getting Started
 
@@ -25,7 +25,7 @@ npm install scichart scichart-react
 
 ### Loading required WASM dependencies
 
-SciChart.js requires additional WASM modules to work (`scichart2d.wasm` + `scichart2d.data` for instantiating `SciChartSurface` and `scichart3d.wasm` + `scichart3d.data` for `SciChart3DSurface`).  
+SciChart.js requires an additional WASM module to work (`scichart.wasm`, a single binary carrying both the 2D and the 3D engine).  
 The library will try to fetch the appropriate files asynchronously during runtime.
 Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/current/Deploying%20Wasm%20or%20WebAssembly%20and%20Data%20Files%20with%20your%20app.html)
 
@@ -33,13 +33,7 @@ By default SciChartReact applies the following configuration:
 
 ```typescript
 SciChartSurface.configure({
-    wasmUrl: "/scichart2d.wasm",
-    dataUrl: "/scichart2d.data"
-});
-
-SciChart3DSurface.configure({
-    wasmUrl: "/scichart3d.wasm",
-    dataUrl: "/scichart3d.data"
+    wasmUrl: "/scichart.wasm"
 });
 ```
 

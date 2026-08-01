@@ -4,7 +4,6 @@ const path = require("path");
 
 module.exports = (env: any, argv: any) => {
     const conf: Configuration = {
-
         // devServer: {
         //     static: path.join(__dirname, "build"),
         //     port: 8080,
@@ -27,10 +26,7 @@ module.exports = (env: any, argv: any) => {
         // plugins: [
         //     new CopyPlugin({
         //         patterns: [
-        //             { from: "../src/_wasm/scichart2d.wasm", to: "" },
-        //             { from: "../src/_wasm/scichart2d.data", to: "" },
-        //             { from: "../src/_wasm/scichart3d.wasm", to: "" },
-        //             { from: "../src/_wasm/scichart3d.data", to: "" },
+        //             { from: "../src/_wasm/scichart.wasm", to: "" },
         //             { from: "client/index.html", to: "" },
         //             { from: "client/example.js", to: "" },
         //         ]

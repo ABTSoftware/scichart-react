@@ -24,7 +24,7 @@ import { SciChartReact } from "../../src/SciChart";
 import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
 
 SciChartSurface.useWasmFromCDN();
-SciChart3DSurface.useWasmFromCDN();
+SciChartSurface.useWasmFromCDN();
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {

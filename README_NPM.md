@@ -21,7 +21,7 @@ npm install scichart scichart-react
 
 ### Loading required WASM dependencies
 
-SciChart.js requires additional WASM modules to work (`scichart2d.wasm` + `scichart2d.data` for instantiating `SciChartSurface` and `scichart3d.wasm` + `scichart3d.data` for `SciChart3DSurface`).  
+SciChart.js requires an additional WASM module to work (`scichart.wasm`, a single binary carrying both the 2D and the 3D engine).  
 The library will try to fetch the appropriate files asynchronously during runtime.
 Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/current/Deploying%20Wasm%20or%20WebAssembly%20and%20Data%20Files%20with%20your%20app.html)
 
@@ -29,13 +29,7 @@ Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentati
 
 ```typescript
 SciChartSurface.configure({
-    wasmUrl: "/scichart2d.wasm",
-    dataUrl: "/scichart2d.data"
-});
-
-SciChart3DSurface.configure({
-    wasmUrl: "/scichart3d.wasm",
-    dataUrl: "/scichart3d.data"
+    wasmUrl: "/scichart.wasm"
 });
 ```
 
@@ -43,13 +37,7 @@ SciChart3DSurface.configure({
 
 ```typescript
 SciChartSurface.configure({
-    wasmUrl: undefined,
-    dataUrl: undefined
-});
-
-SciChart3DSurface.configure({
-    wasmUrl: undefined,
-    dataUrl: undefined
+    wasmUrl: undefined
 });
 ```
 

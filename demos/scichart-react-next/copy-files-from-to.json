@@ -6,6 +6,38 @@
         {
             "from": "./node_modules/scichart/_wasm/scichart.wasm",
             "to": "./public/scichart.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-nosimd.wasm",
+            "to": "./public/scichart-nosimd.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-64.wasm",
+            "to": "./public/scichart-64.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-data.wasm",
+            "to": "./public/scichart-data.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-data-nosimd.wasm",
+            "to": "./public/scichart-data-nosimd.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-data-64.wasm",
+            "to": "./public/scichart-data-64.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-charting3d.wasm",
+            "to": "./public/scichart-charting3d.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-charting3d-nosimd.wasm",
+            "to": "./public/scichart-charting3d-nosimd.wasm"
+        },
+        {
+            "from": "./node_modules/scichart/_wasm/scichart-charting3d-64.wasm",
+            "to": "./public/scichart-charting3d-64.wasm"
         }
     ]
 }

@@ -30,7 +30,14 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "src/index.html", to: "" },
-                { from: "node_modules/scichart/_wasm/scichart.wasm", to: "" }
+                // Since v6 the engine is modular: a core plus side modules it loads at runtime
+                // (scichart-data.wasm is fetched for every chart, scichart-charting3d.wasm for 3D).
+                // Copy the whole directory so a new variant or module never breaks the build.
+                {
+                    from: "node_modules/scichart/_wasm/",
+                    to: "",
+                    globOptions: { ignore: ["**/SCRTTest*", "**/scichart2d*", "**/scichart3d*"] }
+                }
             ]
         })
     ]

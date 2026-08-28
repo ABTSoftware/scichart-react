@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# wasm binaries copied into public/ by the copyWasm script
+/public/*.wasm

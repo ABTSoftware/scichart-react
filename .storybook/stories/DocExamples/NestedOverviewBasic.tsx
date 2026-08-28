@@ -1,8 +1,8 @@
 import { EAxisType, ESeriesType, EChart2DModifierType } from "scichart";
-import { SciChartReact, SciChartNestedOverview } from "scichart-react";
+import { SciChartDeclarative, SciChartNestedOverview } from "scichart-react";
 
 export const NestedOverviewBasic = () => (
-    <SciChartReact
+    <SciChartDeclarative
         config={{
             xAxes: [{ type: EAxisType.NumericAxis }],
             yAxes: [{ type: EAxisType.NumericAxis }],
@@ -33,5 +33,5 @@ export const NestedOverviewBasic = () => (
         innerContainerProps={{ style: { height: "80%" } }}
     >
         <SciChartNestedOverview style={{ height: "20%" }} />
-    </SciChartReact>
+    </SciChartDeclarative>
 );

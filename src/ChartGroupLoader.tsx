@@ -1,3 +1,5 @@
+"use client";
+
 import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState, JSX } from "react";
 import { DefaultFallback, fallbackWrapperStyle } from "./DefaultFallback";
 import { SciChartGroup } from "./SciChartGroup";

@@ -16,6 +16,7 @@ The SciChartReact itself is MIT licensed, find the core library licensing info a
 
 -   `react` 16.14+
 -   `scichart` 6.0.0+ (v6 prereleases are supported; for scichart 3.x-5.x use scichart-react 1.x)
+-   scichart-react 2.x is published as an alpha under the `alpha` npm tag while SciChart.js v6 is in prerelease: `npm install scichart-react@alpha`
 
 ### Installing
 

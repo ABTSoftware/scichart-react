@@ -1,6 +1,6 @@
 {
-    "generatedAt": "2026-08-27T13:30:09.606Z",
-    "scichartReactVersion": "2.0.0-beta.0",
+    "generatedAt": "2026-08-28T08:29:45.768Z",
+    "scichartReactVersion": "2.0.0-alpha.0",
     "scichartVersion": "6.0.0-alpha.162",
     "bundlers": {
         "webpack": {

@@ -33,7 +33,7 @@ four bundlers (webpack 5, Rollup 4, esbuild, Vite 5). Ordered smallest → large
 | `fullImport` | Upper bound: entire barrel kept alive |
 | `cjsRequireBaseline` | webpack-only control: same code resolved through the `require` condition (pre-2.0 consumer) |
 
-## Baseline results (gzip KB, scichart-react 2.0.0-beta.0 / scichart 6.0.0-alpha.162)
+## Baseline results (gzip KB, scichart-react 2.0.0-alpha.0 / scichart 6.0.0-alpha.162)
 
 | Scenario | webpack | rollup | esbuild | vite |
 |---|---:|---:|---:|---:|

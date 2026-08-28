@@ -1,8 +1,8 @@
 # scichart-react bundle sizes
 
-- scichart-react version: `2.0.0-beta.0`
+- scichart-react version: `2.0.0-alpha.0`
 - scichart version: `6.0.0-alpha.162`
-- generated: 2026-08-27T13:30:09.606Z
+- generated: 2026-08-28T08:29:45.768Z
 
 Gzip KB (raw KB) of the JS payload per scenario. Only within-bundler, build-to-build deltas are
 authoritative; cross-bundler numbers are indicative (different minifiers/runtimes).

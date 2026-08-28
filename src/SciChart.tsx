@@ -1,33 +1,25 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext, JSX, CSSProperties } from "react";
-import { ISciChartSurfaceBase, SciChartDefaults, SciChartSurface, generateGuid } from "scichart";
+import "./configureDefaults";
+import { useRef, useState, useEffect, useContext, JSX } from "react";
+import { generateGuid } from "scichart";
+import type { ISciChartSurfaceBase } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
-import { IInitResult, TChartComponentProps, TCleanupCallback, TInitFunction } from "./types";
-import { useIsMountedRef, createChartRoot, createChartFromConfig } from "./utils";
+import { IInitResult, TChartComponentPropsWithInit } from "./types";
+import { useIsMountedRef, createChartRoot } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { DefaultFallback, fallbackWrapperStyle } from "./DefaultFallback";
-import { conflictingConfigsMessage, wrongInitResultMessage } from "./constants";
-
-// use base URL to resolve WASM module.
-// One binary carries both the 2D and the 3D engine, so this single call serves both.
-SciChartSurface.configure({
-    wasmUrl: "/scichart.wasm"
-});
-
-// @ts-ignore this flag is not available in some versions
-SciChartDefaults.defaultLoader = false;
-
-// @ts-ignore this flag is not available in some versions
-SciChartDefaults.disableAspect = true;
+import { configMovedMessage, missingInitChartMessage, wrongInitResultMessage } from "./constants";
 
 function validateArgs<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>>(
-    props: TChartComponentProps<TSurface, TInitResult>
+    props: TChartComponentPropsWithInit<TSurface, TInitResult>
 ) {
-    const { initChart, config } = props;
+    if (!props.initChart) {
+        throw new Error(missingInitChartMessage);
+    }
 
-    if ((!initChart && !config) || (initChart && config)) {
-        throw new Error(conflictingConfigsMessage);
+    if ((props as { config?: unknown }).config) {
+        throw new Error(configMovedMessage);
     }
 }
 
@@ -40,23 +32,11 @@ function validateResult<TSurface extends ISciChartSurfaceBase, TInitResult exten
     return result;
 }
 
-function getInitFunction<TSurface extends ISciChartSurfaceBase, TInitResult extends IInitResult<TSurface>>(
-    props: TChartComponentProps<TSurface, TInitResult>
-) {
-    const { initChart, config } = props;
-
-    const initializationFunction = initChart
-        ? initChart
-        : (createChartFromConfig<TSurface>(config) as TInitFunction<TSurface, TInitResult>);
-    return (rootElement: HTMLDivElement) => initializationFunction(rootElement).then(validateResult);
-}
-
 function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
->(props: TChartComponentProps<TSurface, TInitResult>): JSX.Element {
-    const { initChart, config, fallback, onInit, onDelete, onInitError, innerContainerProps, ...divElementProps } =
-        props;
+>(props: TChartComponentPropsWithInit<TSurface, TInitResult>): JSX.Element {
+    const { initChart, fallback, onInit, onDelete, onInitError, innerContainerProps, ...divElementProps } = props;
 
     validateArgs(props);
 
@@ -77,7 +57,7 @@ function SciChartComponent<
         const chartRoot = createChartRoot();
         rootElement!.appendChild(chartRoot);
 
-        const initializationFunction = getInitFunction(props);
+        const initializationFunction = (root: HTMLDivElement) => initChart(root).then(validateResult);
 
         let cancelled = false;
         let cleanupCallback: void | (() => void);
@@ -167,10 +147,12 @@ function SciChartComponent<
 }
 
 /**
- * The component for rendering a chart surface.
- * There are 2 ways to setup a chart.
- * It requires a chart configuration object passed via `config` or an initialization function passed via `initChart`
- * @param props {@link TChartComponentProps}
+ * The component for rendering a chart surface from an initialization function.
+ * Requires an initialization function passed via `initChart` which should create a surface
+ * on the provided root element and resolve to `{ sciChartSurface }`.
+ *
+ * To create a chart from a Builder API config/definition instead, use {@link SciChartDeclarative}.
+ * @param props {@link TChartComponentPropsWithInit}
  * @returns a React wrapper component that contains a chart
  */
 export const SciChartReact = SciChartComponent;

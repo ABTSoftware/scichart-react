@@ -10,3 +10,8 @@ node_modules
 packageNPM.json
 scichart2d.data
 scichart2d.wasm
+# bundle-check harness artifacts
+/bundle-check/node_modules
+/bundle-check/build
+/bundle-check/dist
+/bundle-check/reports

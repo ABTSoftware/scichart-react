@@ -1,5 +1,5 @@
 import { NumericAxis, SciChartSurface } from "scichart";
-import { SciChartReact, ChartGroupLoader } from "scichart-react";
+import { SciChartReact, SciChartDeclarative, ChartGroupLoader } from "scichart-react";
 
 export const ChartGroupLoaderBasic = () => (
     <ChartGroupLoader style={{ minWidth: 600, display: "flex" }}>
@@ -21,7 +21,7 @@ export const ChartGroupLoaderBasic = () => (
             }}
             style={{ flex: "auto", minHeight: "200px" }}
         />
-        <SciChartReact config={{}} style={{ flex: "auto", minHeight: "200px" }} />
-        <SciChartReact config={{}} style={{ flex: "auto", minHeight: "200px" }} />
+        <SciChartDeclarative config={{}} style={{ flex: "auto", minHeight: "200px" }} />
+        <SciChartDeclarative config={{}} style={{ flex: "auto", minHeight: "200px" }} />
     </ChartGroupLoader>
 );

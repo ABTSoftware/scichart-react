@@ -34,7 +34,6 @@ export const DefaultFallback = (): JSX.Element => {
     );
 };
 
-
 /** @ignore */
 export const fallbackWrapperStyle: CSSProperties = {
     position: "absolute",

@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "es2018",
+        "outDir": "./lib/esm",
+        "rootDir": "./src",
+        "declaration": false,
+        "sourceMap": true,
+        // embed the original TS sources in the maps — src/ is not published
+        "inlineSources": true
+    }
+}

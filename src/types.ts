@@ -1,5 +1,5 @@
-import { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
-import { ISciChartSurfaceBase, SciChartSurface, TSurfaceDefinition } from "scichart";
+import type { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
+import type { ISciChartSurfaceBase, SciChartSurface, TSurfaceDefinition } from "scichart";
 
 /** Describes the core return type of a chart initialization function */
 export interface IInitResult<TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase> {
@@ -22,7 +22,7 @@ export type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDi
 /** @ignore */
 export type TCleanupCallback = () => void;
 
-/** @ignore */
+/** Describes the common properties shared by {@link SciChartReact} and {@link SciChartDeclarative} */
 export interface IChartComponentPropsCore<
     TSurface extends ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
@@ -39,7 +39,7 @@ export interface IChartComponentPropsCore<
     innerContainerProps?: TDivProps;
 }
 
-/** @ignore */
+/** Describes allowed properties for {@link SciChartReact} */
 export type TChartComponentPropsWithInit<
     TSurface extends ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface>
@@ -51,7 +51,8 @@ export type TChartComponentPropsWithInit<
     config?: never;
 };
 
-type TChartComponentPropsWithConfig<TSurface extends ISciChartSurfaceBase> = IChartComponentPropsCore<
+/** Describes allowed properties for {@link SciChartDeclarative} */
+export type TChartComponentPropsWithConfig<TSurface extends ISciChartSurfaceBase> = IChartComponentPropsCore<
     TSurface,
     IInitResult<TSurface>
 > & {
@@ -62,7 +63,12 @@ type TChartComponentPropsWithConfig<TSurface extends ISciChartSurfaceBase> = ICh
     config: string | TSurfaceDefinition;
 };
 
-/** Describes allowed properties for {@link SciChartReact} */
+/**
+ * Describes allowed properties for either {@link SciChartReact} or {@link SciChartDeclarative}
+ * @deprecated since 2.0 the `initChart` and `config` approaches are separate components —
+ * use {@link TChartComponentPropsWithInit} for {@link SciChartReact}
+ * and {@link TChartComponentPropsWithConfig} for {@link SciChartDeclarative}
+ */
 export type TChartComponentProps<
     TSurface extends ISciChartSurfaceBase = SciChartSurface,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>

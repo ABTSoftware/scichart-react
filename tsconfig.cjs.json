@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "module": "commonjs",
+        "target": "es6",
+        "outDir": "./lib/cjs",
+        "rootDir": "./src",
+        "declaration": false,
+        "sourceMap": true,
+        // embed the original TS sources in the maps — src/ is not published
+        "inlineSources": true
+    }
+}

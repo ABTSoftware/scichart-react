@@ -8,6 +8,14 @@
             "to": "./lib/package.json"
         },
         {
+            "from": "./cjs-package.json",
+            "to": "./lib/cjs/package.json"
+        },
+        {
+            "from": "./esm-package.json",
+            "to": "./lib/esm/package.json"
+        },
+        {
             "from": "./README_NPM.md",
             "to": "./lib/README.md"
         }

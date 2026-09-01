@@ -1,0 +1,89 @@
+name: Publish to npm
+
+# Nothing publishes automatically. Press "Run workflow" and pick the branch —
+# the branch is the channel: alpha -> alpha, beta -> beta, main -> latest.
+on:
+    workflow_dispatch:
+
+permissions:
+    # the prerelease channels commit their own version bump back to the branch
+    contents: write
+    # trusted publishing: npm exchanges this OIDC identity for a short-lived
+    # credential at run time, so no npm token is stored anywhere
+    id-token: write
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        # No approval gate here: what may be released to latest is controlled by
+        # branch protection on main. Triggering a run without a version bump fails
+        # the already-published check below.
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Resolve the channel from the branch
+              id: channel
+              run: |
+                  case "${GITHUB_REF_NAME}" in
+                      alpha) echo "tag=alpha"  >> "$GITHUB_OUTPUT"; echo "bump=true"  >> "$GITHUB_OUTPUT" ;;
+                      beta)  echo "tag=beta"   >> "$GITHUB_OUTPUT"; echo "bump=true"  >> "$GITHUB_OUTPUT" ;;
+                      main)  echo "tag=latest" >> "$GITHUB_OUTPUT"; echo "bump=false" >> "$GITHUB_OUTPUT" ;;
+                      *) echo "::error::${GITHUB_REF_NAME} is not a publishing branch — run this from alpha, beta or main"; exit 1 ;;
+                  esac
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.14.0
+                  registry-url: https://registry.npmjs.org
+
+            # trusted publishing needs npm >= 11.5.1; the runner ships an older one
+            - name: Update npm
+              run: npm install -g npm@latest
+
+            # alpha/beta: the workflow owns the version and commits the bump back to the branch
+            - name: Bump the prerelease version
+              if: steps.channel.outputs.bump == 'true'
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  npm version prerelease --preid=${{ steps.channel.outputs.tag }} -m "%s"
+                  git push --follow-tags
+
+            - name: Read the version
+              id: version
+              run: echo "value=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+            # main is hand-bumped, so catch a forgotten or wrong bump before building
+            - name: Check the manual version
+              if: steps.channel.outputs.bump == 'false'
+              run: |
+                  VERSION="${{ steps.version.outputs.value }}"
+                  case "$VERSION" in
+                      *-*) echo "::error::$VERSION is a prerelease and must not publish as latest"; exit 1 ;;
+                  esac
+                  if npm view "scichart-react@$VERSION" version >/dev/null 2>&1; then
+                      echo "::error::$VERSION is already on the registry — bump the version first"
+                      exit 1
+                  fi
+
+            - name: Install
+              run: npm ci
+
+            - name: Typecheck
+              run: npm run typecheck
+
+            # build ends with verifyLib: artifact assertions, then publint and attw
+            - name: Build
+              run: npm run build
+
+            - name: Tree-shaking and bundle-size gate
+              run: npm run bundleCheck
+
+            # the published manifest is lib/package.json, as with the publish* scripts
+            - name: Publish
+              working-directory: lib
+              run: npm publish --tag ${{ steps.channel.outputs.tag }} --provenance
+
+            - name: Summary
+              run: |
+                  echo "Published \`scichart-react@${{ steps.version.outputs.value }}\` under the \`${{ steps.channel.outputs.tag }}\` tag." >> "$GITHUB_STEP_SUMMARY"

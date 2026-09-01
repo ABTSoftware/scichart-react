@@ -19,7 +19,7 @@ jobs:
         # branch protection on main. Triggering a run without a version bump fails
         # the already-published check below.
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
             - name: Resolve the channel from the branch
               id: channel
@@ -31,14 +31,15 @@ jobs:
                       *) echo "::error::${GITHUB_REF_NAME} is not a publishing branch — run this from alpha, beta or main"; exit 1 ;;
                   esac
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7
               with:
-                  node-version: 22.14.0
+                  node-version: 22
                   registry-url: https://registry.npmjs.org
 
-            # trusted publishing needs npm >= 11.5.1; the runner ships an older one
+            # trusted publishing needs npm >= 11.5.1 and the runner ships an older one.
+            # Pinned below 12, whose engine requirement is newer than the Node used here.
             - name: Update npm
-              run: npm install -g npm@latest
+              run: npm install -g npm@^11.5.1
 
             # alpha/beta: the workflow owns the version and commits the bump back to the branch
             - name: Bump the prerelease version

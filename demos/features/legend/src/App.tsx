@@ -11,8 +11,7 @@ import {
     SciChartDefaults,
     SciChartSurface,
     XyDataSeries,
-    XyScatterRenderableSeries,
-    chartBuilder
+    XyScatterRenderableSeries
 } from "scichart";
 import { IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
 import { SciChartNestedLegend } from "../../../../src/SciChartLegendComponent";

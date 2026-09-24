@@ -4,12 +4,16 @@ node_modules
 /storybook-static
 /demos/react18/*/build
 /demos/react18/basic/node_modules
-/demos/react18/cra/node_modules
-/demos/react18/cra-pwa/node_modules
 /demos/react16/node_modules
+/demos/features/*/node_modules
+/demos/features/*/build
+/demos/features/*/types
 packageNPM.json
+# wasm copied next to an entry point by a demo's build step - the v5 pair and its .data
+# files, plus the v6 core and the side modules it loads beside it
+scichart*.wasm
 scichart2d.data
-scichart2d.wasm
+scichart3d.data
 # bundle-check harness artifacts
 /bundle-check/node_modules
 /bundle-check/build

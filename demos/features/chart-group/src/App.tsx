@@ -8,7 +8,8 @@ import {
     SciChartSurface,
     XyDataSeries,
     XyScatterRenderableSeries,
-    chartBuilder
+    build2DChart,
+    registerNumericAxis
 } from "scichart";
 import { ChartGroupLoader, IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
 import "./styles.css";
@@ -18,6 +19,11 @@ import "./styles.css";
 // check out SciChart.JS Docs for configuration info
 SciChartSurface.loadWasmFromCDN();
 SciChartDefaults.performanceWarnings = false;
+
+// since v6 the Builder registers nothing on import, so a type the definition names has to be
+// registered first. Only NumericAxis is needed here: the series is constructed directly rather
+// than described in the definition, so it registers itself by being in the bundle.
+registerNumericAxis();
 
 export function App() {
     return (
@@ -71,7 +77,7 @@ const chartInitializationFunction = async (rootElement: string | HTMLDivElement)
     const createChart = async () => {
         console.log("createChart");
         // for demonstration purposes, here we have used Builder API explicitly
-        const { sciChartSurface } = await chartBuilder.build2DChart(rootElement, {
+        const { sciChartSurface } = await build2DChart(rootElement, {
             xAxes: {
                 type: EAxisType.NumericAxis,
                 options: {

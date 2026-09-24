@@ -29,8 +29,10 @@ module.exports = {
     plugins: [
         new CopyPlugin({
             patterns: [
-                { from: "src/index.html", to: "" }
-                // { from: "node_modules/scichart/_wasm/scichart.wasm", to: "" }
+                { from: "src/index.html", to: "" },
+                // the whole _wasm directory: the core picks a variant per browser and fetches
+                // side modules (charting3d) relative to it, so a single file is not enough
+                { from: "../../node_modules/scichart/_wasm/", to: "" }
             ]
         })
     ]

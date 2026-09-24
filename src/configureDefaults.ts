@@ -21,8 +21,8 @@ import { SciChartDefaults, SciChartSurface } from "scichart";
  * ```
  */
 export function configureSciChartDefaults(): void {
-    // Resolve the WASM module against the app base URL.
-    // One binary carries both the 2D and the 3D engine, so this single call serves both.
+    // Resolve the WASM core against the app base URL. Side modules (charting3d) are fetched
+    // on demand relative to this URL's directory, so pointing at the core configures them too.
     SciChartSurface.configure({
         wasmUrl: "/scichart.wasm"
     });

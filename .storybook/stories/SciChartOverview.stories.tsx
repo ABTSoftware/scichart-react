@@ -1,15 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import NestedOverviewBasicSrc from "!!raw-loader!./DocExamples/NestedOverviewBasic";
 import { NestedOverviewBasic as NestedOverviewBasicRenderer } from "./DocExamples/NestedOverviewBasic";
-import { EAxisType, EChart2DModifierType, ESeriesType, SciChart3DSurface, SciChartSurface } from "scichart";
+import { EAxisType, EChart2DModifierType, ESeriesType } from "scichart";
 import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
 import { SciChartNestedOverview } from "../../src/SciChartOverview";
 import { SciChartReact } from "../../src/SciChart";
-
-// SciChartSurface.loadWasmFromCDN();
-// SciChartSurface.loadWasmFromCDN();
-SciChartSurface.useWasmFromCDN();
-SciChartSurface.useWasmFromCDN();
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {

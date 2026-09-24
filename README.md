@@ -15,8 +15,7 @@ The SciChartReact itself is MIT licensed, find the core library licensing info a
 ### Prerequisites
 
 -   `react` 16.14+
--   `scichart` 6.0.0+ (v6 prereleases are supported; for scichart 3.x-5.x use scichart-react 1.x)
--   scichart-react 2.x is published as an alpha under the `alpha` npm tag while SciChart.js v6 is in prerelease: `npm install scichart-react@alpha`
+-   `scichart` 6.0.0+ — for scichart 3.x-5.x use scichart-react 1.x
 
 ### Installing
 
@@ -28,8 +27,10 @@ npm install scichart scichart-react
 
 SciChart.js requires WebAssembly binaries to work. Since v6 the engine is modular — a core plus
 side modules it loads at runtime — so the payload is the whole `_wasm` **directory**, not a single
-file: `scichart-data.wasm` is fetched for every chart and `scichart-charting3d.wasm` for the first
-3D chart. The library fetches them asynchronously at runtime.
+file: the core (`scichart.wasm`, with `scichart-nosimd.wasm` and `scichart-64.wasm` picked per
+browser capability) is fetched for every chart, and `scichart-charting3d.wasm` for the first 3D
+chart. The library fetches them asynchronously at runtime, resolving each module relative to the
+configured `wasmUrl`, so copy the directory rather than naming individual files.
 
 ```js
 // webpack — copy the directory so a new variant or module never breaks the build

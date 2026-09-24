@@ -19,12 +19,8 @@ import { ChartUsageWithTypescript as ChartUsageWithTypescriptRenderer } from "./
 import { ChartWith3dSurface as ChartWith3dSurfaceRenderer } from "./DocExamples/ChartWith3dSurface";
 import { ChartWithPieSurface as ChartWithPieSurfaceRenderer } from "./DocExamples/ChartWithPieSurface";
 import { ChartWrapperStyling as ChartWrapperStylingRenderer } from "./DocExamples/ChartWrapperStyling";
-import { SciChart3DSurface, SciChartSurface } from "scichart";
 import { SciChartReact } from "../../src/SciChart";
 import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
-
-SciChartSurface.useWasmFromCDN();
-SciChartSurface.useWasmFromCDN();
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {

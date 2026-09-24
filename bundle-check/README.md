@@ -33,27 +33,27 @@ four bundlers (webpack 5, Rollup 4, esbuild, Vite 5). Ordered smallest → large
 | `fullImport` | Upper bound: entire barrel kept alive |
 | `cjsRequireBaseline` | webpack-only control: same code resolved through the `require` condition (pre-2.0 consumer) |
 
-## Baseline results (gzip KB, scichart-react 2.0.0-alpha.0 / scichart 6.0.0-alpha.162)
+## Baseline results (gzip KB, scichart-react 2.0.0 / scichart 6.0.1)
 
 | Scenario | webpack | rollup | esbuild | vite |
 |---|---:|---:|---:|---:|
 | typesOnly | 0.1 | 0.1 | 0.1 | 0.1 |
 | reactBaseline | 44.0 | 44.2 | 44.5 | 44.3 |
-| groupOnly | **44.3** | 399.5 | 181.0 | **44.6** |
+| groupOnly | **44.3** | 404.0 | 181.9 | **44.6** |
 | groupOnlyDeepImport | 44.3 | **47.1** | **44.9** | 44.6 |
-| initChartOnly | **209.8** | 752.9 | 217.7 | 212.3 |
-| nestedOverview | 238.5 | 754.1 | 245.7 | 240.3 |
-| declarative | 413.9 | 419.2 | 423.5 | 416.3 |
-| fullImport | 415.8 | 421.2 | 425.6 | 418.3 |
-| cjsRequireBaseline | 516.1 | — | — | — |
+| initChartOnly | **213.3** | 762.0 | 221.3 | 215.8 |
+| nestedOverview | 242.2 | 763.3 | 249.5 | 243.9 |
+| declarative | 418.8 | 423.7 | 428.3 | 420.8 |
+| fullImport | 420.7 | 425.7 | 430.4 | 422.8 |
+| cjsRequireBaseline | 513.0 | — | — | — |
 
 Headline readings (webpack, the barrel-skipping bundler):
 
-- **ESM vs CJS**: `initChartOnly` 209.8 KB vs `cjsRequireBaseline` 516.1 KB — **−59 %** for identical app code.
-- **Component split works**: `declarative` − `initChartOnly` = **+204 KB** Builder cost paid only by `config` users.
-- **Registration is the bulk of it**: most of that +204 KB is `registerAllTypes()`, which `SciChartDeclarative` calls so any definition works with no setup.
+- **ESM vs CJS**: `initChartOnly` 213.3 KB vs `cjsRequireBaseline` 513.0 KB — **−58 %** for identical app code.
+- **Component split works**: `declarative` − `initChartOnly` = **+205 KB** Builder cost paid only by `config` users.
+- **Registration is the bulk of it**: most of that +205 KB is `registerAllTypes()`, which `SciChartDeclarative` calls so any definition works with no setup.
 - **sideEffects allowlist works**: `groupOnly` − `reactBaseline` = **0.3 KB** — a group-only consumer bundles no scichart at all.
-- **Rollup-family caveat**: without barrel-skipping, a barrel import of `SciChartGroup` still retains ~355 KB on rollup; the deep import (`scichart-react/SciChartGroup`) brings it back to the React floor on every bundler. Vite and esbuild improved sharply on alpha.162 (vite `groupOnly` fell from 273.1 to 44.6 KB) because scichart now ships an empty `sideEffects` array.
+- **Rollup-family caveat**: without barrel-skipping, a barrel import of `SciChartGroup` still retains ~360 KB on rollup; the deep import (`scichart-react/SciChartGroup`) brings it back to the React floor on every bundler. Vite and esbuild improved sharply during the v6 prereleases (vite `groupOnly` fell from 273.1 to 44.6 KB) because scichart now ships an empty `sideEffects` array.
 
 
 ## What `measure` gates on

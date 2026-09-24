@@ -1,6 +1,5 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
 import merge from "webpack-merge";
-const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 const config: StorybookConfig = {
@@ -10,7 +9,9 @@ const config: StorybookConfig = {
         "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
     ],
     addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
-    staticDirs: ["./public"],
+    // the whole _wasm directory, not a single file: the core picks a variant per browser and
+    // fetches side modules (charting3d) relative to it, matching what the README tells consumers
+    staticDirs: ["./public", { from: "../node_modules/scichart/_wasm", to: "/" }],
     framework: {
         name: "@storybook/react-webpack5",
         options: {}
@@ -35,15 +36,6 @@ const config: StorybookConfig = {
             },
             webpackConfig
         );
-
-        // config.plugins?.push(
-        //     new CopyPlugin({
-        //         patterns: [
-        //             { from: "src/index.html", to: "" },
-        //             { from: "node_modules/scichart/_wasm/scichart.wasm", to: "" }
-        //         ]
-        //     })
-        // );
 
         return customizedWebpackConfig;
     }

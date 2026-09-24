@@ -1,7 +1,7 @@
 "use client";
 
 import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState, JSX } from "react";
-import { DefaultFallback, fallbackWrapperStyle } from "./DefaultFallback";
+import { DefaultFallback, groupFallbackWrapperStyle } from "./DefaultFallback";
 import { SciChartGroup } from "./SciChartGroup";
 import { IInitResult } from "./types";
 
@@ -25,14 +25,16 @@ export const ChartGroupLoader = (props: TChartGroupLoaderProps): JSX.Element => 
             }}
             onInitError={onInitError}
         >
-            <div {...divProps}>
+            {/* the fallback below is absolutely positioned and must resolve against this element,
+                so it needs a positioned ancestor here - without it the overlay escapes to the
+                nearest positioned ancestor (often the page) and lands offset from the group.
+                A caller's own position wins, since divProps.style is spread last. */}
+            <div {...divProps} style={{ position: "relative", ...divProps.style }}>
                 {props.children}
+                {/* both branches are wrapped, so the default overlay is layered above the
+                    per-chart overlays exactly as a custom one is */}
                 {!isInitialized ? (
-                    fallback ? (
-                        <div style={fallbackWrapperStyle}>{fallback}</div>
-                    ) : (
-                        <DefaultFallback />
-                    )
+                    <div style={groupFallbackWrapperStyle}>{fallback ? fallback : <DefaultFallback />}</div>
                 ) : null}
             </div>
         </SciChartGroup>

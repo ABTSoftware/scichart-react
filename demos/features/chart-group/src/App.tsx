@@ -8,8 +8,7 @@ import {
     SciChartSurface,
     XyDataSeries,
     XyScatterRenderableSeries,
-    build2DChart,
-    registerNumericAxis
+    build2DChart
 } from "scichart";
 import { ChartGroupLoader, IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
 import "./styles.css";
@@ -20,10 +19,9 @@ import "./styles.css";
 SciChartSurface.loadWasmFromCDN();
 SciChartDefaults.performanceWarnings = false;
 
-// since v6 the Builder registers nothing on import, so a type the definition names has to be
-// registered first. Only NumericAxis is needed here: the series is constructed directly rather
-// than described in the definition, so it registers itself by being in the bundle.
-registerNumericAxis();
+// The shared wasm context is auto-disposed with no delay on unmount. SciChartMemoryDebugWrapper,
+// which wraps this App in index.tsx, sets autoDisposeWasmContext and wasmContextDisposeTimeout
+// itself, so there is nothing to configure here.
 
 export function App() {
     return (

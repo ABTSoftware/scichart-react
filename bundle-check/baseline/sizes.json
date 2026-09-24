@@ -1,7 +1,7 @@
 {
-    "generatedAt": "2026-08-28T08:29:45.768Z",
-    "scichartReactVersion": "2.0.0-alpha.0",
-    "scichartVersion": "6.0.0-alpha.162",
+    "generatedAt": "2026-09-24T14:41:55.749Z",
+    "scichartReactVersion": "2.0.0-alpha.2",
+    "scichartVersion": "6.0.1",
     "bundlers": {
         "webpack": {
             "typesOnly": {
@@ -25,28 +25,28 @@
                 "fileCount": 1
             },
             "initChartOnly": {
-                "rawBytes": 791575,
-                "gzipBytes": 214846,
+                "rawBytes": 807344,
+                "gzipBytes": 218437,
                 "fileCount": 1
             },
             "nestedOverview": {
-                "rawBytes": 928136,
-                "gzipBytes": 244211,
+                "rawBytes": 944236,
+                "gzipBytes": 247978,
                 "fileCount": 1
             },
             "declarative": {
-                "rawBytes": 1831028,
-                "gzipBytes": 423831,
+                "rawBytes": 1851170,
+                "gzipBytes": 428837,
                 "fileCount": 1
             },
             "fullImport": {
-                "rawBytes": 1838582,
-                "gzipBytes": 425818,
+                "rawBytes": 1858544,
+                "gzipBytes": 430827,
                 "fileCount": 1
             },
             "cjsRequireBaseline": {
-                "rawBytes": 2713794,
-                "gzipBytes": 528445,
+                "rawBytes": 2696098,
+                "gzipBytes": 525287,
                 "fileCount": 1
             }
         },
@@ -62,8 +62,8 @@
                 "fileCount": 1
             },
             "groupOnly": {
-                "rawBytes": 1724135,
-                "gzipBytes": 409038,
+                "rawBytes": 1742030,
+                "gzipBytes": 413686,
                 "fileCount": 1
             },
             "groupOnlyDeepImport": {
@@ -72,23 +72,23 @@
                 "fileCount": 1
             },
             "initChartOnly": {
-                "rawBytes": 3302765,
-                "gzipBytes": 770939,
+                "rawBytes": 3338692,
+                "gzipBytes": 780267,
                 "fileCount": 1
             },
             "nestedOverview": {
-                "rawBytes": 3307164,
-                "gzipBytes": 772228,
+                "rawBytes": 3343091,
+                "gzipBytes": 781589,
                 "fileCount": 1
             },
             "declarative": {
-                "rawBytes": 1803845,
-                "gzipBytes": 429222,
+                "rawBytes": 1821737,
+                "gzipBytes": 433893,
                 "fileCount": 1
             },
             "fullImport": {
-                "rawBytes": 1810413,
-                "gzipBytes": 431264,
+                "rawBytes": 1828305,
+                "gzipBytes": 435947,
                 "fileCount": 1
             }
         },
@@ -104,8 +104,8 @@
                 "fileCount": 1
             },
             "groupOnly": {
-                "rawBytes": 634299,
-                "gzipBytes": 185304,
+                "rawBytes": 637879,
+                "gzipBytes": 186215,
                 "fileCount": 1
             },
             "groupOnlyDeepImport": {
@@ -114,23 +114,23 @@
                 "fileCount": 1
             },
             "initChartOnly": {
-                "rawBytes": 791778,
-                "gzipBytes": 222887,
+                "rawBytes": 807202,
+                "gzipBytes": 226637,
                 "fileCount": 1
             },
             "nestedOverview": {
-                "rawBytes": 925458,
-                "gzipBytes": 251564,
+                "rawBytes": 941082,
+                "gzipBytes": 255495,
                 "fileCount": 1
             },
             "declarative": {
-                "rawBytes": 1805867,
-                "gzipBytes": 433655,
+                "rawBytes": 1824371,
+                "gzipBytes": 438589,
                 "fileCount": 1
             },
             "fullImport": {
-                "rawBytes": 1812710,
-                "gzipBytes": 435800,
+                "rawBytes": 1831214,
+                "gzipBytes": 440757,
                 "fileCount": 1
             }
         },
@@ -156,23 +156,23 @@
                 "fileCount": 1
             },
             "initChartOnly": {
-                "rawBytes": 783173,
-                "gzipBytes": 217371,
+                "rawBytes": 798391,
+                "gzipBytes": 220959,
                 "fileCount": 1
             },
             "nestedOverview": {
-                "rawBytes": 916619,
-                "gzipBytes": 246065,
+                "rawBytes": 932010,
+                "gzipBytes": 249796,
                 "fileCount": 1
             },
             "declarative": {
-                "rawBytes": 1793344,
-                "gzipBytes": 426249,
+                "rawBytes": 1811402,
+                "gzipBytes": 430950,
                 "fileCount": 1
             },
             "fullImport": {
-                "rawBytes": 1799961,
-                "gzipBytes": 428296,
+                "rawBytes": 1818019,
+                "gzipBytes": 432954,
                 "fileCount": 1
             }
         }

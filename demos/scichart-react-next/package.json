@@ -14,7 +14,7 @@
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
-    "scichart": "6.0.0-alpha.162",
+    "scichart": "6.0.1",
     "scichart-react": "file:../../lib"
   },
   "devDependencies": {

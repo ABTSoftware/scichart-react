@@ -33,7 +33,7 @@ configured `wasmUrl`, so copy the directory rather than naming individual files.
 new CopyPlugin({ patterns: [{ from: "node_modules/scichart/_wasm/", to: "" }] })
 ```
 
-Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/current/Deploying%20Wasm%20or%20WebAssembly%20and%20Data%20Files%20with%20your%20app.html)
+Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/v6/2d-charts/surface/deploying-wasm/)
 
 **Notice that by default scichart-react applies the following configuration:**
 
@@ -60,7 +60,7 @@ These defaults are applied at import time by the `configureSciChartDefaults` mod
 There are two chart components:
 
 -   **`SciChartReact`** — takes an initialization function via the `initChart` prop. This is the primary component for code-first apps and produces the smallest bundles.
--   **`SciChartDeclarative`** — takes a chart definition (object or JSON string) via the `config` prop and creates the chart with the [Builder API](https://www.scichart.com/documentation/js/current/Intro%20to%20the%20Builder%20API.html). The Builder API is only bundled by apps that use this component. It registers every built-in chart type, so any definition works with no setup.
+-   **`SciChartDeclarative`** — takes a chart definition (object or JSON string) via the `config` prop and creates the chart with the [Builder API](https://www.scichart.com/documentation/js/v6/2d-charts/builder-api/builder-api-overview/). The Builder API is only bundled by apps that use this component. It registers every built-in chart type, so any definition works with no setup.
 
 #### With Initialization Function (SciChartReact)
 
@@ -123,7 +123,7 @@ function App() {
 
 #### With Config (SciChartDeclarative)
 
-Alternatively, pass a config object that will be used to generate a chart via the [Builder API](https://www.scichart.com/documentation/js/current/Intro%20to%20the%20Builder%20API.html).
+Alternatively, pass a config object that will be used to generate a chart via the [Builder API](https://www.scichart.com/documentation/js/v6/2d-charts/builder-api/builder-api-overview/).
 
 ```tsx
 import { EAxisType, EChart2DModifierType, ESeriesType, SciChartSurface } from "scichart";
@@ -220,6 +220,12 @@ rather not maintain the list — that is exactly what `SciChartDeclarative` does
 
 ## Migrating from 1.x to 2.0
 
+Upgrading the wrapper means upgrading the core library too, so read
+[Breaking Changes in SciChart.js v6.0 from v5.2](https://www.scichart.com/documentation/js/v6/whats-new/breaking-changes-v5.2-v6.0/)
+alongside this list — it covers the wasm deployment change, the Builder API restructure and the
+type-registration change that the points below depend on. See also
+[What's New in SciChart.js SDK v6.0](https://www.scichart.com/documentation/js/v6/whats-new/sdk-6.0/).
+
 -   **`SciChartOverview` no longer mirrors** palette providers, animations or data labels onto the overview's mini series. Set them on the overview series explicitly if you relied on that.
 -   **`scichart` peer dependency is now v6+** (one union `scichart.wasm` file instead of the `scichart2d.wasm`/`scichart3d.wasm` pair, no more `.data` files). Apps staying on scichart 3.x-5.x should stay on scichart-react 1.x. When upgrading the core library, the `scichart-migrate` codemod automates the renames.
 -   **The `config` prop moved to the new `SciChartDeclarative` component**: replace `<SciChartReact config={...} />` with `<SciChartDeclarative config={...} />` (one JSX rename; all other props are identical). `SciChartReact` now requires `initChart` and throws a pointer error if it receives `config`.
@@ -235,9 +241,9 @@ rather not maintain the list — that is exactly what `SciChartDeclarative` does
 
 ### Onboarding
 
--   [Tutorials](https://www.scichart.com/documentation/js/current/webframe.html#Tutorial%2001%20-%20Setting%20up%20a%20Project%20with%20SciChart.js.html)
+-   [Tutorials](https://www.scichart.com/documentation/js/v6/get-started/tutorials-js-npm-webpack/tutorial-01-setting-up-npm-project-with-scichart-js/)
 -   [Getting Started Guide](https://scichart.com/getting-started/scichart-javascript/)
--   [SciChart.JS Documentation](https://www.scichart.com/documentation/js/current/webframe.html)
+-   [SciChart.JS Documentation](https://www.scichart.com/documentation/js/v6/intro/)
 -   [SciChart.React Documentation](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 -   [CodePen, JSFiddle support](https://www.scichart.com/blog/codepen-codesandbox-and-jsfiddle-support-in-scichart-js/)
 

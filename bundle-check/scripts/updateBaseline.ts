@@ -2,16 +2,28 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { baselineDir, reportsDir } from "./paths";
 
-/** Promotes reports/current/sizes.json to the committed baseline/sizes.json. */
+/**
+ * Promotes reports/current to the committed baseline.
+ *
+ * Both files move together: sizes.json is what compareSizes gates on, and sizes.md is the
+ * human-readable table carrying the versions the numbers were recorded against. Copying only
+ * the JSON leaves the table claiming versions that are no longer the baseline's.
+ */
 
-const currentPath = path.join(reportsDir, "current", "sizes.json");
+const files = ["sizes.json", "sizes.md"];
+const currentDir = path.join(reportsDir, "current");
 
-if (!fs.existsSync(currentPath)) {
-    console.error("updateBaseline: reports/current/sizes.json not found — run snapshotSizes first");
+const missing = files.filter(name => !fs.existsSync(path.join(currentDir, name)));
+
+if (missing.length > 0) {
+    console.error(`updateBaseline: reports/current/${missing.join(", ")} not found — run snapshotSizes first`);
     process.exit(1);
 }
 
 fs.mkdirSync(baselineDir, { recursive: true });
-fs.copyFileSync(currentPath, path.join(baselineDir, "sizes.json"));
 
-console.log("updateBaseline: baseline/sizes.json updated — review and commit it");
+for (const name of files) {
+    fs.copyFileSync(path.join(currentDir, name), path.join(baselineDir, name));
+}
+
+console.log(`updateBaseline: baseline/${files.join(" and ")} updated — review and commit`);

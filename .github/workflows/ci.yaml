@@ -1,0 +1,36 @@
+name: CI
+
+on:
+    pull_request:
+    push:
+        branches:
+            - main
+
+permissions:
+    contents: read
+
+jobs:
+    verify:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+
+            - name: Install
+              run: npm ci
+
+            - name: Typecheck
+              run: npm run typecheck
+
+            # build ends with verifyLib: artifact layout assertions, then publint and attw
+            - name: Build
+              run: npm run build
+
+            # compares against bundle-check/baseline/sizes.json and fails on regressions,
+            # so a change that widens sideEffects or drags the Builder into the init path
+            # is caught here rather than at publish time
+            - name: Tree-shaking and bundle-size gate
+              run: npm run bundleCheck

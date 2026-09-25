@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "es2018",
+        "outDir": "./lib/types",
+        "rootDir": "./src",
+        "declaration": true,
+        "emitDeclarationOnly": true
+    }
+}

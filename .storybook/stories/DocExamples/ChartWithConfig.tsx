@@ -1,8 +1,8 @@
 import { EAxisType, ESeriesType, EChart2DModifierType } from "scichart";
-import { SciChartReact } from "scichart-react";
+import { SciChartDeclarative } from "scichart-react";
 
 export const ChartWithConfig = () => (
-    <SciChartReact
+    <SciChartDeclarative
         config={{
             xAxes: [{ type: EAxisType.NumericAxis }],
             yAxes: [{ type: EAxisType.NumericAxis }],

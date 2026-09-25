@@ -1,28 +1,28 @@
 {
-  "name": "scichart-react-next",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "copyWasm": "copy-files-from-to --config copy-files-from-to.json",
-    "dev": "npm run copyWasm && next dev --turbo",
-    "build": "npm run copyWasm && next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "copy-files-from-to": "^3.9.0",
-    "next": "14.0.2",
-    "react": "^18",
-    "react-dom": "^18",
-    "scichart": "^3.2.516",
-    "scichart-react": "file:../../lib"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.2",
-    "typescript": "^5"
-  }
+    "name": "scichart-react-next",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "copyWasm": "copy-files-from-to --config copy-files-from-to.json",
+        "dev": "npm run copyWasm && next dev",
+        "build": "npm run copyWasm && next build",
+        "start": "npx --yes serve build",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "copy-files-from-to": "^3.9.0",
+        "next": "14.0.2",
+        "react": "^18",
+        "react-dom": "^18",
+        "scichart": "6.0.1",
+        "scichart-react": "file:../../lib"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.0.2",
+        "typescript": "^5"
+    }
 }

@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        // force the whole program (incl. ../../src) onto this demo's React 16 types —
+        // the repo root has @types/react 18, and mixing the two fails typechecking
+        "paths": {
+            "react": ["node_modules/@types/react"],
+            "react/jsx-runtime": ["node_modules/@types/react/jsx-runtime"]
+        },
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "sourceMap": true
+    },
+    "include": ["src/**/*", "../../src/**/*"]
+}

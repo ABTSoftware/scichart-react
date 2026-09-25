@@ -1,12 +1,12 @@
 import { StrictMode } from "react";
-import { SciChartMemoryDebugWrapper, SciChartReact } from "scichart-react";
+import { SciChartDeclarative, SciChartMemoryDebugWrapper } from "scichart-react";
 
 function App() {
     return (
         <div className="App">
             <StrictMode>
                 <SciChartMemoryDebugWrapper>
-                    <SciChartReact config={{}} style={{ width: 800, height: 600 }} />
+                    <SciChartDeclarative config={{}} style={{ width: 800, height: 600 }} />
                 </SciChartMemoryDebugWrapper>
             </StrictMode>
         </div>

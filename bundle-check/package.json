@@ -1,0 +1,43 @@
+{
+    "name": "scichart-react-bundle-check",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Tree-shaking test scenarios and build-to-build bundle-size tracking for the published scichart-react artifact (lib/), mirroring the core library's BundleAnalysis harness. Never published.",
+    "scripts": {
+        "clean": "rimraf dist reports",
+        "typecheck": "tsc --noEmit",
+        "buildWebpack": "webpack --config webpack.config.ts",
+        "buildRollup": "tsx scripts/buildWithRollup.ts",
+        "buildEsbuild": "tsx scripts/buildWithEsbuild.ts",
+        "buildVite": "tsx scripts/buildWithVite.ts",
+        "build": "npm run buildWebpack && npm run buildRollup && npm run buildEsbuild && npm run buildVite",
+        "snapshotSizes": "tsx scripts/snapshotBundleSizes.ts",
+        "compareSizes": "tsx scripts/compareBundleSizes.ts",
+        "updateBaseline": "tsx scripts/updateBaseline.ts",
+        "assertBundles": "tsx scripts/assertBundles.ts",
+        "measure": "npm run build && npm run snapshotSizes && npm run assertBundles && npm run compareSizes"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^26.0.3",
+        "@rollup/plugin-node-resolve": "^15.3.1",
+        "@rollup/plugin-replace": "^5.0.7",
+        "@types/node": "^20.14.0",
+        "@types/react": "^18.2.37",
+        "@types/react-dom": "^18.2.15",
+        "esbuild": "^0.23.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "rimraf": "^5.0.10",
+        "rollup": "^4.24.4",
+        "rollup-plugin-esbuild": "^6.1.1",
+        "scichart": "6.0.1",
+        "scichart-react": "file:../lib",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.20.5",
+        "typescript": "^5.2.2",
+        "vite": "^5.4.0",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4"
+    }
+}

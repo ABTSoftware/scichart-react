@@ -3,7 +3,7 @@ import * as path from "path";
 import * as ts from "typescript";
 import { Statement } from "typescript";
 
-const IGNORE_DIRS: string[] = ["src/stories"];
+const IGNORE_DIRS: string[] = [];
 
 const IGNORE_FILES: string[] = ["src/index.ts", "src/utils.ts", "src/constants.ts"];
 
@@ -12,6 +12,7 @@ const IGNORE_FILE_NAMES: string[] = [];
 export type TExport = {
     path: string;
     exportName: string;
+    isTypeOnly: boolean;
 };
 
 export async function getFiles(pathUrl: string, rootFolderPath: string) {
@@ -67,6 +68,8 @@ export function generateTypedExportsFile(allExports: TExport[], fileName: string
     sourceFile.statements.forEach(statement => {
         // console.log("statement.kind", statement.kind);
         let name = "";
+        // interfaces and type aliases must be re-exported with "export type" to keep the barrel isolatedModules-safe
+        let isTypeOnly = false;
         if (ts.isFunctionDeclaration(statement)) {
             // console.log("isFunctionDeclaration");
             name = statement.name!.text;
@@ -82,9 +85,11 @@ export function generateTypedExportsFile(allExports: TExport[], fileName: string
         } else if (ts.isInterfaceDeclaration(statement)) {
             // console.log("isInterfaceDeclaration");
             name = statement.name.text;
+            isTypeOnly = true;
         } else if (ts.isTypeAliasDeclaration(statement)) {
             // console.log("isTypeAliasDeclaration");
             name = statement.name.text;
+            isTypeOnly = true;
         }
         const comment = statement.getFullText().slice(0, statement.getLeadingTriviaWidth());
         // console.log(fileName, "comment", comment);
@@ -97,7 +102,8 @@ export function generateTypedExportsFile(allExports: TExport[], fileName: string
         if (name && hasExport && !hasIgnoreComment) {
             allExports.push({
                 exportName: name,
-                path: fileName
+                path: fileName,
+                isTypeOnly
             });
         }
     });
@@ -150,10 +156,10 @@ export function writeAllAsNamedExports(
     );
 
     allExports.forEach(el => {
-        writeImport(el.exportName, el.path);
+        writeImport(el.exportName, el.path, el.isTypeOnly);
     });
 
-    function writeImport(elementName: string, importPath: string) {
+    function writeImport(elementName: string, importPath: string, isTypeOnly: boolean) {
         const fileExtension = path.extname(importPath).toLowerCase();
         const lengthWithoutPrefixAndExtension = importPath.length - prefixLength - fileExtension.length;
         let relativePath = `${relativePrefix}${importPath.substr(prefixLength, lengthWithoutPrefixAndExtension)}`;
@@ -161,7 +167,7 @@ export function writeAllAsNamedExports(
         if (isWindows) {
             relativePath = relativePath.split(path.sep).join(path.posix.sep);
         }
-        const textToWrite = `export { ${elementName} } from "${relativePath}";\n`;
+        const textToWrite = `export ${isTypeOnly ? "type " : ""}{ ${elementName} } from "${relativePath}";\n`;
         appendFileSync(outputFile, textToWrite);
     }
 }

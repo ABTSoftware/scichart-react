@@ -1,0 +1,180 @@
+{
+    "generatedAt": "2026-09-25T09:29:20.807Z",
+    "scichartReactVersion": "2.0.0",
+    "scichartVersion": "6.0.1",
+    "bundlers": {
+        "webpack": {
+            "typesOnly": {
+                "rawBytes": 59,
+                "gzipBytes": 79,
+                "fileCount": 1
+            },
+            "reactBaseline": {
+                "rawBytes": 139843,
+                "gzipBytes": 45095,
+                "fileCount": 1
+            },
+            "groupOnly": {
+                "rawBytes": 140844,
+                "gzipBytes": 45403,
+                "fileCount": 1
+            },
+            "groupOnlyDeepImport": {
+                "rawBytes": 140844,
+                "gzipBytes": 45403,
+                "fileCount": 1
+            },
+            "initChartOnly": {
+                "rawBytes": 807440,
+                "gzipBytes": 218475,
+                "fileCount": 1
+            },
+            "nestedOverview": {
+                "rawBytes": 944332,
+                "gzipBytes": 248017,
+                "fileCount": 1
+            },
+            "declarative": {
+                "rawBytes": 1851266,
+                "gzipBytes": 428877,
+                "fileCount": 1
+            },
+            "fullImport": {
+                "rawBytes": 1858756,
+                "gzipBytes": 430931,
+                "fileCount": 1
+            },
+            "cjsRequireBaseline": {
+                "rawBytes": 2696426,
+                "gzipBytes": 525368,
+                "fileCount": 1
+            }
+        },
+        "rollup": {
+            "typesOnly": {
+                "rawBytes": 47,
+                "gzipBytes": 67,
+                "fileCount": 1
+            },
+            "reactBaseline": {
+                "rawBytes": 141706,
+                "gzipBytes": 45292,
+                "fileCount": 1
+            },
+            "groupOnly": {
+                "rawBytes": 1742030,
+                "gzipBytes": 413686,
+                "fileCount": 1
+            },
+            "groupOnlyDeepImport": {
+                "rawBytes": 150389,
+                "gzipBytes": 48209,
+                "fileCount": 1
+            },
+            "initChartOnly": {
+                "rawBytes": 3338827,
+                "gzipBytes": 780285,
+                "fileCount": 1
+            },
+            "nestedOverview": {
+                "rawBytes": 3343226,
+                "gzipBytes": 781655,
+                "fileCount": 1
+            },
+            "declarative": {
+                "rawBytes": 1821868,
+                "gzipBytes": 433943,
+                "fileCount": 1
+            },
+            "fullImport": {
+                "rawBytes": 1828542,
+                "gzipBytes": 436034,
+                "fileCount": 1
+            }
+        },
+        "esbuild": {
+            "typesOnly": {
+                "rawBytes": 45,
+                "gzipBytes": 65,
+                "fileCount": 1
+            },
+            "reactBaseline": {
+                "rawBytes": 141707,
+                "gzipBytes": 45603,
+                "fileCount": 1
+            },
+            "groupOnly": {
+                "rawBytes": 637879,
+                "gzipBytes": 186215,
+                "fileCount": 1
+            },
+            "groupOnlyDeepImport": {
+                "rawBytes": 142730,
+                "gzipBytes": 45977,
+                "fileCount": 1
+            },
+            "initChartOnly": {
+                "rawBytes": 807347,
+                "gzipBytes": 226718,
+                "fileCount": 1
+            },
+            "nestedOverview": {
+                "rawBytes": 941227,
+                "gzipBytes": 255558,
+                "fileCount": 1
+            },
+            "declarative": {
+                "rawBytes": 1824522,
+                "gzipBytes": 438648,
+                "fileCount": 1
+            },
+            "fullImport": {
+                "rawBytes": 1831459,
+                "gzipBytes": 440850,
+                "fileCount": 1
+            }
+        },
+        "vite": {
+            "typesOnly": {
+                "rawBytes": 47,
+                "gzipBytes": 67,
+                "fileCount": 1
+            },
+            "reactBaseline": {
+                "rawBytes": 141706,
+                "gzipBytes": 45327,
+                "fileCount": 1
+            },
+            "groupOnly": {
+                "rawBytes": 142670,
+                "gzipBytes": 45691,
+                "fileCount": 1
+            },
+            "groupOnlyDeepImport": {
+                "rawBytes": 142670,
+                "gzipBytes": 45691,
+                "fileCount": 1
+            },
+            "initChartOnly": {
+                "rawBytes": 798522,
+                "gzipBytes": 221024,
+                "fileCount": 1
+            },
+            "nestedOverview": {
+                "rawBytes": 932141,
+                "gzipBytes": 249857,
+                "fileCount": 1
+            },
+            "declarative": {
+                "rawBytes": 1811533,
+                "gzipBytes": 431005,
+                "fileCount": 1
+            },
+            "fullImport": {
+                "rawBytes": 1818256,
+                "gzipBytes": 433062,
+                "fileCount": 1
+            }
+        }
+    }
+}

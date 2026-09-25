@@ -1,22 +1,48 @@
 {
     "name": "scichart-react",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "React wrapper for SciChart JS",
     "homepage": "https://www.scichart.com",
-    "main": "index.js",
-    "types": "index.d.ts",
+    "main": "./cjs/index.js",
+    "module": "./esm/index.js",
+    "types": "./types/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./types/index.d.ts",
+                "default": "./esm/index.js"
+            },
+            "require": {
+                "types": "./types/index.d.ts",
+                "default": "./cjs/index.js"
+            }
+        },
+        "./package.json": "./package.json",
+        "./*": {
+            "import": {
+                "types": "./types/*.d.ts",
+                "default": "./esm/*.js"
+            },
+            "require": {
+                "types": "./types/*.d.ts",
+                "default": "./cjs/*.js"
+            }
+        }
+    },
     "scripts": {
-        "build": "npm run generateGlobalExportsModule && npm run buildJs && npm run updateJson && npm run copyToLib",
+        "build": "npm run generateGlobalExportsModule && npm run buildJs && npm run updateJson && npm run copyToLib && npm run verifyLib",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "storybook-docs": "storybook dev --docs",
         "build-storybook-docs": "storybook build --docs",
-        "dev-docs-server": "ts-node --project tsconfig-server.json ./src/stories/server/index.ts",
         "tsc": "tsc --watch",
+        "typecheck": "tsc --noEmit",
         "relink": "cd lib && npm link",
-        "buildJs": "rimraf lib && tsc --build tsconfig.json",
+        "buildJs": "rimraf lib && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && tsc -p tsconfig.types.json",
         "generateGlobalExportsModule": "ts-node generate-exports-file.ts",
-        "buildBrowserBundle": "echo Not Implemented!",
+        "verifyLib": "ts-node scripts/verify-lib.ts && npm run verifyPackage",
+        "verifyPackage": "publint lib && attw --pack lib --ignore-rules unexpected-module-syntax",
+        "bundleCheck": "cd bundle-check && npm install --no-audit --no-fund && npm run measure",
         "updateJson": "run-script-os",
         "updateJson:nix": "cp package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
         "updateJson:windows": "copy package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
@@ -25,7 +51,8 @@
         "prettier": "prettier src/**/*.{js,ts,tsx} --write",
         "pretty-quick": "pretty-quick --staged",
         "publishPublic": "npm version patch && npm run build && cd lib && npm publish",
-        "publishBeta": "npm version prepatch --preid=beta && npm run build && cd lib && npm publish --tag beta",
+        "publishAlpha": "npm version prerelease --preid=alpha && npm run build && cd lib && npm publish --tag alpha",
+        "publishBeta": "npm version prerelease --preid=beta && npm run build && cd lib && npm publish --tag beta",
         "prepare": "husky install"
     },
     "author": "SciChart Ltd",
@@ -60,6 +87,7 @@
     },
     "bugs": "https://github.com/ABTSoftware/scichart-react/issues",
     "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.5",
         "@babel/preset-env": "^7.23.3",
         "@babel/preset-react": "^7.23.3",
         "@babel/preset-typescript": "^7.23.3",
@@ -79,12 +107,13 @@
         "json": "^11.0.0",
         "prettier": "^2.3.1",
         "pretty-quick": "^3.1.1",
+        "publint": "^0.3.22",
         "raw-loader": "^4.0.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "rimraf": "^5.0.5",
         "run-script-os": "^1.1.6",
-        "scichart": "^5.0.211",
+        "scichart": "6.0.1",
         "storybook": "^7.5.3",
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2",
@@ -93,7 +122,7 @@
         "webpack-merge": "^5.10.0"
     },
     "peerDependencies": {
-        "react": ">=16.8.0",
-        "scichart": ">=4.0.828"
+        "react": ">=16.14.0",
+        "scichart": ">=6.0.0-0"
     }
 }

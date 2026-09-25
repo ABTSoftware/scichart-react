@@ -1,14 +1,14 @@
-import { SciChartReact } from "scichart-react";
+import { SciChartDeclarative } from "scichart-react";
 
-// By default SciChartReact uses the following to configure how WASM module dependencies are resolved
+// By default scichart-react uses the following to configure how WASM module dependencies are resolved
 // SciChartSurface.configure({
-//     wasmUrl: "/scichart2d.wasm",
-//     dataUrl: "/scichart2d.data"
+//     wasmUrl: "/scichart.wasm"
 // });
 //
 // or you can load the WASM files from CDN by changing the config
-// SciChartSurface.loadWasmFromCDN();
+// SciChartSurface.useWasmFromCDN();
 
+// since 2.0 the JSON-config chart is SciChartDeclarative; SciChartReact takes initChart
 export default function ChartExample() {
-    return <SciChartReact config={{}} style={{ height: 600, width: 800 }} />;
+    return <SciChartDeclarative config={{}} style={{ height: 600, width: 800 }} />;
 }

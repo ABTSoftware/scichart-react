@@ -1,0 +1,3 @@
+{
+    "sideEffects": ["./configureDefaults.js"]
+}

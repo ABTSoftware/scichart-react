@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NumericAxis, SciChartSurface } from "scichart";
-import { SciChartReact, ChartGroupLoader, DefaultFallback } from "scichart-react";
+import { SciChartReact, SciChartDeclarative, ChartGroupLoader, DefaultFallback } from "scichart-react";
 
 // this will be displayed if error happens during initialization
 const customFallback = (
@@ -55,8 +55,8 @@ export const ChartGroupLoaderCustom = () => {
                 }}
                 style={{ flex: "auto", minHeight: "200px" }}
             />
-            <SciChartReact config={{}} style={{ flex: "auto", minHeight: "200px" }} />
-            <SciChartReact config={{}} style={{ flex: "auto", minHeight: "200px" }} />
+            <SciChartDeclarative config={{}} style={{ flex: "auto", minHeight: "200px" }} />
+            <SciChartDeclarative config={{}} style={{ flex: "auto", minHeight: "200px" }} />
         </ChartGroupLoader>
     );
 };

@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "lib": ["es2020", "dom"],
+        "types": ["node"],
+        "strict": true,
+        "noEmit": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["scenarios.ts", "scenarios/**/*", "scripts/**/*", "webpack.config.ts"],
+    // webpack-cli loads webpack.config.ts through ts-node, which must emit CommonJS
+    "ts-node": {
+        "transpileOnly": true,
+        "compilerOptions": {
+            "module": "commonjs",
+            "moduleResolution": "node"
+        }
+    }
+}

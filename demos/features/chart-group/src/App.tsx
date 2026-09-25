@@ -8,7 +8,7 @@ import {
     SciChartSurface,
     XyDataSeries,
     XyScatterRenderableSeries,
-    chartBuilder
+    build2DChart
 } from "scichart";
 import { ChartGroupLoader, IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
 import "./styles.css";
@@ -18,6 +18,10 @@ import "./styles.css";
 // check out SciChart.JS Docs for configuration info
 SciChartSurface.loadWasmFromCDN();
 SciChartDefaults.performanceWarnings = false;
+
+// The shared wasm context is auto-disposed with no delay on unmount. SciChartMemoryDebugWrapper,
+// which wraps this App in index.tsx, sets autoDisposeWasmContext and wasmContextDisposeTimeout
+// itself, so there is nothing to configure here.
 
 export function App() {
     return (
@@ -71,7 +75,7 @@ const chartInitializationFunction = async (rootElement: string | HTMLDivElement)
     const createChart = async () => {
         console.log("createChart");
         // for demonstration purposes, here we have used Builder API explicitly
-        const { sciChartSurface } = await chartBuilder.build2DChart(rootElement, {
+        const { sciChartSurface } = await build2DChart(rootElement, {
             xAxes: {
                 type: EAxisType.NumericAxis,
                 options: {

@@ -43,7 +43,7 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
 
     const notifyError = (error: any) => {
         return props?.onInitError?.(error);
-    }
+    };
 
     const contextState = { ...groupState, addChartToGroup, removeChartFromGroup, notifyError };
 

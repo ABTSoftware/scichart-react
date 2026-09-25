@@ -39,6 +39,9 @@ The 2.0 line targets SciChart.js v6 and is built and verified against `scichart`
     `groupInitializedClassName`, and now merges with a user-supplied `className`.
 -   Exported types `TChartGroupLoaderProps`, `IChartComponentPropsCore`,
     `TChartComponentPropsWithInit` and `TChartComponentPropsWithConfig`.
+-   `SciChartMemoryDebugWrapper` gained a `defaultRenderChildren` prop, so the children can be
+    rendered on the first render instead of waiting for the checkbox. Its props are now typed
+    rather than `any`.
 
 ### Changed
 

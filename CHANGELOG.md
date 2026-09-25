@@ -51,6 +51,12 @@ The 2.0 line targets SciChart.js v6 and is built and verified against `scichart`
     consumer does not import. An `initChart`-only bundle no longer drags in the Builder.
 -   `"use client"` directives added, so the components work in React Server Component setups.
 -   `react` peer dependency raised to `>=16.14.0`.
+-   Each surface returned from `initChart` is marked as externally lifecycle-managed, which
+    suppresses the core's "root detached before delete" and "surface already deleted"
+    memory-debug warnings. Both are expected here: the component removes the chart root before
+    the asynchronous delete, and a surface can be deleted twice (the nested overview). The flag
+    is only set when the core exposes it, so this is inert against scichart 6.0.1 and takes
+    effect with the core release that adds it.
 
 ### Deprecated
 

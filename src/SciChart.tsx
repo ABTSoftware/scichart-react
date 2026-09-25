@@ -29,7 +29,20 @@ function validateResult<TSurface extends ISciChartSurfaceBase, TInitResult exten
     if (!result.sciChartSurface) {
         throw new Error(wrongInitResultMessage);
     }
+    markLifecycleManagedExternally(result.sciChartSurface);
     return result;
+}
+
+/**
+ * This component removes the chart root before the async delete and may delete a surface twice
+ * (e.g. the nested overview), so the matching memory-debug warnings are expected noise here.
+ * Guarded because published scichart versions do not have the property yet.
+ */
+function markLifecycleManagedExternally(surface: ISciChartSurfaceBase) {
+    if ("isLifecycleManagedExternally" in surface) {
+        (surface as ISciChartSurfaceBase & { isLifecycleManagedExternally: boolean }).isLifecycleManagedExternally =
+            true;
+    }
 }
 
 function SciChartComponent<

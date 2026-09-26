@@ -23,6 +23,6 @@ function Main() {
 }
 
 if (typeof window !== "undefined") {
-    // SciChartSurface.useWasmFromCDN();
+    // SciChartSurface.loadWasmFromCDN();
     ReactDOM.render(<Main />, document.querySelector("#app"));
 }

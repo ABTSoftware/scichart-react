@@ -6,7 +6,8 @@ import { SciChartGroup } from "./SciChartGroup";
 import { IInitResult } from "./types";
 
 type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
-type TChartGroupLoaderProps = TDivProps & {
+/** Props for {@link ChartGroupLoader}: a div's own props, plus the group's loading and init hooks. */
+export type TChartGroupLoaderProps = TDivProps & {
     fallback?: ReactNode | undefined;
     onInit?: (chartInitResults: IInitResult[]) => void;
     onInitError?: (error: any) => void;

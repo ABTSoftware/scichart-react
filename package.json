@@ -47,7 +47,7 @@
         "updateJson:nix": "cp package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
         "updateJson:windows": "copy package.json packageNpm.json && json -I -f packageNpm.json -e \"this.scripts={}\" -e \"this.devDependencies={}\"",
         "copyToLib": "copy-files-from-to --config copy-files-from-to.json",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "lint": "eslint src .storybook --ext .js,.jsx,.ts,.tsx --max-warnings 0",
         "prettier": "prettier src/**/*.{js,ts,tsx} --write",
         "pretty-quick": "pretty-quick --staged",
         "publishPublic": "npm version patch && npm run build && cd lib && npm publish",

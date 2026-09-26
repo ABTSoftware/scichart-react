@@ -130,6 +130,9 @@ function SciChartComponent<
             // wait for init to finish before deleting it
             initPromise.then(performCleanup);
         };
+        // Runs once per chart lifecycle: re-running on callback or context identity would tear
+        // down and re-create the surface.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const groupContext = useContext(SciChartGroupContext);

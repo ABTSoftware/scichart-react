@@ -54,6 +54,9 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
             ) as IInitResult[];
             onInit(initResults);
         }
+        // Runs once per chart lifecycle: re-running on callback or context identity would tear
+        // down and re-create the surface.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [groupState.groupInitialized]);
 
     useEffect(() => {
@@ -66,6 +69,9 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
                 onDelete(initResults);
             };
         }
+        // Runs once per chart lifecycle: re-running on callback or context identity would tear
+        // down and re-create the surface.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [groupState.groupInitialized]);
 
     return <SciChartGroupContext.Provider value={contextState}>{props.children}</SciChartGroupContext.Provider>;

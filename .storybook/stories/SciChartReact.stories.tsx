@@ -20,7 +20,7 @@ import { ChartWith3dSurface as ChartWith3dSurfaceRenderer } from "./DocExamples/
 import { ChartWithPieSurface as ChartWithPieSurfaceRenderer } from "./DocExamples/ChartWithPieSurface";
 import { ChartWrapperStyling as ChartWrapperStylingRenderer } from "./DocExamples/ChartWrapperStyling";
 import { SciChartReact } from "../../src/SciChart";
-import { Title, Subtitle, Description, Primary, Controls, Stories, ArgTypes } from "@storybook/blocks";
+import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/blocks";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {

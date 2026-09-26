@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import ChartGroupLoaderBasicSrc from "!!raw-loader!./DocExamples/ChartGroupLoaderBasic";
 import ChartGroupLoaderCustomSrc from "!!raw-loader!./DocExamples/ChartGroupLoaderCustom";
 import { ChartGroupLoaderBasic as ChartGroupLoaderBasicRenderer } from "./DocExamples/ChartGroupLoaderBasic";
 import { ChartGroupLoaderCustom as ChartGroupLoaderCustomRenderer } from "./DocExamples/ChartGroupLoaderCustom";
-import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/blocks";
+import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/addon-docs/blocks";
 import { ChartGroupLoader } from "../../src/ChartGroupLoader";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

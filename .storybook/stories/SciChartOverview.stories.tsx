@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import NestedOverviewBasicSrc from "!!raw-loader!./DocExamples/NestedOverviewBasic";
 import { NestedOverviewBasic as NestedOverviewBasicRenderer } from "./DocExamples/NestedOverviewBasic";
-import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/blocks";
+import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/addon-docs/blocks";
 import { SciChartNestedOverview } from "../../src/SciChartOverview";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

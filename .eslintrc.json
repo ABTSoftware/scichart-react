@@ -1,6 +1,9 @@
 {
     "root": true,
-    "extends": ["react-app"],
+    "extends": [
+        "react-app",
+        "plugin:storybook/recommended"
+    ],
     "ignorePatterns": [
         "node_modules/",
         "lib/",
@@ -11,7 +14,9 @@
     ],
     "overrides": [
         {
-            "files": [".storybook/**/*.{ts,tsx}"],
+            "files": [
+                ".storybook/**/*.{ts,tsx}"
+            ],
             "rules": {
                 "import/no-webpack-loader-syntax": "off"
             }

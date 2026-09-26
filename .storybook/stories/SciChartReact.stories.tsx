@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import PrimaryChartExampleSrcCode from "!!raw-loader!./DocExamples/PrimaryChartExample";
 import ChartWithConfigSrcCode from "!!raw-loader!./DocExamples/ChartWithConfig";
 import ChartWithInitFunctionSrcCode from "!!raw-loader!./DocExamples/ChartWithInitFunction";
@@ -20,7 +20,7 @@ import { ChartWith3dSurface as ChartWith3dSurfaceRenderer } from "./DocExamples/
 import { ChartWithPieSurface as ChartWithPieSurfaceRenderer } from "./DocExamples/ChartWithPieSurface";
 import { ChartWrapperStyling as ChartWrapperStylingRenderer } from "./DocExamples/ChartWrapperStyling";
 import { SciChartReact } from "../../src/SciChart";
-import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/blocks";
+import { Title, Subtitle, Description, Primary, Stories, ArgTypes } from "@storybook/addon-docs/blocks";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {

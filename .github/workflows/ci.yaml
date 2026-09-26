@@ -38,6 +38,14 @@ jobs:
             - name: Tree-shaking and bundle-size gate
               run: npm run bundleCheck
 
+            # every story is rendered in a real Chromium and fails the run if it throws; the
+            # charts are WebAssembly and WebGL, so a real browser is the only place they run
+            - name: Install Chromium
+              run: npx playwright install chromium --with-deps
+
+            - name: Story smoke tests
+              run: npm run test:stories:ci
+
     # Every demo is its own npm project, so nothing above compiles them. Four of the six failed to
     # build during the 2.0 work - a removed Builder namespace, two demos left on scichart 3.x, and
     # a dev script that could not resolve its own dependency - and all four were found by hand.

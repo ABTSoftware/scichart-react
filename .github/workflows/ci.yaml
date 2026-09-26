@@ -37,3 +37,52 @@ jobs:
             # is caught here rather than at publish time
             - name: Tree-shaking and bundle-size gate
               run: npm run bundleCheck
+
+    # Every demo is its own npm project, so nothing above compiles them. Four of the six failed to
+    # build during the 2.0 work - a removed Builder namespace, two demos left on scichart 3.x, and
+    # a dev script that could not resolve its own dependency - and all four were found by hand.
+    # Building each one catches that whole class.
+    demos:
+        runs-on: ubuntu-latest
+        strategy:
+            # one broken demo should not hide the state of the others
+            fail-fast: false
+            matrix:
+                include:
+                    - demo: demos/features/chart-group
+                      build: npm run build
+                    - demo: demos/features/legend
+                      build: npm run build
+                    - demo: demos/react16
+                      build: npm run build
+                    - demo: demos/react18/basic
+                      build: npm run build
+                    - demo: demos/scichart-react-next
+                      build: npm run build
+                    # electron-forge exposes no compile-only command, so packaging is the build.
+                    # It downloads an Electron binary, which is why this leg is the slow one.
+                    - demo: demos/electron
+                      build: npm run package
+        steps:
+            - uses: actions/checkout@v7
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+                  cache: npm
+
+            # the root install and build are both prerequisites: the feature demos and react16
+            # resolve scichart from the root node_modules, and the rest consume lib/ as a file:
+            # dependency, so it has to exist before their install runs
+            - name: Install and build the library
+              run: |
+                  npm ci
+                  npm run build
+
+            - name: Install ${{ matrix.demo }}
+              working-directory: ${{ matrix.demo }}
+              run: npm ci
+
+            - name: Build ${{ matrix.demo }}
+              working-directory: ${{ matrix.demo }}
+              run: ${{ matrix.build }}

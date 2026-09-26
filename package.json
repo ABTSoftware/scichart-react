@@ -108,7 +108,7 @@
         "@storybook/react": "^7.5.3",
         "@storybook/react-webpack5": "^7.5.3",
         "@storybook/testing-library": "^0.2.2",
-        "@types/react": "^18.2.37",
+        "@types/react": "^18.3.0",
         "copy-files-from-to": "^3.9.0",
         "copy-webpack-plugin": "^11.0.0",
         "eslint": "^8.57.0",

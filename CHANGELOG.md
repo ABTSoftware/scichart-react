@@ -8,6 +8,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This file is not shipped in the npm package — the tarball root is `lib/`, which carries
 `README_NPM.md` as its readme.
 
+## [Unreleased]
+
+### Fixed
+
+-   The import-time `wasmUrl: "/scichart.wasm"` default could overwrite the app's own
+    `SciChartSurface.configure(...)` when chart code is lazy-loaded and `configureDefaults` is
+    evaluated after it. The default is now applied only while `SciChartSurface.isWasmConfigured`
+    is false, so the app's configuration wins in either order. Requires scichart 6.0.8, which adds
+    that flag.
+
 ## [2.0.0]
 
 The 2.0 line targets SciChart.js v6 and is built and verified against `scichart` 6.0.1.

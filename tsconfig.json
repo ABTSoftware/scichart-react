@@ -9,6 +9,10 @@
         /* Modules */
         "module": "commonjs",
         "typeRoots": ["./node_modules/@types"],
+        // Types for deep imports such as "scichart/Charting/Visuals/sciChartConfig". The package
+        // maps them through its exports field ("./*" -> types/*.d.ts), which the classic "node"
+        // resolution used here does not read. Type resolution only: emitted specifiers are unchanged.
+        "paths": { "scichart/*": ["./node_modules/scichart/types/*"] },
 
         /* JavaScript Support */
         "allowJs": true,

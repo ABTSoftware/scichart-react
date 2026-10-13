@@ -3,7 +3,7 @@
 import "./configureDefaults";
 import { useRef, useState, useEffect, useContext, JSX } from "react";
 import { generateGuid } from "scichart";
-import type { ISciChartSurfaceBase } from "scichart";
+import type { ISciChartSurfaceBase, SciChartSurfaceBase } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentPropsWithInit } from "./types";
 import { useIsMountedRef, createChartRoot } from "./utils";
@@ -36,13 +36,12 @@ function validateResult<TSurface extends ISciChartSurfaceBase, TInitResult exten
 /**
  * This component removes the chart root before the async delete and may delete a surface twice
  * (e.g. the nested overview), so the matching memory-debug warnings are expected noise here.
- * Guarded because published scichart versions do not have the property yet.
  */
 function markLifecycleManagedExternally(surface: ISciChartSurfaceBase) {
-    if ("isLifecycleManagedExternally" in surface) {
-        (surface as ISciChartSurfaceBase & { isLifecycleManagedExternally: boolean }).isLifecycleManagedExternally =
-            true;
-    }
+    // The flag lives on SciChartSurfaceBase; the ISciChartSurfaceBase interface does not expose it.
+    (
+        surface as ISciChartSurfaceBase & Pick<SciChartSurfaceBase, "isLifecycleManagedExternally">
+    ).isLifecycleManagedExternally = true;
 }
 
 function SciChartComponent<

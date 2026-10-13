@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8" />
+        <title>scichart-react wasmUrl load-order repro</title>
+        <script async type="text/javascript" src="bundle.js"></script>
+        <style>
+            body { font-family: sans-serif; margin: 16px; }
+            #root { width: 600px; height: 300px; }
+            pre { margin: 4px 0; }
+        </style>
+    </head>
+    <body>
+        <p>App configured <code>wasmUrl: "/demo/scichart.wasm"</code>. Effective value after the example module loaded:</p>
+        <pre>wasmUrl: <span id="wasm-url">(not read yet)</span></pre>
+        <pre>status: <span id="status">(waiting for the chart)</span></pre>
+        <div id="root"></div>
+    </body>
+</html>

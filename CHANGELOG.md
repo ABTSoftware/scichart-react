@@ -18,6 +18,10 @@ This file is not shipped in the npm package — the tarball root is `lib/`, whic
     is false, so the app's configuration wins in either order. Requires scichart 6.0.8, which adds
     that flag.
 
+### Changed
+
+-   `scichart` peer dependency raised to `>=6.0.8`.
+
 ## [2.0.0]
 
 The 2.0 line targets SciChart.js v6 and is built and verified against `scichart` 6.0.1.

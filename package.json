@@ -77,7 +77,7 @@
         "real-time",
         "streaming-data",
         "big-data",
-        "large-datasets",
+        "fast",
         "data-visualization",
         "interactive-charts",
         "scientific-charts",
@@ -88,7 +88,6 @@
         "webgpu",
         "graph",
         "plot",
-        "plotting",
         "dashboard",
         "nextjs"
     ],

@@ -27,7 +27,7 @@ This file is not shipped in the npm package — the tarball root is `lib/`, whic
 
 ### Changed
 
--   `scichart` peer dependency raised to `>=6.0.8`.
+-   `scichart` peer dependency raised to `>=6.0.13`.
 -   Surfaces returned from `initChart` are always marked as externally lifecycle-managed; the
     guard for cores without the flag is gone now that the peer floor includes it.
 

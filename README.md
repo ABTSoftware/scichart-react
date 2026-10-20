@@ -15,7 +15,7 @@ The SciChartReact itself is MIT licensed, find the core library licensing info a
 ### Prerequisites
 
 -   `react` 16.14+
--   `scichart` 6.0.8+ — for scichart 3.x-5.x use scichart-react 1.x
+-   `scichart` 6.0.13+ — for scichart 3.x-5.x use scichart-react 1.x
 
 ### Installing
 

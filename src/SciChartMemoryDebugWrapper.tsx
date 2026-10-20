@@ -35,13 +35,17 @@ export function SciChartMemoryDebugWrapper(
 
     return (
         <>
-            <div style={{ position: "fixed", top: 0, left: 0 }}>
+            {/* Sticky rather than fixed, and the children sit outside it. A fixed box with no
+                width shrink-wraps to its content, so children rendered inside it lost their
+                sizing - a chart asking for a percentage width resolved it against the collapsed
+                box - and, being out of flow, anything below the fold could not be scrolled to.
+                Sticky keeps the controls in view while leaving the children in normal flow. */}
+            <div style={{ position: "sticky", top: 0, zIndex: 20, background: "#fff" }}>
                 <input type="checkbox" checked={drawChart} onChange={handleCheckbox} /> Render Child Components Tree
                 <br />
                 <input type="button" onClick={handleClick} value="Log Object Registry State"></input>
-                <br />
-                {drawChart ? props.children : null}
             </div>
+            {drawChart ? props.children : null}
         </>
     );
 }

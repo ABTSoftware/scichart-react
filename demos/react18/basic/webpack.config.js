@@ -19,7 +19,9 @@ module.exports = {
         extensions: [".js", ".ts", ".tsx"],
         alias: {
             react: path.resolve("./node_modules/react"),
-            scichart: path.resolve("./node_modules/scichart")
+            // the esm folder, not the package root: a folder alias bypasses the package's exports
+            // map, so deep imports such as "scichart/Charting/..." only resolve against esm/
+            scichart: path.resolve("./node_modules/scichart/esm")
         }
     },
     output: {

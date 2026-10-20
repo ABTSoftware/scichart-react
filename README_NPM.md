@@ -11,7 +11,7 @@ The SciChartReact itself is MIT licensed, find the core library licensing info a
 ### Prerequisites
 
 -   `react` 16.14+
--   `scichart` 6.0.0+ — for scichart 3.x-5.x use scichart-react 1.x
+-   `scichart` 6.0.8+ — for scichart 3.x-5.x use scichart-react 1.x
 
 ### Installing
 
@@ -35,7 +35,7 @@ new CopyPlugin({ patterns: [{ from: "node_modules/scichart/_wasm/", to: "" }] })
 
 Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/v6/2d-charts/surface/deploying-wasm/)
 
-**Notice that by default scichart-react applies the following configuration:**
+By default scichart-react applies the equivalent of:
 
 ```typescript
 SciChartSurface.configure({
@@ -43,15 +43,9 @@ SciChartSurface.configure({
 });
 ```
 
-**which is different from the core library configuration:**
+The core's own default is the page-relative `"scichart.wasm"`, which resolves to a different file on every route of a single-page app. The default is applied at import time by the `configureSciChartDefaults` module, which is bundled whenever your app uses the chart components.
 
-```typescript
-SciChartSurface.configure({
-    wasmUrl: undefined
-});
-```
-
-These defaults are applied at import time by the `configureSciChartDefaults` module, which is bundled whenever your app uses the chart components. Your own `SciChartSurface.configure(...)` / `loadWasmFromCDN()` calls always run after it and take precedence.
+It is applied only while your app has not configured wasm loading itself (`SciChartSurface.configure(...)`, `loadWasmFromCDN()`, `loadWasmLocal()`), so your configuration wins whichever module is evaluated first.
 
 ### Using
 

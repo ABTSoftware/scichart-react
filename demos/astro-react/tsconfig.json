@@ -1,0 +1,13 @@
+{
+    "extends": "astro/tsconfigs/strict",
+    "include": [".astro/types.d.ts", "**/*"],
+    "exclude": ["dist"],
+    "compilerOptions": {
+        // scichart-react ships an exports map with an ESM and a CJS condition, plus a "./*"
+        // wildcard for deep imports. "bundler" resolution is what reads that map the way Vite does.
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "jsxImportSource": "react"
+    }
+}

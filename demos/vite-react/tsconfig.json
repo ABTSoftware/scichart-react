@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "jsx": "react-jsx",
+        "useDefineForClassFields": true,
+
+        /**
+         * "module": "esnext" + "moduleResolution": "bundler" is what scichart-react 2.x asks
+         * consumers to use. It makes the TYPE layer read the package `exports` map through its
+         * "import" condition, so `scichart-react` and deep subpaths such as
+         * `scichart-react/SciChartGroup` resolve to the right .d.ts files. Under the legacy
+         * "node10" resolution those deep subpaths do not typecheck at all.
+         *
+         * Vite's own module resolution is separate and is not driven by these options - it always
+         * takes the "import" condition and bundles the tree-shakable `esm/` builds. Nothing here is
+         * emitted either ("noEmit": true); esbuild/Rolldown does the transpilation.
+         */
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+
+        "skipLibCheck": true,
+        "noEmit": true
+    },
+    "include": ["src", "vite.config.ts"]
+}

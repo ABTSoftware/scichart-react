@@ -1,0 +1,6 @@
+.react-router/
+build/
+.env
+
+# WebAssembly binaries are copied from node_modules/scichart by scripts/copy-wasm.mjs
+public/*.wasm

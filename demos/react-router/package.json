@@ -1,0 +1,35 @@
+{
+    "name": "scichart-react-react-router-demo",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "SciChart.js + scichart-react demo on React Router 8 in framework (SSR) mode",
+    "engines": {
+        "node": ">=22.22.0"
+    },
+    "scripts": {
+        "copyWasm": "node ./scripts/copy-wasm.mjs",
+        "dev": "npm run copyWasm && react-router dev",
+        "build": "npm run copyWasm && react-router build",
+        "start": "react-router-serve ./build/server/index.js",
+        "typecheck": "react-router typegen && tsc --noEmit"
+    },
+    "dependencies": {
+        "@react-router/node": "8.3.0",
+        "@react-router/serve": "8.3.0",
+        "isbot": "^5.1.40",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
+        "react-router": "8.3.0",
+        "scichart": "6.0.13",
+        "scichart-react": "file:../../lib"
+    },
+    "devDependencies": {
+        "@react-router/dev": "8.3.0",
+        "@types/node": "^26.1.2",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.4",
+        "typescript": "^7.0.2",
+        "vite": "^8.2.0"
+    }
+}

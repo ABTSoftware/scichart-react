@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+        "jsx": "react-jsx",
+        // `module: esnext` + `moduleResolution: bundler` is what scichart-react 2.x asks consumers to
+        // set so that the package's `exports` map resolves to the tree-shakable ESM build.
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "types": ["vite/client"],
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "verbatimModuleSyntax": true,
+        "noUncheckedIndexedAccess": true
+    },
+    "include": ["src", "vite.config.ts"],
+    "exclude": ["node_modules", "dist", ".output", ".nitro", ".tanstack"]
+}

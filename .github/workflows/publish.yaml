@@ -15,9 +15,8 @@ permissions:
 jobs:
     publish:
         runs-on: ubuntu-latest
-        # No approval gate here: what may be released to latest is controlled by
-        # branch protection on main. Triggering a run without a version bump fails
-        # the already-published check below.
+        # No approval gate: anyone with write access to the repo can run this. A run on
+        # main without a version bump fails the already-published check below.
         steps:
             - uses: actions/checkout@v7
 

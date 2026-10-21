@@ -56,9 +56,9 @@
         "lint": "eslint src .storybook --ext .js,.jsx,.ts,.tsx --max-warnings 0",
         "prettier": "prettier src/**/*.{js,ts,tsx} --write",
         "pretty-quick": "pretty-quick --staged",
-        "publishPublic": "npm version patch && npm run build && cd lib && npm publish",
-        "publishAlpha": "npm version prerelease --preid=alpha && npm run build && cd lib && npm publish --tag alpha",
-        "publishBeta": "npm version prerelease --preid=beta && npm run build && cd lib && npm publish --tag beta",
+        "release:latest": "gh workflow run publish.yaml --ref main",
+        "release:alpha": "gh workflow run publish.yaml --ref alpha",
+        "release:beta": "gh workflow run publish.yaml --ref beta",
         "prepare": "husky install",
         "update-snapshots": "playwright test --project=stories --update-snapshots"
     },

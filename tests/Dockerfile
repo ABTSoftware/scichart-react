@@ -21,9 +21,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 
 COPY . .
-RUN npm run build
 
-# after the build: the demo consumes lib/ as a file: dependency
-RUN npm --prefix demos/scichart-react-next ci --no-audit --no-fund
+# the leak test's demo; it compiles the library from src/, so nothing has to be built first
+RUN npm --prefix demos/features/chart-group ci --no-audit --no-fund
 
 CMD ["npm", "run", "test:e2e"]

@@ -1,8 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
 
 /**
- * Mounts and unmounts a 2D and a 3D chart repeatedly in one page, and asserts that everything
- * SciChart created was both deleted and released.
+ * Mounts and unmounts a chart group - two 2D charts and a 3D chart in a ChartGroupLoader - repeatedly
+ * in one page, and asserts that everything SciChart created was both deleted and released.
  *
  * Two signals from SciChart's object registry, read after a forced garbage collection:
  * - `undeletedObjectsIds`: objects whose `delete()` was never called.
@@ -47,20 +47,22 @@ test("charts are fully deleted and released after mount and unmount", async ({ p
     const client = await page.context().newCDPSession(page);
     await client.send("HeapProfiler.enable");
 
-    // the demo mounts the charts on load; every later cycle remounts them in the same page, so
-    // anything left behind accumulates instead of being thrown away with the page
-    await expect(toggle).toBeChecked();
-
+    // The demo starts with the charts unmounted. Every cycle mounts and unmounts them in the same
+    // page, so anything left behind accumulates instead of being thrown away with the page.
     for (let cycle = 1; cycle <= CYCLES; cycle++) {
-        if (!(await toggle.isChecked())) {
-            await toggle.check();
-        }
+        await toggle.check();
 
-        // both engines are live before the unmount; the 3D module is fetched after the core
-        await page.waitForFunction(() => document.querySelectorAll("canvas").length >= 2, undefined, {
-            timeout: 60_000
-        });
-        await page.waitForTimeout(4000);
+        // The group is ready once every chart has initialised: each chart's own fallback and the
+        // group's loading overlay are then gone. The 3D engine is fetched after the core, so this
+        // also waits for it.
+        await page.waitForFunction(
+            () =>
+                document.querySelector("canvas") !== null &&
+                document.querySelector(".fallback, .scichart_loader") === null,
+            undefined,
+            { timeout: 60_000 }
+        );
+        await page.waitForTimeout(2000);
 
         await toggle.uncheck();
         await page.waitForTimeout(2000);

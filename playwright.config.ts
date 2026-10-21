@@ -19,8 +19,10 @@ const APP_PORT = 3100;
  * .github/workflows/ci.yaml). Runs anywhere else write their own platform's folder, which git
  * ignores; `npm run test:docker` runs the suite in the CI image for a local check.
  *
- * `app` drives the Next demo for the memory-leak test. It runs the dev server rather than the static
- * export because SciChart compiles its memory-debug registry out of production builds -
+ * `app` drives demos/features/chart-group for the memory-leak test: a ChartGroupLoader holding two 2D
+ * charts and a 3D chart, behind SciChartMemoryDebugWrapper. The demo compiles the library from
+ * src/, so the test needs no library build. It runs the webpack dev server rather than a production
+ * build because SciChart compiles its memory-debug registry out of production builds -
  * MemoryUsageHelper only creates objectRegistry when NODE_ENV is not "production" - so the leak test
  * would have nothing to read.
  */
@@ -59,7 +61,8 @@ export default defineConfig({
         {
             name: "app",
             testMatch: /memory-leak\.spec\.ts/,
-            use: { baseURL: `http://127.0.0.1:${APP_PORT}` }
+            // tall enough for all three charts of the group to be on screen
+            use: { baseURL: `http://127.0.0.1:${APP_PORT}`, viewport: { width: 800, height: 1200 } }
         }
     ],
 
@@ -71,7 +74,7 @@ export default defineConfig({
             timeout: 600_000
         },
         {
-            command: `npm --prefix demos/scichart-react-next run dev -- -p ${APP_PORT}`,
+            command: `npm --prefix demos/features/chart-group run dev -- --port ${APP_PORT} --host 127.0.0.1`,
             url: `http://127.0.0.1:${APP_PORT}`,
             reuseExistingServer: !process.env.CI,
             timeout: 300_000

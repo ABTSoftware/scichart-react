@@ -58,20 +58,19 @@ jobs:
               with:
                   node-version: 22
 
-            # the Next demo consumes lib/ as a file: dependency, so the library is built first
-            - name: Install and build the library
+            # the chart-group demo compiles the library from src/, so nothing has to be built first
+            - name: Install
               run: |
                   npm ci
-                  npm run build
-                  npm --prefix demos/scichart-react-next ci
+                  npm --prefix demos/features/chart-group ci
 
             # every story is rendered and fails the run if it throws
             - name: Story smoke tests
               run: npm run test:stories:ci
 
-            # every story against its committed baseline, and the Next demo's 2D and 3D charts
-            # behind the memory-debug wrapper: nothing may be left undeleted or held in memory after
-            # repeated mount/unmount
+            # every story against its committed baseline, and the chart-group demo's two 2D charts and
+            # 3D chart behind the memory-debug wrapper: nothing may be left undeleted or held in
+            # memory after repeated mount/unmount
             - name: Visual and memory leak tests
               run: npm run test:e2e
 

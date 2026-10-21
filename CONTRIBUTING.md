@@ -17,14 +17,14 @@ Browser tests:
 
 ```bash
 npm run test:stories:ci   # opens every Storybook story in a browser and fails if one throws
-npm run test:leak         # mounts and unmounts the Next demo's 2D and 3D charts, checks nothing is left in memory
+npm run test:leak         # mounts and unmounts the chart-group demo (two 2D charts, one 3D), checks nothing is left in memory
 npm run test:docker       # visual and leak tests inside the same Docker image CI uses
 ```
 
-`test:leak` needs the library built and the Next demo installed once:
-`npm run build && npm --prefix demos/scichart-react-next ci`. The tests start their own servers on
-`127.0.0.1:6106` (Storybook) and `127.0.0.1:3100` (Next demo); locally they reuse whatever is
-already running there, so stop anything else on those ports first.
+`test:leak` needs the chart-group demo installed once: `npm --prefix demos/features/chart-group ci`.
+The tests start their own servers on `127.0.0.1:6106` (Storybook) and `127.0.0.1:3100` (chart-group
+demo); locally they reuse whatever is already running there, so stop anything else on those ports
+first.
 
 ### Visual tests
 

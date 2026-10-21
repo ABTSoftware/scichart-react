@@ -1,0 +1,16 @@
+# Ignore file for tests/Dockerfile only (BuildKit reads <Dockerfile>.dockerignore).
+# Host builds and installs must not enter the image: node_modules holds native binaries for the
+# host's platform, and lib/ and storybook-static are rebuilt inside.
+**/node_modules
+.git
+lib
+storybook-static
+build
+**/build
+**/.next
+bundle-check/dist
+bundle-check/reports
+playwright-report
+test-results
+.playwright-mcp
+demos/electron/out

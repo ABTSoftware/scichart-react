@@ -19,3 +19,10 @@ scichart3d.data
 /bundle-check/build
 /bundle-check/dist
 /bundle-check/reports
+# playwright
+/playwright-report
+/test-results
+/blob-report
+# only CI's Linux baselines are committed; other platforms' runs stay local
+/tests/__screenshots__/*
+!/tests/__screenshots__/linux/

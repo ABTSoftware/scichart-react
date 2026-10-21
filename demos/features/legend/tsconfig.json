@@ -3,6 +3,8 @@
         "outDir": "./build",
         "lib": ["es2020", "DOM"],
         "moduleResolution": "node",
+        // types for the library's deep scichart imports; "node" resolution ignores the exports map
+        "paths": { "scichart/*": ["../../../node_modules/scichart/types/*"] },
         "module": "CommonJS",
         "resolveJsonModule": true,
         "allowJs": true,

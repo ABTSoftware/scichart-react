@@ -9,7 +9,9 @@
         // the repo root has @types/react 18, and mixing the two fails typechecking
         "paths": {
             "react": ["node_modules/@types/react"],
-            "react/jsx-runtime": ["node_modules/@types/react/jsx-runtime"]
+            "react/jsx-runtime": ["node_modules/@types/react/jsx-runtime"],
+            // types for the library's deep scichart imports; "node" resolution ignores the exports map
+            "scichart/*": ["../../node_modules/scichart/types/*"]
         },
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,

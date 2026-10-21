@@ -6,7 +6,7 @@ import { SciChartDeclarative } from "scichart-react";
 // });
 //
 // or you can load the WASM files from CDN by changing the config
-// SciChartSurface.useWasmFromCDN();
+// SciChartSurface.loadWasmFromCDN();
 
 // since 2.0 the JSON-config chart is SciChartDeclarative; SciChartReact takes initChart
 export default function ChartExample() {

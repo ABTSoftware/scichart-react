@@ -8,28 +8,35 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This file is not shipped in the npm package — the tarball root is `lib/`, which carries
 `README_NPM.md` as its readme.
 
-## [Unreleased]
+## [2.1.0]
+
+Built and verified against `scichart` 6.0.13.
 
 ### Added
 
 -   `TChartGroupLoaderProps` is exported, matching every other component's props type.
+
+### Changed
+
+-   `scichart` peer dependency raised to `>=6.0.13`.
+-   `configureSciChartDefaults()` no longer resets `wasmUrl` to `"/scichart.wasm"` once the app has
+    configured wasm loading itself (`SciChartSurface.configure(...)`, `loadWasmFromCDN()`,
+    `loadWasmLocal()`). It still resets the loader and aspect defaults.
+-   The defaults module now imports `scichart/Charting/Visuals/sciChartConfig`. A bundler alias that
+    maps `scichart` to the package folder (`path.resolve("node_modules/scichart")`) bypasses the
+    package's `exports` map and can no longer resolve it; point the alias at `scichart/esm` instead.
+-   Surfaces returned from `initChart` are always marked as externally lifecycle-managed; the
+    guard for cores without the flag is gone now that the peer floor includes it.
 
 ### Fixed
 
 -   The import-time `wasmUrl: "/scichart.wasm"` default could overwrite the app's own
     `SciChartSurface.configure(...)` when chart code is lazy-loaded and `configureDefaults` is
     evaluated after it. The default is now applied only while `SciChartSurface.isWasmConfigured`
-    is false, so the app's configuration wins in either order. Requires scichart 6.0.8, which adds
-    that flag.
+    is false, so the app's configuration wins in either order.
 -   `SciChartMemoryDebugWrapper` rendered its children inside a `position: fixed` box, which
     collapsed percentage-based sizing and put anything below the fold out of reach of scrolling.
     The controls are `sticky` now and the children render in normal flow.
-
-### Changed
-
--   `scichart` peer dependency raised to `>=6.0.8`.
--   Surfaces returned from `initChart` are always marked as externally lifecycle-managed; the
-    guard for cores without the flag is gone now that the peer floor includes it.
 
 ## [2.0.0]
 
@@ -87,5 +94,6 @@ The 2.0 line targets SciChart.js v6 and is built and verified against `scichart`
 
 First stable release of the 1.x line, targeting SciChart.js 3.x–5.x.
 
+[2.1.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.1.0
 [2.0.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.0.0
 [1.0.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v1.0.0

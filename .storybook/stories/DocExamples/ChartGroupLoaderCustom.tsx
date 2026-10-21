@@ -29,7 +29,7 @@ export const ChartGroupLoaderCustom = () => {
             fallback={fallback}
             style={{ minWidth: 600, display: "flex", height: 400, position: "relative" }}
             onInit={initResults => {
-                console.log("initResults", initResults);
+                console.log("initialized", initResults.length, "charts");
             }}
             onInitError={() => {
                 setHasError(true);
@@ -49,8 +49,11 @@ export const ChartGroupLoaderCustom = () => {
                         }, 4000)
                     );
 
+                    // this story exists to show the group's error path, so the throw is the point
+                    // and the return below is deliberately never reached
                     throw new Error("Something wrong!");
 
+                    // eslint-disable-next-line no-unreachable
                     return { sciChartSurface };
                 }}
                 style={{ flex: "auto", minHeight: "200px" }}

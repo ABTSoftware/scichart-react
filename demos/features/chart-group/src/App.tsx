@@ -11,12 +11,13 @@ import {
     build2DChart
 } from "scichart";
 import { ChartGroupLoader, IInitResult, SciChartGroup, SciChartReact, TResolvedReturnType } from "../../../../src";
+import { Surface3DChart } from "./Surface3DChart";
 import "./styles.css";
 
-// SciChart core lib requires asynchronously loaded WASM module.
-// It could be loaded from CDN or by specified path.
+// SciChart core lib requires asynchronously loaded WASM module. It is served from this demo's own
+// server (webpack.config.js copies node_modules/scichart/_wasm), at the "/scichart.wasm" default
+// scichart-react applies. It could also come from a CDN: SciChartSurface.loadWasmFromCDN().
 // check out SciChart.JS Docs for configuration info
-SciChartSurface.loadWasmFromCDN();
 SciChartDefaults.performanceWarnings = false;
 
 // The shared wasm context is auto-disposed with no delay on unmount. SciChartMemoryDebugWrapper,
@@ -27,14 +28,16 @@ export function App() {
     return (
         <div className="App">
             <ChartGroupLoader
+                // Log counts, not the init results: the browser console keeps every logged object
+                // alive while DevTools is open, so the deleted charts would never be garbage collected
                 onInit={(initResults: IInitResult[]) => {
-                    console.log("Group onInit", initResults);
+                    console.log("Group onInit", initResults.length, "charts");
                 }}
-                onError={(initResults: any) => {
-                    console.log("Group error", initResults);
+                onError={(error: unknown) => {
+                    console.log("Group error", String(error));
                 }}
                 // onDelete={(initResults: IInitResult[]) => {
-                //     console.log("Group onDelete", initResults);
+                //     console.log("Group onDelete", initResults.length, "charts");
                 // }}
             >
                 <SciChartReact<SciChartSurface, TResolvedReturnType<typeof chartInitializationFunction>>
@@ -66,6 +69,8 @@ export function App() {
                         console.log("Chart 2 onDelete");
                     }}
                 />
+                <hr />
+                <Surface3DChart />
             </ChartGroupLoader>
         </div>
     );

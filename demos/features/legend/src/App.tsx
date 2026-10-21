@@ -20,7 +20,7 @@ import "./styles.css";
 // SciChart core lib requires asynchronously loaded WASM module.
 // It could be loaded from CDN or by specified path.
 // check out SciChart.JS Docs for configuration info
-// SciChartSurface.useWasmFromCDN();
+// SciChartSurface.loadWasmFromCDN();
 SciChartDefaults.performanceWarnings = false;
 
 export function App() {

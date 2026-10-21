@@ -36,6 +36,9 @@ export const SciChartNestedLegend = (props: ISciChartNestedLegendProps): JSX.Ele
         return () => {
             parentSurface.chartModifiers.remove(legendModifier, true);
         };
+        // Runs once per chart lifecycle: re-running on callback or context identity would tear
+        // down and re-create the surface.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parentSurface]);
 
     return <div {...divProps} ref={legendPlacementDivRef}></div>;

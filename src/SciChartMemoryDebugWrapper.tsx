@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, MouseEventHandler, PropsWithChildren, useState, JSX, useCallback } from "react";
+import { ChangeEventHandler, MouseEventHandler, PropsWithChildren, useState, JSX } from "react";
 import { SciChartSurface, MemoryUsageHelper } from "scichart";
 
 /**

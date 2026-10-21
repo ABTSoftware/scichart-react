@@ -70,7 +70,8 @@ jobs:
               run: npm run test:stories:ci
 
             # every story against its committed baseline, and the Next demo's 2D and 3D charts
-            # behind the memory-debug wrapper: nothing may be left undeleted after mount/unmount
+            # behind the memory-debug wrapper: nothing may be left undeleted or held in memory after
+            # repeated mount/unmount
             - name: Visual and memory leak tests
               run: npm run test:e2e
 

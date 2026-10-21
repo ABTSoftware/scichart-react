@@ -27,14 +27,16 @@ export function App() {
     return (
         <div className="App">
             <ChartGroupLoader
+                // Log counts, not the init results: the browser console keeps every logged object
+                // alive while DevTools is open, so the deleted charts would never be garbage collected
                 onInit={(initResults: IInitResult[]) => {
-                    console.log("Group onInit", initResults);
+                    console.log("Group onInit", initResults.length, "charts");
                 }}
-                onError={(initResults: any) => {
-                    console.log("Group error", initResults);
+                onError={(error: unknown) => {
+                    console.log("Group error", String(error));
                 }}
                 // onDelete={(initResults: IInitResult[]) => {
-                //     console.log("Group onDelete", initResults);
+                //     console.log("Group onDelete", initResults.length, "charts");
                 // }}
             >
                 <SciChartReact<SciChartSurface, TResolvedReturnType<typeof chartInitializationFunction>>

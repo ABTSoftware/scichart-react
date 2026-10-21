@@ -29,7 +29,7 @@ export const ChartGroupLoaderCustom = () => {
             fallback={fallback}
             style={{ minWidth: 600, display: "flex", height: 400, position: "relative" }}
             onInit={initResults => {
-                console.log("initResults", initResults);
+                console.log("initialized", initResults.length, "charts");
             }}
             onInitError={() => {
                 setHasError(true);

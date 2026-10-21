@@ -1,17 +1,15 @@
 import { test, expect, type Page } from "@playwright/test";
 
 /**
- * Mounts and unmounts a 2D and a 3D chart repeatedly and asserts the wrapper deleted everything
- * it created.
+ * Mounts and unmounts a 2D and a 3D chart repeatedly in one page, and asserts that everything
+ * SciChart created was both deleted and released.
  *
- * The signal is `undeletedObjectsIds` — objects SciChart registered whose `delete()` was never
- * called. That is what this wrapper is responsible for, and it is empty today, so the test is
- * meaningful from the start and fails if a `delete()` goes missing.
+ * Two signals from SciChart's object registry, read after a forced garbage collection:
+ * - `undeletedObjectsIds`: objects whose `delete()` was never called.
+ * - `uncollectedObjectsIds`: objects that were deleted but are still held in memory by something.
  *
- * It is deliberately NOT `uncollectedObjectsIds`, which counts objects not yet garbage collected.
- * That grows by 8 per cycle because the core retains surfaces, axes and data series after they are
- * deleted — reproduced identically on scichart-react 1.0.0 with scichart 5.2.69, so it is not this
- * package's doing. Gating on it would fail forever through no fault of this repo.
+ * The demo must not pass chart objects to `console.log`: the browser console keeps every logged
+ * object alive while DevTools or Playwright is attached, and they then count as uncollected.
  */
 
 const CYCLES = 3;
@@ -37,30 +35,32 @@ async function readRegistry(page: Page): Promise<{ undeleted: number; uncollecte
     });
 }
 
-test("charts are fully deleted after mount and unmount", async ({ page }) => {
+test("charts are fully deleted and released after mount and unmount", async ({ page }) => {
     const pageErrors: string[] = [];
     page.on("pageerror", error => pageErrors.push(String(error)));
 
     const readings: Array<{ cycle: number; undeleted: number; uncollected: number }> = [];
 
-    for (let cycle = 1; cycle <= CYCLES; cycle++) {
-        // A fresh page per cycle, rather than toggling the charts back on. Remounting a 3D chart
-        // under the debug wrapper currently throws in the core - the wrapper enables revocable
-        // proxies and a zero-delay wasm dispose, so the context is disposed and its proxy revoked
-        // between unmount and the next mount, and the 3D module loader then reads it. Reloading
-        // sidesteps that without having to ignore the error, which would also hide real ones.
-        await page.goto("/");
+    await page.goto("/");
 
-        const toggle = page.locator('input[type="checkbox"]');
-        await expect(toggle).toBeChecked();
+    const toggle = page.locator('input[type="checkbox"]');
+    const client = await page.context().newCDPSession(page);
+    await client.send("HeapProfiler.enable");
+
+    // the demo mounts the charts on load; every later cycle remounts them in the same page, so
+    // anything left behind accumulates instead of being thrown away with the page
+    await expect(toggle).toBeChecked();
+
+    for (let cycle = 1; cycle <= CYCLES; cycle++) {
+        if (!(await toggle.isChecked())) {
+            await toggle.check();
+        }
+
         // both engines are live before the unmount; the 3D module is fetched after the core
         await page.waitForFunction(() => document.querySelectorAll("canvas").length >= 2, undefined, {
             timeout: 60_000
         });
         await page.waitForTimeout(4000);
-
-        const client = await page.context().newCDPSession(page);
-        await client.send("HeapProfiler.enable");
 
         await toggle.uncheck();
         await page.waitForTimeout(2000);
@@ -77,9 +77,10 @@ test("charts are fully deleted after mount and unmount", async ({ page }) => {
     console.log("registry after each cycle:", JSON.stringify(readings));
 
     for (const reading of readings) {
+        expect(reading.undeleted, `cycle ${reading.cycle}: ${reading.undeleted} object(s) were never deleted`).toBe(0);
         expect(
-            reading.undeleted,
-            `cycle ${reading.cycle}: ${reading.undeleted} object(s) were never deleted`
+            reading.uncollected,
+            `cycle ${reading.cycle}: ${reading.uncollected} deleted object(s) are still held in memory`
         ).toBe(0);
     }
 

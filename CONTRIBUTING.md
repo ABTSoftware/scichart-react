@@ -17,7 +17,7 @@ Browser tests:
 
 ```bash
 npm run test:stories:ci   # opens every Storybook story in a browser and fails if one throws
-npm run test:leak         # mounts and unmounts the Next demo's 2D and 3D charts, checks nothing is left undeleted
+npm run test:leak         # mounts and unmounts the Next demo's 2D and 3D charts, checks nothing is left in memory
 npm run test:docker       # visual and leak tests inside the same Docker image CI uses
 ```
 

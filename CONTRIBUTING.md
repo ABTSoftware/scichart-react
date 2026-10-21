@@ -92,10 +92,15 @@ published automatically. The branch you run it on decides the npm tag:
 Before publishing, the workflow runs the install, typecheck, build and bundle-size checks again,
 then publishes with npm trusted publishing (no npm token is stored).
 
+Start it with `npm run release:latest`, `npm run release:alpha` or `npm run release:beta`, which
+need the [GitHub CLI](https://cli.github.com/) installed and logged in (`gh auth login`). Or in
+GitHub: Actions → **Publish to npm** → Run workflow → pick the branch. Never run `npm publish`
+yourself: it skips the checks and the provenance.
+
 ### A prerelease (`alpha` or `beta`)
 
 1. Merge the changes into the `alpha` or `beta` branch.
-2. Actions → **Publish to npm** → Run workflow → pick the branch.
+2. `npm run release:alpha` or `npm run release:beta`.
 
 The workflow raises the prerelease number, commits it to the branch with a `v…` tag, and publishes.
 
@@ -104,9 +109,10 @@ The workflow raises the prerelease number, commits it to the branch with a `v…
 1. In the pull request into `main`, rename `[Unreleased]` in `CHANGELOG.md` to the new version.
    Merge it.
 2. On an up-to-date local `main`, set the version: `npm version <x.y.z>`. This commits `<x.y.z>`
-   and tags `v<x.y.z>`. Push both: `git push --follow-tags`.
-3. Actions → **Publish to npm** → Run workflow → `main`. It refuses a prerelease version and a
-   version that is already on npm.
+   and tags `v<x.y.z>`. Push both: `git push origin main v<x.y.z>`. (`--follow-tags` would also
+   push any old tags that only exist on your machine.)
+3. `npm run release:latest`. The workflow refuses a prerelease version and a version that is
+   already on npm.
 4. Create a GitHub Release on the tag, with the CHANGELOG entry as its text.
 5. Merge `main` into `alpha`, so the next alpha builds on the released version.
 

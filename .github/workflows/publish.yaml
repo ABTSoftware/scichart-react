@@ -1,7 +1,8 @@
 name: Publish to npm
 
-# Nothing publishes automatically. Press "Run workflow" and pick the branch —
-# the branch is the channel: alpha -> alpha, beta -> beta, main -> latest.
+# Nothing publishes automatically. Press "Run workflow" and pick the branch, or run
+# `npm run release:<latest|alpha|beta>` — the branch is the channel: alpha -> alpha,
+# beta -> beta, main -> latest.
 on:
     workflow_dispatch:
 

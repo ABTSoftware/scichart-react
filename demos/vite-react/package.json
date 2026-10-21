@@ -1,0 +1,27 @@
+{
+    "name": "scichart-react-vite-demo",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "SciChart.js + scichart-react demo on Vite 8, React 19 and TypeScript",
+    "scripts": {
+        "copyWasm": "node scripts/copy-wasm.mjs",
+        "dev": "npm run copyWasm && vite",
+        "build": "npm run copyWasm && npm run typecheck && vite build",
+        "preview": "vite preview",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "react": "19.2.8",
+        "react-dom": "19.2.8",
+        "scichart": "6.0.13",
+        "scichart-react": "file:../../lib"
+    },
+    "devDependencies": {
+        "@types/react": "19.2.18",
+        "@types/react-dom": "19.2.4",
+        "@vitejs/plugin-react": "6.0.5",
+        "typescript": "5.9.3",
+        "vite": "8.2.1"
+    }
+}

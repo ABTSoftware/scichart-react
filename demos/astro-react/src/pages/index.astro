@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DeclarativeChartIsland from "../components/DeclarativeChartIsland";
+import InitChartIsland from "../components/InitChartIsland";
+---
+
+<BaseLayout title="scichart-react on Astro">
+    <h1>scichart-react on Astro</h1>
+    <p>
+        Two React islands on an otherwise static Astro page. Both use <code>client:only="react"</code>, which is the
+        only directive that works for a WebGL/WebAssembly component — see the README for the reasoning.
+    </p>
+    <p>
+        Each island is wrapped in a <code>.chart-frame</code> element. That wrapper is ordinary Astro markup, so it is
+        part of the static HTML and reserves the chart's space before any JavaScript runs. The island itself renders
+        nothing on the server, so without the wrapper the page would reflow when the chart mounts.
+    </p>
+
+    <section>
+        <h2>SciChartReact — <code>initChart</code></h2>
+        <p>
+            The chart is built imperatively from SciChart.js primitives. Only the types referenced by the island are
+            bundled; the Builder API is tree-shaken away.
+        </p>
+        <div class="chart-frame">
+            <InitChartIsland client:only="react" />
+        </div>
+    </section>
+
+    <section>
+        <h2>SciChartDeclarative — <code>config</code></h2>
+        <p>
+            The same shape of chart expressed as a Builder API definition. Convenient when the definition is data, at
+            the cost of pulling the whole Builder API into the bundle.
+        </p>
+        <div class="chart-frame">
+            <DeclarativeChartIsland client:only="react" />
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    /* Server-rendered, so the chart's box exists before the island hydrates. The islands are sized 100%. */
+    .chart-frame {
+        height: 400px;
+        width: 100%;
+    }
+</style>

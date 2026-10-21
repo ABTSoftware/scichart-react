@@ -1,0 +1,28 @@
+{
+    "name": "scichart-react-astro-demo",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "copyWasm": "node scripts/copy-wasm.mjs",
+        "dev": "npm run copyWasm && astro dev",
+        "build": "npm run copyWasm && astro build",
+        "preview": "astro preview",
+        "check": "npm run copyWasm && astro check",
+        "typecheck": "npm run check"
+    },
+    "dependencies": {
+        "@astrojs/react": "6.0.2",
+        "astro": "7.1.6",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
+        "scichart": "6.0.13",
+        "scichart-react": "file:../../lib"
+    },
+    "devDependencies": {
+        "@astrojs/check": "^0.9.10",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.4",
+        "typescript": "^5.9.3"
+    }
+}

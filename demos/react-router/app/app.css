@@ -1,0 +1,82 @@
+:root {
+    color-scheme: dark;
+    --page-background: #14161e;
+    --panel-background: #1c1f2b;
+    --panel-border: #2c3142;
+    --text-primary: #e6e9f2;
+    --text-secondary: #98a0b6;
+    --accent: #50c7e8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem;
+    background: var(--page-background);
+    color: var(--text-primary);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+}
+
+h2 {
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem;
+}
+
+p {
+    margin: 0 0 1rem;
+    color: var(--text-secondary);
+    max-width: 70ch;
+}
+
+code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    color: var(--accent);
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--panel-border);
+}
+
+nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+nav a:hover,
+nav a[aria-current="page"] {
+    color: var(--accent);
+}
+
+.chart-panel {
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    background: var(--panel-background);
+    overflow: hidden;
+}
+
+.chart-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}

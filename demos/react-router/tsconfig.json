@@ -1,0 +1,27 @@
+{
+    "include": ["**/*.ts", "**/*.tsx", "**/.server/**/*.ts", "**/.client/**/*.ts", ".react-router/types/**/*"],
+    "compilerOptions": {
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+        "types": ["node", "vite/client"],
+        "target": "ES2022",
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "jsx": "react-jsx",
+        "verbatimModuleSyntax": true,
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": true,
+
+        // `module: esnext` + `moduleResolution: bundler` is what scichart-react's README asks
+        // consumers to set: it makes TypeScript read the package `exports` map and pick the ESM
+        // build, which is the tree-shakable one. Under `module: commonjs` the compiler emits
+        // `require()` and the bundler falls back to the much larger CJS builds.
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+
+        // React Router generates per-route types into .react-router/types; rootDirs lets route
+        // modules import them with a relative "./+types/<route>" specifier.
+        "rootDirs": [".", "./.react-router/types"]
+    }
+}

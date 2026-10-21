@@ -115,6 +115,16 @@ jobs:
                       build: npm run build
                     - demo: demos/scichart-react-next
                       build: npm run build
+                    # React 19 on Vite and the server-rendering frameworks; their builds do not
+                    # typecheck by themselves, except Vite's
+                    - demo: demos/vite-react
+                      build: npm run build
+                    - demo: demos/react-router
+                      build: npm run typecheck && npm run build
+                    - demo: demos/tanstack-start
+                      build: npm run typecheck && npm run build
+                    - demo: demos/astro-react
+                      build: npm run check && npm run build
                     # electron-forge exposes no compile-only command, so packaging is the build.
                     # It downloads an Electron binary, which is why this leg is the slow one.
                     - demo: demos/electron

@@ -1,0 +1,6 @@
+# Astro build output and generated types
+dist/
+.astro/
+
+# WASM binaries copied in by scripts/copy-wasm.mjs
+public/*.wasm

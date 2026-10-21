@@ -1,6 +1,6 @@
 {
     "name": "scichart-react",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "Official React component wrapper for SciChart.js. High-performance WebGL/WebGPU charts for real-time data streams and large datasets, with TypeScript support.",
     "homepage": "https://www.scichart.com/react-charts/",
     "main": "./cjs/index.js",

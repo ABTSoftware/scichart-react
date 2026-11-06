@@ -3,7 +3,13 @@ import type { ISciChartSurfaceBase, SciChartSurface, TSurfaceDefinition } from "
 
 /** Describes the core return type of a chart initialization function */
 export interface IInitResult<TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase> {
+    /** the created surface; deleted on unmount */
     sciChartSurface: TSurface;
+    /**
+     * an optional callback to clean up disposable entities, other than the surface, created within `initChart`.
+     * Executes on unmount, even if init has not finished, before the surface is deleted
+     */
+    destructor?: TCleanupCallback;
 }
 
 /**
@@ -41,14 +47,20 @@ export interface IChartComponentPropsCore<
 > extends TDivProps {
     /** a component that would be rendered while the chart is being initialized */
     fallback?: ReactNode | undefined;
-    /** a callback function used after the chart is initialized */
+    /**
+     * called after init, before the fallback is removed; skipped if unmounted earlier.
+     * May return a cleanup function
+     */
     onInit?: (initResult: TInitResult) => TCleanupCallback | void;
     /**
-     * a callback function used once the chart is initialized and has rendered at least once, whichever happens
-     * last; see {@link IStateClassNames.rendered}
+     * called after the first render, once the fallback is removed; see {@link IStateClassNames.rendered}.
+     * May return a cleanup function
      */
-    onRendered?: (initResult: TInitResult) => void;
-    /** a callback function used when the component with initialized chart is unmounted */
+    onRendered?: (initResult: TInitResult) => TCleanupCallback | void;
+    /**
+     * called on unmount, before the surface is deleted; skipped if `onInit` was.
+     * For what `initChart` created, use {@link IInitResult.destructor}
+     */
     onDelete?: (initResult: TInitResult) => void;
     /** a callback function used when the initialization function has thrown an error */
     onInitError?: (err?: any) => void;

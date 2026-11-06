@@ -55,7 +55,7 @@ export default defineConfig({
     projects: [
         {
             name: "stories",
-            testMatch: /(visual|group-loader-classes)\.spec\.ts/,
+            testMatch: /(visual|group-loader-classes|lifecycle-callbacks)\.spec\.ts/,
             use: { baseURL: `http://127.0.0.1:${STORYBOOK_PORT}` }
         },
         {

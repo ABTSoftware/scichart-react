@@ -13,11 +13,11 @@ type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElemen
 export type TChartGroupLoaderProps = TDivProps & {
     /** a component that would be rendered while the charts are being initialized */
     fallback?: ReactNode | undefined;
-    /** a callback function used after all charts within the group are initialized */
+    /** called once all charts are initialized, while the fallback is still shown */
     onInit?: (chartInitResults: IInitResult[]) => void;
     /**
-     * a callback function used once every chart within the group is initialized and has rendered at least once,
-     * whichever happens last; see {@link IStateClassNames.rendered}
+     * called once all charts are initialized and have rendered at least once, after the fallback is removed;
+     * see {@link IStateClassNames.rendered}
      */
     onRendered?: (chartInitResults: IInitResult[]) => void;
     /** a callback function used when an initialization function has thrown an error */

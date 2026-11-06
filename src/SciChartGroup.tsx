@@ -93,12 +93,18 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
     // The effects read the live chart map: a chart mounted in the commit that initialized the group has
     // already joined it, without an init result, so the callbacks wait until that chart is initialized too.
 
+    // set in the effect that calls onInit, so onRendered waits for the commit of whatever onInit updated
+    const [isInitHandled, setIsInitHandled] = useState(false);
+
     useEffect(() => {
         const initResults = getGroupInitResults(groupState.charts);
+        const isGroupInitialized = groupState.groupInitialized && initResults !== undefined;
 
-        if (onInit && groupState.groupInitialized && initResults) {
+        if (onInit && isGroupInitialized) {
             onInit(initResults);
         }
+
+        setIsInitHandled(isGroupInitialized);
         // Runs once per chart lifecycle: re-running on callback or context identity would tear
         // down and re-create the surface.
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,13 +113,13 @@ export const SciChartGroup = (props: TSciChartGroupProps): JSX.Element => {
     useEffect(() => {
         const initResults = getGroupInitResults(groupState.charts);
 
-        if (onRendered && groupState.groupRendered && initResults) {
+        if (onRendered && groupState.groupRendered && isInitHandled && initResults) {
             onRendered(initResults);
         }
         // Runs once each time every chart within the group has rendered; re-running on callback identity
         // would call onRendered again for the same charts.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [groupState.groupRendered]);
+    }, [groupState.groupRendered, isInitHandled]);
 
     useEffect(() => {
         const initResults = getGroupInitResults(groupState.charts);

@@ -6,7 +6,8 @@ import { generateGuid } from "scichart";
 import type { ISciChartSurfaceBase, SciChartSurfaceBase } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentPropsWithInit } from "./types";
-import { useIsMountedRef, createChartRoot } from "./utils";
+import { defaultChartStateClassNames } from "./stateClassNames";
+import { useIsMountedRef, createChartRoot, hasSurfaceRendered, mergeStateClassNames } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { DefaultFallback, fallbackWrapperStyle } from "./DefaultFallback";
 import { configMovedMessage, missingInitChartMessage, wrongInitResultMessage } from "./constants";
@@ -48,7 +49,18 @@ function SciChartComponent<
     TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase,
     TInitResult extends IInitResult<TSurface> = IInitResult<TSurface>
 >(props: TChartComponentPropsWithInit<TSurface, TInitResult>): JSX.Element {
-    const { initChart, fallback, onInit, onDelete, onInitError, innerContainerProps, ...divElementProps } = props;
+    const {
+        initChart,
+        fallback,
+        onInit,
+        onRendered,
+        onDelete,
+        onInitError,
+        innerContainerProps,
+        stateClassNames,
+        className,
+        ...divElementProps
+    } = props;
 
     validateArgs(props);
 
@@ -58,6 +70,7 @@ function SciChartComponent<
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
     const initResultRef = useRef<TInitResult | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
+    const [isRendered, setIsRendered] = useState(false);
 
     useEffect(() => {
         // generate guid to distinguish between effect calls in StrictMode
@@ -73,6 +86,31 @@ function SciChartComponent<
 
         let cancelled = false;
         let cleanupCallback: void | (() => void);
+        let unsubscribeRendered: (() => void) | undefined;
+
+        const markRendered = (result: TInitResult) => {
+            setIsRendered(true);
+            onRendered?.(result);
+            groupContext?.setChartRendered(chartId);
+        };
+
+        // A surface may have rendered before its init function resolved; otherwise wait for its first frame
+        const waitForFirstRender = (result: TInitResult) => {
+            if (hasSurfaceRendered(result.sciChartSurface)) {
+                markRendered(result);
+                return;
+            }
+
+            const handleRendered = () => {
+                unsubscribeRendered?.();
+                unsubscribeRendered = undefined;
+                markRendered(result);
+            };
+
+            result.sciChartSurface.rendered.subscribe(handleRendered);
+            unsubscribeRendered = () => result.sciChartSurface.rendered.unsubscribe(handleRendered);
+        };
+
         const runInit = async () => {
             try {
                 const result = await initializationFunction(chartRoot);
@@ -86,6 +124,8 @@ function SciChartComponent<
                     if (onInit) {
                         cleanupCallback = onInit(result);
                     }
+
+                    waitForFirstRender(result);
                 } else {
                     cancelled = true;
                 }
@@ -106,6 +146,9 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = (initResult: TInitResult) => {
+            unsubscribeRendered?.();
+            unsubscribeRendered = undefined;
+
             if (!cancelled && cleanupCallback) {
                 cleanupCallback();
                 cleanupCallback = undefined;
@@ -119,6 +162,7 @@ function SciChartComponent<
             if (isMountedRef.current) {
                 initResultRef.current = null;
                 setIsInitialized(false);
+                setIsRendered(false);
             }
 
             groupContext?.removeChartFromGroup(chartId);
@@ -144,7 +188,16 @@ function SciChartComponent<
 
     return (
         <SciChartSurfaceContext.Provider value={initResultRef.current}>
-            <div {...divElementProps} style={{ position: "relative", ...divElementProps.style }}>
+            <div
+                {...divElementProps}
+                className={mergeStateClassNames(
+                    className,
+                    { isInitialized, isRendered },
+                    stateClassNames,
+                    defaultChartStateClassNames
+                )}
+                style={{ position: "relative", ...divElementProps.style }}
+            >
                 <>
                     <div {...mergedInnerContainerProps} ref={innerContainerRef} />
                     {isInitialized ? props.children : null}

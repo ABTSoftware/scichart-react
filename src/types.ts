@@ -22,6 +22,18 @@ export type TDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDi
 /** @ignore */
 export type TCleanupCallback = () => void;
 
+/** Class names a component adds to its element as its charts reach each state */
+export interface IStateClassNames {
+    /** added once the charts are initialized */
+    initialized: string;
+    /**
+     * added once the charts are initialized and have rendered at least once.
+     * A chart has rendered once its surface has raised its `rendered` event, which does not mean it is on screen
+     * yet; a pie chart raises it only once it has a segment
+     */
+    rendered: string;
+}
+
 /** Describes the common properties shared by {@link SciChartReact} and {@link SciChartDeclarative} */
 export interface IChartComponentPropsCore<
     TSurface extends ISciChartSurfaceBase,
@@ -31,12 +43,22 @@ export interface IChartComponentPropsCore<
     fallback?: ReactNode | undefined;
     /** a callback function used after the chart is initialized */
     onInit?: (initResult: TInitResult) => TCleanupCallback | void;
+    /**
+     * a callback function used once the chart is initialized and has rendered at least once, whichever happens
+     * last; see {@link IStateClassNames.rendered}
+     */
+    onRendered?: (initResult: TInitResult) => void;
     /** a callback function used when the component with initialized chart is unmounted */
     onDelete?: (initResult: TInitResult) => void;
     /** a callback function used when the initialization function has thrown an error */
     onInitError?: (err?: any) => void;
     /** props passed to the inner container of the chart */
     innerContainerProps?: TDivProps;
+    /**
+     * class names added to the element as the chart reaches each state;
+     * a state left out uses its {@link defaultChartStateClassNames} entry, and an empty string adds no class
+     */
+    stateClassNames?: Partial<IStateClassNames>;
 }
 
 /** Describes allowed properties for {@link SciChartReact} */

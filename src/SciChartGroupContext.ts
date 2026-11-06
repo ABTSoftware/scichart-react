@@ -3,10 +3,15 @@
 import { createContext } from "react";
 import { IInitResult } from "./types";
 
+/** @ignore */
+export type TGroupChartState = { isInitialized: boolean; isRendered: boolean; initResult: IInitResult | null };
+
 type TSciChartGroupContext = {
     groupInitialized: boolean;
-    charts: Map<any, { isInitialized: boolean; initResult: IInitResult | null }>;
+    groupRendered: boolean;
+    charts: Map<any, TGroupChartState>;
     addChartToGroup: (chart: any, isInitialized: boolean, initResult: IInitResult | null) => void;
+    setChartRendered: (chart: any) => void;
     removeChartFromGroup: (chart: any) => void;
     notifyError: (error: any) => void;
 };

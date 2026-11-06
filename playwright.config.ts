@@ -8,11 +8,11 @@ const APP_PORT = 3100;
 /**
  * Two suites with different needs.
  *
- * `stories` renders every Storybook story against a committed baseline. Rendering is deliberately
- * left on Playwright's default headless renderer, which is SwiftShader (software) even on a machine
- * with a GPU; hardware output depends on the GPU and its driver. No --use-gl / --use-angle flags:
- * they force software on some platforms anyway and are a known cause of WebGL context loss in
- * headless Windows.
+ * `stories` renders every Storybook story against a committed baseline, and checks the chart and
+ * group state classes on a few stories. Rendering is deliberately left on Playwright's default
+ * headless renderer, which is SwiftShader (software) even on a machine with a GPU; hardware output
+ * depends on the GPU and its driver. No --use-gl / --use-angle flags: they force software on some
+ * platforms anyway and are a known cause of WebGL context loss in headless Windows.
  *
  * Software output still differs slightly between machines, so the only committed baselines are the
  * Linux ones, recorded and judged by CI's browser-tests job inside the pinned Playwright image (see
@@ -55,7 +55,7 @@ export default defineConfig({
     projects: [
         {
             name: "stories",
-            testMatch: /visual\.spec\.ts/,
+            testMatch: /(visual|group-loader-classes)\.spec\.ts/,
             use: { baseURL: `http://127.0.0.1:${STORYBOOK_PORT}` }
         },
         {

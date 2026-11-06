@@ -10,11 +10,7 @@ const require = createRequire(import.meta.url);
 const path = require("path");
 
 const config: StorybookConfig = {
-    stories: [
-        "./stories/SciChartReact.stories.tsx",
-        "./stories/**/*.mdx",
-        "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
-    ],
+    stories: ["./stories/SciChartReact.stories.tsx", "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
 
     addons: [
         "@storybook/addon-links",

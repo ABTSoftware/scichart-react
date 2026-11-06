@@ -39,7 +39,7 @@ export const ChartWithFallback = () => (
             // simulate long running task
             await new Promise(resolve =>
                 setTimeout(() => {
-                    // never resolve to demonstrate the fallback in this axample
+                    // never resolve to demonstrate the fallback in this example
                     // resolve()
                 }, 10000)
             );
@@ -49,24 +49,16 @@ export const ChartWithFallback = () => (
         fallback={
             <div
                 style={{
-                    aspectRatio: 2,
-                    minWidth: "600px",
-                    minHeight: "300px",
+                    height: "100%",
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                     backgroundColor: "#242529",
-                    top: 0,
-                    left: 0,
-                    width: 600,
-                    height: 200,
                     fontSize: 30,
-                    color: "grey",
-                    textAlign: "center",
-                    verticalAlign: "middle",
-                    justifyContent: "stretch"
+                    color: "grey"
                 }}
             >
-                <div style={{ flex: "auto" }}> Loading...</div>
+                Loading...
             </div>
         }
         style={{

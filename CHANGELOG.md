@@ -8,7 +8,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This file is not shipped in the npm package — the tarball root is `lib/`, which carries
 `README_NPM.md` as its readme.
 
-## [Unreleased]
+## [2.2.0]
 
 ### Added
 
@@ -124,6 +124,7 @@ The 2.0 line targets SciChart.js v6 and is built and verified against `scichart`
 
 First stable release of the 1.x line, targeting SciChart.js 3.x–5.x.
 
+[2.2.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.2.0
 [2.1.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.1.0
 [2.0.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.0.0
 [1.0.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v1.0.0

@@ -1,6 +1,23 @@
 import { useState } from "react";
 import { NumericAxis, SciChartSurface } from "scichart";
-import { SciChartReact, SciChartDeclarative, ChartGroupLoader, DefaultFallback } from "scichart-react";
+import { SciChartReact, SciChartDeclarative, ChartGroupLoader } from "scichart-react";
+
+// this will be displayed while the charts are being initialized
+const customLoader = (
+    <div
+        style={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#242529",
+            fontSize: 30,
+            color: "grey"
+        }}
+    >
+        Loading...
+    </div>
+);
 
 // this will be displayed if error happens during initialization
 const customFallback = (
@@ -22,12 +39,12 @@ const customFallback = (
 
 export const ChartGroupLoaderCustom = () => {
     const [hasError, setHasError] = useState(false);
-    const fallback = hasError ? customFallback : <DefaultFallback />;
+    const fallback = hasError ? customFallback : customLoader;
 
     return (
         <ChartGroupLoader
             fallback={fallback}
-            style={{ minWidth: 600, display: "flex", height: 400, position: "relative" }}
+            style={{ minWidth: 600, display: "flex", position: "relative" }}
             onInit={initResults => {
                 console.log("initialized", initResults.length, "charts");
             }}
@@ -46,7 +63,7 @@ export const ChartGroupLoaderCustom = () => {
                     await new Promise(res =>
                         setTimeout(() => {
                             res(null);
-                        }, 4000)
+                        }, 2000)
                     );
 
                     // this story exists to show the group's error path, so the throw is the point

@@ -30,7 +30,7 @@ export const createChartRoot = () => {
  * @param surface the surface to check
  * @returns `true` if the surface has rendered at least once; `false` if it has not or its kind is unknown
  */
-export const hasSurfaceRendered = (surface: ISciChartSurfaceBase): boolean => {
+const hasSurfaceRendered = (surface: ISciChartSurfaceBase): boolean => {
     // declared on SciChartSurfaceBase (2D, 3D, polar and sub-surfaces), not on the interface;
     // undefined until the surface's first render pass sets it
     if ("seriesViewRect" in surface) {
@@ -44,6 +44,29 @@ export const hasSurfaceRendered = (surface: ISciChartSurfaceBase): boolean => {
     }
 
     return false;
+};
+
+/**
+ * Calls back once a surface has rendered at least once: right away if it already has, otherwise on its first
+ * `rendered` event
+ * @param surface the surface to watch
+ * @param onRendered called once the surface has rendered
+ * @returns a function that stops waiting
+ */
+export const waitForFirstRender = (surface: ISciChartSurfaceBase, onRendered: () => void): (() => void) => {
+    if (hasSurfaceRendered(surface)) {
+        onRendered();
+        return () => {};
+    }
+
+    const handleRendered = () => {
+        surface.rendered.unsubscribe(handleRendered);
+        onRendered();
+    };
+
+    surface.rendered.subscribe(handleRendered);
+
+    return () => surface.rendered.unsubscribe(handleRendered);
 };
 
 /**

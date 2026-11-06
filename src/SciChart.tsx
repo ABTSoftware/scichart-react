@@ -7,7 +7,7 @@ import type { ISciChartSurfaceBase, SciChartSurfaceBase } from "scichart";
 import { SciChartSurfaceContext } from "./SciChartSurfaceContext";
 import { IInitResult, TChartComponentPropsWithInit } from "./types";
 import { defaultChartStateClassNames } from "./stateClassNames";
-import { useIsMountedRef, createChartRoot, hasSurfaceRendered, mergeStateClassNames } from "./utils";
+import { useIsMountedRef, createChartRoot, mergeStateClassNames, waitForFirstRender } from "./utils";
 import { SciChartGroupContext } from "./SciChartGroupContext";
 import { DefaultFallback, fallbackWrapperStyle } from "./DefaultFallback";
 import { configMovedMessage, missingInitChartMessage, wrongInitResultMessage } from "./constants";
@@ -86,30 +86,7 @@ function SciChartComponent<
 
         let cancelled = false;
         let cleanupCallback: void | (() => void);
-        let unsubscribeRendered: (() => void) | undefined;
-
-        const markRendered = (result: TInitResult) => {
-            setIsRendered(true);
-            onRendered?.(result);
-            groupContext?.setChartRendered(chartId);
-        };
-
-        // A surface may have rendered before its init function resolved; otherwise wait for its first frame
-        const waitForFirstRender = (result: TInitResult) => {
-            if (hasSurfaceRendered(result.sciChartSurface)) {
-                markRendered(result);
-                return;
-            }
-
-            const handleRendered = () => {
-                unsubscribeRendered?.();
-                unsubscribeRendered = undefined;
-                markRendered(result);
-            };
-
-            result.sciChartSurface.rendered.subscribe(handleRendered);
-            unsubscribeRendered = () => result.sciChartSurface.rendered.unsubscribe(handleRendered);
-        };
+        let stopWaitingForRender: (() => void) | undefined;
 
         const runInit = async () => {
             try {
@@ -125,7 +102,11 @@ function SciChartComponent<
                         cleanupCallback = onInit(result);
                     }
 
-                    waitForFirstRender(result);
+                    stopWaitingForRender = waitForFirstRender(result.sciChartSurface, () => {
+                        setIsRendered(true);
+                        onRendered?.(result);
+                        groupContext?.setChartRendered(chartId);
+                    });
                 } else {
                     cancelled = true;
                 }
@@ -146,8 +127,7 @@ function SciChartComponent<
         initPromiseRef.current = initPromise;
 
         const performCleanup = (initResult: TInitResult) => {
-            unsubscribeRendered?.();
-            unsubscribeRendered = undefined;
+            stopWaitingForRender?.();
 
             if (!cancelled && cleanupCallback) {
                 cleanupCallback();

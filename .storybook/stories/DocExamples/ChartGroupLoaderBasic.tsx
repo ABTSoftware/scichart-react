@@ -14,7 +14,7 @@ export const ChartGroupLoaderBasic = () => (
                 await new Promise(res =>
                     setTimeout(() => {
                         res(null);
-                    }, 4000)
+                    }, 2000)
                 );
 
                 return { sciChartSurface };

@@ -229,7 +229,7 @@ type-registration change that the points below depend on. See also
 
 ### Features & benefits
 
--   Learn about [features of SciChart.js](https://scichart.com/javascript-chart-features) here
+-   Learn about [features of SciChart.js](https://scichart.com/react-charts) here
 
 -   [SciChartReact Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 

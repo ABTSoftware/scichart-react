@@ -1,4 +1,4 @@
-# SciChart.React - Official React Component Wrapper for SciChart.js: High Performance [JavaScript Chart Library](https://www.scichart.com/javascript-chart-features)
+# SciChart.React - Official React Component Wrapper for SciChart.js: High Performance [JavaScript Chart Library](https://scichart.com/react-charts)
 
 SciChart.React requires core [SciChart.js](https://www.npmjs.com/package/scichart) package to work and uses it as a peer dependency.
 
@@ -231,7 +231,7 @@ type-registration change that the points below depend on. See also
 
 ### Features & benefits
 
--   Learn about [features of SciChart.js](https://scichart.com/javascript-chart-features) here
+-   Learn about [features of SciChart.js](https://scichart.com/react-charts) here
 
 ### Onboarding
 

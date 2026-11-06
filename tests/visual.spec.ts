@@ -8,8 +8,11 @@ const TIMEOUT = 120_000;
 const SETTLE_FRAMES = 4;
 
 type TStoryIndex = {
-    entries: Record<string, { id: string; type: string }>;
+    entries: Record<string, { id: string; type: string; tags: string[] }>;
 };
+
+/** Tags stories that exist only for other specs */
+const TEST_ONLY_TAG = "test-only";
 
 /** Redraw on a timer, so no two captures match */
 const STORIES_THAT_ANIMATE = new Set([
@@ -61,7 +64,7 @@ test.beforeEach(async ({ page }) => {
 test("every story matches its baseline", async ({ page, request }) => {
     const index: TStoryIndex = await (await request.get("/index.json")).json();
     const storyIds = Object.values(index.entries)
-        .filter(entry => entry.type === "story")
+        .filter(entry => entry.type === "story" && !entry.tags.includes(TEST_ONLY_TAG))
         .map(entry => entry.id)
         .sort();
 

@@ -30,7 +30,7 @@ configured `wasmUrl`, so copy the directory rather than naming individual files.
 
 ```js
 // webpack — copy the directory so a new variant or module never breaks the build
-new CopyPlugin({ patterns: [{ from: "node_modules/scichart/_wasm/", to: "" }] })
+new CopyPlugin({ patterns: [{ from: "node_modules/scichart/_wasm/", to: "" }] });
 ```
 
 Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/v6/2d-charts/surface/deploying-wasm/)
@@ -159,6 +159,49 @@ function App() {
 
 **NOTE** Make sure that in both cases `initChart` and `config` props do not change, as they should be only used for initial chart render.
 
+## Lifecycle callbacks and cleanup
+
+`SciChartReact` and `SciChartDeclarative` call these synchronous callbacks:
+
+| Callback     | When it is called                                       | Fallback shown | Children mounted |
+| ------------ | ------------------------------------------------------- | -------------- | ---------------- |
+| `onInit`     | the init function has resolved                          | yes            | no               |
+| `onRendered` | the chart is initialized and has rendered at least once | no             | yes              |
+| `onDelete`   | the component is unmounted                              | -              | -                |
+
+`onInit` and `onRendered` may return a cleanup function, called when the component is unmounted.
+
+`onInit` and `onDelete` are not called when the component is unmounted before the init function has
+resolved, so use `onDelete` only for what `onInit` set up.
+
+To release what the init function itself created besides the surface — subscriptions, objects holding
+the surface, timers — return a `destructor` with the surface. It is called on unmount, even if the init
+function has not resolved yet, before the surface is deleted:
+
+```tsx
+<SciChartReact
+    initChart={async rootElement => {
+        const { sciChartSurface } = await SciChartSurface.create(rootElement);
+
+        // ... create something that has to be released, e.g. a subscription
+        const subscription = subscribeToData(sciChartSurface);
+
+        return { sciChartSurface, destructor: () => subscription.unsubscribe() };
+    }}
+/>
+```
+
+On unmount, the steps run in this order:
+
+1. the cleanup returned by `onRendered`, if it was called
+2. the cleanup returned by `onInit`, if it was called
+3. `onDelete`, if `onInit` was called
+4. `destructor`
+5. the surface is deleted, along with everything added to it with `sciChartSurface.addDeletable()`
+
+`ChartGroupLoader` calls its `onInit` while its fallback is still shown, and its `onRendered` once the
+fallback has been removed.
+
 ## Type registration (SciChart v6)
 
 A chart definition names its parts as strings — `{ type: "LineSeries" }`. A string cannot pull code
@@ -223,7 +266,6 @@ type-registration change that the points below depend on. See also
 -   **`SciChartOverview` no longer mirrors** palette providers, animations or data labels onto the overview's mini series. Set them on the overview series explicitly if you relied on that.
 -   **`scichart` peer dependency is now v6+** (one union `scichart.wasm` file instead of the `scichart2d.wasm`/`scichart3d.wasm` pair, no more `.data` files). Apps staying on scichart 3.x-5.x should stay on scichart-react 1.x. When upgrading the core library, the `scichart-migrate` codemod automates the renames.
 -   **The `config` prop moved to the new `SciChartDeclarative` component**: replace `<SciChartReact config={...} />` with `<SciChartDeclarative config={...} />` (one JSX rename; all other props are identical). `SciChartReact` now requires `initChart` and throws a pointer error if it receives `config`.
-
 
 ## Useful Links
 

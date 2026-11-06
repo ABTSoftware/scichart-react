@@ -4,7 +4,7 @@ import { RefObject, useContext, useEffect, useRef, useState } from "react";
 import { generateGuid } from "scichart";
 import type { ISciChartSurfaceBase, SciChartSurfaceBase } from "scichart";
 import { SciChartGroupContext } from "./SciChartGroupContext";
-import { IInitResult, TChartComponentPropsWithInit } from "./types";
+import { IInitResult, TChartComponentPropsWithInit, TCleanupCallback } from "./types";
 import { createChartRoot, useIsMountedRef, waitForFirstRender } from "./utils";
 import { wrongInitResultMessage } from "./constants";
 
@@ -65,6 +65,7 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
 
     const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
     const initResultRef = useRef<TInitResult | null>(null);
+    const renderedCleanupRef = useRef<TCleanupCallback | void>();
     const [isInitialized, setIsInitialized] = useState(false);
     const [isRendered, setIsRendered] = useState(false);
 
@@ -83,7 +84,7 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
         const initializationFunction = (root: HTMLDivElement) => initChart(root).then(validateResult);
 
         let cancelled = false;
-        let cleanupCallback: void | (() => void);
+        let cleanupCallback: TCleanupCallback | void;
         let stopWaitingForRender: (() => void) | undefined;
 
         const runInit = async () => {
@@ -92,17 +93,19 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
 
                 // check if the component was unmounted before init finished
                 if (isMountedRef.current) {
-                    groupContext?.addChartToGroup(chartId, true, result);
                     initResultRef.current = result;
-                    setIsInitialized(true);
 
+                    // called before the state updates below, so it runs before the fallback is removed
+                    // whether or not React batches those updates
                     if (onInit) {
                         cleanupCallback = onInit(result);
                     }
 
+                    groupContext?.addChartToGroup(chartId, true, result);
+                    setIsInitialized(true);
+
                     stopWaitingForRender = waitForFirstRender(result.sciChartSurface, () => {
                         setIsRendered(true);
-                        onRendered?.(result);
                         groupContext?.setChartRendered(chartId);
                     });
                 } else {
@@ -127,6 +130,11 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
         const performCleanup = (initResult: TInitResult) => {
             stopWaitingForRender?.();
 
+            if (!cancelled && renderedCleanupRef.current) {
+                renderedCleanupRef.current();
+                renderedCleanupRef.current = undefined;
+            }
+
             if (!cancelled && cleanupCallback) {
                 cleanupCallback();
                 cleanupCallback = undefined;
@@ -134,6 +142,11 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
 
             if (!cancelled) {
                 onDelete?.(initResult);
+            }
+
+            // runs whether or not the component was unmounted before init finished
+            if (typeof initResult.destructor === "function") {
+                initResult.destructor();
             }
 
             // TODO check if this is needed at all
@@ -156,6 +169,20 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
         // down and re-create the surface.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // runs onRendered once the fallback is removed and the children are mounted
+    useEffect(() => {
+        const initResult = initResultRef.current;
+
+        if (!isInitialized || !isRendered || !initResult) {
+            return;
+        }
+
+        renderedCleanupRef.current = onRendered?.(initResult);
+
+        // onRendered is left out so a new callback identity does not call it again
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isInitialized, isRendered]);
 
     return { innerContainerRef, initResult: initResultRef.current, isInitialized, isRendered };
 }

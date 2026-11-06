@@ -22,6 +22,16 @@ This file is not shipped in the npm package — the tarball root is `lib/`, whic
 -   The class names can be overridden per state with the `stateClassNames` prop. The defaults are
     exported as `defaultChartStateClassNames` and `defaultGroupStateClassNames`, and their type as
     `IStateClassNames`.
+-   The init function may return a `destructor` along with the surface. It is called on
+    unmount, even if the init function has not resolved yet, before the surface is deleted.
+-   `onRendered` may return a cleanup function, like `onInit`.
+
+### Changed
+
+-   `onInit` is now always called while the fallback is still shown and before the children are
+    mounted. Apps mounted with `ReactDOM.render` previously got it after the fallback was removed.
+-   `onRendered` is now always called after the fallback has been removed and the children are
+    mounted.
 
 ### Fixed
 

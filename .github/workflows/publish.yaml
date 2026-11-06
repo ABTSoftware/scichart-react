@@ -7,7 +7,8 @@ on:
     workflow_dispatch:
 
 permissions:
-    # the prerelease channels commit their own version bump back to the branch
+    # the prerelease channels commit their own version bump back to the branch, and main pushes
+    # its release tag
     contents: write
     # trusted publishing: npm exchanges this OIDC identity for a short-lived
     # credential at run time, so no npm token is stored anywhere
@@ -84,6 +85,20 @@ jobs:
             - name: Publish
               working-directory: lib
               run: npm publish --tag ${{ steps.channel.outputs.tag }} --provenance
+
+            # main: tag the published commit; the prerelease channels were tagged by npm version above
+            - name: Tag the release
+              if: steps.channel.outputs.bump == 'false'
+              run: |
+                  TAG="v${{ steps.version.outputs.value }}"
+                  if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
+                      echo "::notice::$TAG already exists, left as it is"
+                  else
+                      git config user.name "github-actions[bot]"
+                      git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                      git tag -a "$TAG" -m "${{ steps.version.outputs.value }}"
+                      git push origin "$TAG"
+                  fi
 
             - name: Summary
               run: |

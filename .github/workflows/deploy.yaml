@@ -16,9 +16,32 @@ jobs:
             name: github-pages
             url: ${{ steps.build-publish.outputs.page_url }}
         runs-on: ubuntu-latest
+        outputs:
+            page_url: ${{ steps.build-publish.outputs.page_url }}
         steps:
             - id: build-publish
               uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
               with:
                   path: storybook-static
                   build_command: npm run build-storybook-docs
+
+    # Opens the live site and fails if a page cannot load its files or render a chart
+    verify:
+        needs: deploy
+        runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.63.0-noble
+        steps:
+            - uses: actions/checkout@v7
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+
+            - name: Install
+              run: npm ci
+
+            - name: Test the deployed docs
+              run: npm run test:deployed
+              env:
+                  DEPLOYED_URL: ${{ needs.deploy.outputs.page_url }}

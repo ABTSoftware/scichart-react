@@ -1,20 +1,16 @@
 import { test, expect, type Page } from "@playwright/test";
+import { defaultGroupStateClassNames } from "../src/stateClassNames";
 
 /**
- * Mounts and unmounts a chart group - two 2D charts and a 3D chart in a ChartGroupLoader - repeatedly
- * in one page, and asserts that everything SciChart created was both deleted and released.
+ * Mounts and unmounts the chart-group demo (two 2D charts and a 3D chart) several times in one page,
+ * then checks SciChart's object registry: nothing left undeleted, nothing deleted but still in memory.
  *
- * Two signals from SciChart's object registry, read after a forced garbage collection:
- * - `undeletedObjectsIds`: objects whose `delete()` was never called.
- * - `uncollectedObjectsIds`: objects that were deleted but are still held in memory by something.
- *
- * The demo must not pass chart objects to `console.log`: the browser console keeps every logged
- * object alive while DevTools or Playwright is attached, and they then count as uncollected.
+ * The demo must not log chart objects: the console keeps them alive while Playwright is attached.
  */
 
 const CYCLES = 3;
 
-/** Reads SciChart's object registry out of the page, via the debug wrapper's own button. */
+/** Reads SciChart's object registry through the debug wrapper's button, which logs it */
 async function readRegistry(page: Page): Promise<{ undeleted: number; uncollected: number }> {
     return page.evaluate(() => {
         let state: any = null;
@@ -47,28 +43,15 @@ test("charts are fully deleted and released after mount and unmount", async ({ p
     const client = await page.context().newCDPSession(page);
     await client.send("HeapProfiler.enable");
 
-    // The demo starts with the charts unmounted. Every cycle mounts and unmounts them in the same
-    // page, so anything left behind accumulates instead of being thrown away with the page.
     for (let cycle = 1; cycle <= CYCLES; cycle++) {
         await toggle.check();
-
-        // The group is ready once every chart has initialised: each chart's own fallback and the
-        // group's loading overlay are then gone. The 3D engine is fetched after the core, so this
-        // also waits for it.
-        await page.waitForFunction(
-            () =>
-                document.querySelector("canvas") !== null &&
-                document.querySelector(".fallback, .scichart_loader") === null,
-            undefined,
-            { timeout: 60_000 }
-        );
+        await page.locator(`.${defaultGroupStateClassNames.rendered}`).waitFor({ timeout: 60_000 });
         await page.waitForTimeout(2000);
 
         await toggle.uncheck();
         await page.waitForTimeout(2000);
 
-        // only meaningful after a real collection: without this the counts are dominated by
-        // objects that simply have not been collected yet
+        // the counts mean nothing until a real collection has run
         await client.send("HeapProfiler.collectGarbage");
         await page.waitForTimeout(500);
 
@@ -78,12 +61,9 @@ test("charts are fully deleted and released after mount and unmount", async ({ p
     // eslint-disable-next-line no-console
     console.log("registry after each cycle:", JSON.stringify(readings));
 
-    for (const reading of readings) {
-        expect(reading.undeleted, `cycle ${reading.cycle}: ${reading.undeleted} object(s) were never deleted`).toBe(0);
-        expect(
-            reading.uncollected,
-            `cycle ${reading.cycle}: ${reading.uncollected} deleted object(s) are still held in memory`
-        ).toBe(0);
+    for (const { cycle, undeleted, uncollected } of readings) {
+        expect(undeleted, `cycle ${cycle}: ${undeleted} object(s) never deleted`).toBe(0);
+        expect(uncollected, `cycle ${cycle}: ${uncollected} deleted object(s) still in memory`).toBe(0);
     }
 
     expect(pageErrors, "the page threw while mounting or unmounting").toEqual([]);

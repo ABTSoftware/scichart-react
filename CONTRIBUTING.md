@@ -32,10 +32,10 @@ Every story is screenshotted and compared with a reference image in `tests/__scr
 Screenshots differ slightly from machine to machine, so **only CI records and judges these images**.
 Never commit screenshots taken on your own machine.
 
-- `npm run test:docker` runs the tests in CI's image, which is the closest you can get locally. It
-  can still differ by a few pixels from CI, for example on an Apple Silicon Mac.
-- Running `npm run test:visual` directly on macOS or Windows compares against a separate set for
-  that system, kept only on your machine (git ignores it). The first run creates it and fails.
+-   `npm run test:docker` runs the tests in CI's image, which is the closest you can get locally. It
+    can still differ by a few pixels from CI, for example on an Apple Silicon Mac.
+-   Running `npm run test:visual` directly on macOS or Windows compares against a separate set for
+    that system, kept only on your machine (git ignores it). The first run creates it and fails.
 
 ### Updating the reference screenshots
 
@@ -43,8 +43,8 @@ When a change is meant to alter how a story looks:
 
 1. Push the branch. The `browser-tests` job in CI fails on the changed stories.
 2. Open the failed run in GitHub Actions and download two artifacts:
-   - `playwright-report`: shows each difference. Check that it is the change you intended.
-   - `visual-baselines-linux`: the screenshots CI just recorded.
+    - `playwright-report`: shows each difference. Check that it is the change you intended.
+    - `visual-baselines-linux`: the screenshots CI just recorded.
 3. Unzip `visual-baselines-linux` into `tests/__screenshots__/linux/`, commit and push.
 
 New stories work the same way: the first run fails because there is no reference image yet.
@@ -66,11 +66,11 @@ rebuilding the library.
 
 `.github/workflows/ci.yaml`, on every pull request and on pushes to `main`:
 
-| Job | What it does |
-| --- | --- |
-| `verify` | lint, typecheck, build, bundle-size check |
+| Job             | What it does                                                                      |
+| --------------- | --------------------------------------------------------------------------------- |
+| `verify`        | lint, typecheck, build, bundle-size check                                         |
 | `browser-tests` | story smoke tests, visual tests, leak test, inside `mcr.microsoft.com/playwright` |
-| `demos` | builds each demo |
+| `demos`         | builds each demo                                                                  |
 
 The Playwright image tag in `ci.yaml` and `tests/Dockerfile` must match the `@playwright/test`
 version in `package.json`. Update all three together.
@@ -83,11 +83,11 @@ Pages.
 Releases go through the **Publish to npm** workflow (`.github/workflows/publish.yaml`). Nothing is
 published automatically. The branch you run it on decides the npm tag:
 
-| Branch | npm tag | Version |
-| --- | --- | --- |
-| `alpha` | `alpha` | bumped by the workflow (`x.y.z-alpha.N`) |
-| `beta` | `beta` | bumped by the workflow (`x.y.z-beta.N`) |
-| `main` | `latest` | set by hand before running |
+| Branch  | npm tag  | Version                                  |
+| ------- | -------- | ---------------------------------------- |
+| `alpha` | `alpha`  | bumped by the workflow (`x.y.z-alpha.N`) |
+| `beta`  | `beta`   | bumped by the workflow (`x.y.z-beta.N`)  |
+| `main`  | `latest` | bumped in the pull request into `main`   |
 
 Before publishing, the workflow runs the install, typecheck, build and bundle-size checks again,
 then publishes with npm trusted publishing (no npm token is stored).
@@ -106,14 +106,11 @@ The workflow raises the prerelease number, commits it to the branch with a `v…
 
 ### A release (`latest`)
 
-1. In the pull request into `main`, rename `[Unreleased]` in `CHANGELOG.md` to the new version.
-   Merge it.
-2. On an up-to-date local `main`, set the version: `npm version <x.y.z>`. This commits `<x.y.z>`
-   and tags `v<x.y.z>`. Push both: `git push origin main v<x.y.z>`. (`--follow-tags` would also
-   push any old tags that only exist on your machine.)
-3. `npm run release:latest`. The workflow refuses a prerelease version and a version that is
-   already on npm.
-4. Create a GitHub Release on the tag, with the CHANGELOG entry as its text.
-5. Merge `main` into `alpha`, so the next alpha builds on the released version.
+1. In the pull request into `main`, set the version with `npm version <x.y.z> --no-git-tag-version`
+   and rename `[Unreleased]` in `CHANGELOG.md` to it. Merge it.
+2. `npm run release:latest`. The workflow refuses a prerelease version and a version that is
+   already on npm. After publishing, it tags the published commit `v<x.y.z>`.
+3. Create a GitHub Release on the tag, with the CHANGELOG entry as its text.
+4. Merge `main` into `alpha`, so the next alpha builds on the released version.
 
 Check the result with `npm view scichart-react dist-tags`.

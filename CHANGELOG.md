@@ -8,6 +8,36 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This file is not shipped in the npm package — the tarball root is `lib/`, which carries
 `README_NPM.md` as its readme.
 
+## [2.2.0]
+
+### Added
+
+-   `SciChartReact` (and so `SciChartDeclarative` and `SciChartNestedOverview`) adds the
+    `scichart_initialized` class to its element once its chart is initialized, and
+    `scichart_rendered` once the chart has also rendered at least once. Its new `onRendered`
+    callback is called at that point.
+-   `ChartGroupLoader` does the same for the whole group, with `scichart_group_initialized` and
+    `scichart_group_rendered`, and forwards a new `onRendered` callback. `SciChartGroup` accepts
+    `onRendered` too.
+-   The class names can be overridden per state with the `stateClassNames` prop. The defaults are
+    exported as `defaultChartStateClassNames` and `defaultGroupStateClassNames`, and their type as
+    `IStateClassNames`.
+-   The init function may return a `destructor` along with the surface. It is called on
+    unmount, even if the init function has not resolved yet, before the surface is deleted.
+-   `onRendered` may return a cleanup function, like `onInit`.
+
+### Changed
+
+-   `onInit` is now always called while the fallback is still shown and before the children are
+    mounted. Apps mounted with `ReactDOM.render` previously got it after the fallback was removed.
+-   `onRendered` is now always called after the fallback has been removed and the children are
+    mounted.
+
+### Fixed
+
+-   `SciChartGroup` no longer passes a `null` init result to `onInit` and `onDelete` when a chart,
+    such as a nested overview, joins the group in the same render that initialized it.
+
 ## [2.1.0]
 
 Built and verified against `scichart` 6.0.13.
@@ -94,6 +124,7 @@ The 2.0 line targets SciChart.js v6 and is built and verified against `scichart`
 
 First stable release of the 1.x line, targeting SciChart.js 3.x–5.x.
 
+[2.2.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.2.0
 [2.1.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.1.0
 [2.0.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v2.0.0
 [1.0.0]: https://github.com/ABTSoftware/scichart-react/releases/tag/v1.0.0

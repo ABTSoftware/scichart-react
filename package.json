@@ -60,7 +60,8 @@
         "release:alpha": "gh workflow run publish.yaml --ref alpha",
         "release:beta": "gh workflow run publish.yaml --ref beta",
         "prepare": "husky install",
-        "update-snapshots": "playwright test --project=stories --update-snapshots"
+        "update-snapshots": "playwright test --project=stories --update-snapshots",
+        "test:deployed": "playwright test --config playwright.deployed.config.ts"
     },
     "author": "SciChart Ltd",
     "license": "MIT",

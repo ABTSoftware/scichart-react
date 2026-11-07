@@ -72,8 +72,8 @@ rebuilding the library.
 | `browser-tests` | story smoke tests, visual tests, leak test, inside `mcr.microsoft.com/playwright` |
 | `demos`         | builds each demo                                                                  |
 
-The Playwright image tag in `ci.yaml` and `tests/Dockerfile` must match the `@playwright/test`
-version in `package.json`. Update all three together.
+The Playwright image tag in `ci.yaml`, `deploy.yaml` and `tests/Dockerfile` must match the
+`@playwright/test` version in `package.json`. Update all four together.
 
 On every push to `main`, `.github/workflows/deploy.yaml` publishes the Storybook docs to GitHub
 Pages.

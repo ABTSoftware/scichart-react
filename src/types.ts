@@ -62,7 +62,7 @@ export interface IChartComponentPropsCore<
      * For what `initChart` created, use {@link IInitResult.destructor}
      */
     onDelete?: (initResult: TInitResult) => void;
-    /** a callback function used when the initialization function has thrown an error */
+    /** called when the initialization function or `onInit` throws */
     onInitError?: (err?: any) => void;
     /** props passed to the inner container of the chart */
     innerContainerProps?: TDivProps;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
-import { useEffect, useRef, useState, JSX } from "react";
+import { StrictMode, useEffect, useRef, useState, JSX } from "react";
 import { render as legacyRender, unmountComponentAtNode } from "react-dom";
 import { NumericAxis, SciChartPieSurface, SciChartSurface, ISciChartSurfaceBase } from "scichart";
 import { ChartGroupLoader, IInitResult, SciChartReact } from "scichart-react";
@@ -47,19 +47,31 @@ type TLoggedChartProps = {
     /** init waits for the "Finish init" button */
     delayInit?: boolean;
     noDestructor?: boolean;
+    initChartThrows?: boolean;
+    onInitThrows?: boolean;
+    /** leaves out onInitError, so init errors are unhandled */
+    noOnInitError?: boolean;
 };
 
 /** A chart that logs every lifecycle step, with an "Unmount" button */
 const LoggedChart = ({
     createSurface = createLineSurface,
     delayInit,
-    noDestructor
+    noDestructor,
+    initChartThrows,
+    onInitThrows,
+    noOnInitError
 }: TLoggedChartProps): JSX.Element => {
     const [mounted, setMounted] = useState(true);
     const finishInitRef = useRef<() => void>();
 
     const initChart = async (rootElement: string | HTMLDivElement): Promise<IInitResult> => {
         log("initChart");
+
+        if (initChartThrows) {
+            throw new Error("initChart failed");
+        }
+
         const sciChartSurface = await createSurface(rootElement);
         sciChartSurface.addDeletable({ delete: () => log("surface deleted") });
 
@@ -83,8 +95,14 @@ const LoggedChart = ({
                     style={chartStyle}
                     onInit={() => {
                         log("onInit");
+
+                        if (onInitThrows) {
+                            throw new Error("onInit failed");
+                        }
+
                         return () => log("onInit cleanup");
                     }}
+                    onInitError={noOnInitError ? undefined : () => log("onInitError")}
                     onRendered={() => {
                         log("onRendered");
                         return () => log("onRendered cleanup");
@@ -98,15 +116,28 @@ const LoggedChart = ({
     );
 };
 
-/** A chart group that logs its callbacks */
-const LoggedGroup = (): JSX.Element => (
+/** A chart group that logs its callbacks; with `onInitThrows`, its chart's onInit throws */
+const LoggedGroup = ({ onInitThrows }: { onInitThrows?: boolean }): JSX.Element => (
     <ChartGroupLoader
         fallback={<Fallback />}
         onInit={() => log("group onInit")}
         onRendered={() => log("group onRendered")}
+        onInitError={() => log("group onInitError")}
     >
         <SciChartReact
-            initChart={async rootElement => ({ sciChartSurface: await createLineSurface(rootElement) })}
+            initChart={async rootElement => {
+                const sciChartSurface = await createLineSurface(rootElement);
+                sciChartSurface.addDeletable({ delete: () => log("surface deleted") });
+
+                return { sciChartSurface, destructor: () => log("destructor") };
+            }}
+            onInit={() => {
+                log("onInit");
+
+                if (onInitThrows) {
+                    throw new Error("onInit failed");
+                }
+            }}
             style={chartStyle}
         >
             <Child />
@@ -150,4 +181,30 @@ export const NeverRenders: Story = { render: () => <LoggedChart createSurface={c
 
 export const NoDestructor: Story = { render: () => <LoggedChart noDestructor /> };
 
+export const InitChartThrows: Story = { render: () => <LoggedChart initChartThrows /> };
+
+export const InitChartThrowsUnhandled: Story = { render: () => <LoggedChart initChartThrows noOnInitError /> };
+
+export const OnInitThrows: Story = { render: () => <LoggedChart onInitThrows /> };
+
+export const OnInitThrowsUnhandled: Story = { render: () => <LoggedChart onInitThrows noOnInitError /> };
+
+export const InitChartThrowsUnhandledStrict: Story = {
+    render: () => (
+        <StrictMode>
+            <LoggedChart initChartThrows noOnInitError />
+        </StrictMode>
+    )
+};
+
+export const OnInitThrowsUnhandledStrict: Story = {
+    render: () => (
+        <StrictMode>
+            <LoggedChart onInitThrows noOnInitError />
+        </StrictMode>
+    )
+};
+
 export const Group: Story = { render: () => <LoggedGroup /> };
+
+export const GroupOnInitThrows: Story = { render: () => <LoggedGroup onInitThrows /> };

@@ -281,6 +281,7 @@ type-registration change that the points below depend on. See also
 
 -   [Tutorials](https://www.scichart.com/documentation/js/v6/get-started/tutorials-js-npm-webpack/tutorial-01-setting-up-npm-project-with-scichart-js/)
 -   [Getting Started Guide](https://scichart.com/getting-started/scichart-javascript/)
+-   [SciChart.js Demos](https://www.scichart.com/demo/react)
 -   [Documentation](https://www.scichart.com/documentation/js/v6/intro/)
 -   [CodePen, JSFiddle support](https://www.scichart.com/blog/codepen-codesandbox-and-jsfiddle-support-in-scichart-js/)
 

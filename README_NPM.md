@@ -4,6 +4,8 @@ SciChart.React requires core [SciChart.js](https://www.npmjs.com/package/scichar
 
 The SciChartReact itself is MIT licensed, find the core library licensing info at [https://www.scichart.com/licensing-scichart-js/](https://www.scichart.com/licensing-scichart-js/).
 
+o:chart_with_upwards_trend: [SciChart.js Demos](https://www.scichart.com/demo/react)
+
 :ledger: [Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 
 ## Getting Started
@@ -273,6 +275,7 @@ type-registration change that the points below depend on. See also
 
 -   Learn about [features of SciChart.js](https://scichart.com/react-charts) here
 
+-   [SciChart.js Demos](https://www.scichart.com/demo/react)
 -   [SciChartReact Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 
 ### Onboarding

@@ -63,7 +63,7 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
     const isMountedRef = useIsMountedRef();
     const innerContainerRef = useRef<HTMLDivElement>(null);
 
-    const initPromiseRef = useRef<Promise<TInitResult | IInitResult<TSurface>>>();
+    const initPromiseRef = useRef<Promise<TInitResult | undefined>>();
     const initResultRef = useRef<TInitResult | null>(null);
     const renderedCleanupRef = useRef<TCleanupCallback | void>();
     const [isInitialized, setIsInitialized] = useState(false);
@@ -114,12 +114,31 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
 
                 return result;
             } catch (error: any) {
+                const initResult = initResultRef.current;
+
+                // onInit threw: the surface exists, so it is deleted as a failed init
+                if (initResult) {
+                    initResultRef.current = null;
+
+                    if (typeof initResult.destructor === "function") {
+                        initResult.destructor();
+                    }
+
+                    initResult.sciChartSurface!.delete();
+                }
+
                 if (onInitError) {
                     onInitError(error);
                 }
 
-                groupContext?.notifyError(error);
-                throw error;
+                const isHandledByGroup = groupContext?.notifyError(error) ?? false;
+
+                // leave an unhandled error visible unless an onInitError handled it
+                if (!onInitError && !isHandledByGroup) {
+                    throw error;
+                }
+
+                return undefined;
             }
         };
 
@@ -162,8 +181,11 @@ export function useChartLifecycle<TSurface extends ISciChartSurfaceBase, TInitRe
 
         return () => {
             rootElement!.removeChild(chartRoot);
-            // wait for init to finish before deleting it
-            initPromise.then(performCleanup);
+            // wait for init to finish before deleting it; a failed init has nothing left to delete
+            initPromise.then(
+                result => result && performCleanup(result),
+                () => undefined
+            );
         };
         // Runs once per chart lifecycle: re-running on callback or context identity would tear
         // down and re-create the surface.

@@ -1,10 +1,16 @@
-# SciChart.React - React Wrapper for [SciChart.js: High Performance JavaScript Chart Library](https://www.npmjs.com/package/scichart)
+# SciChart.React - React Wrapper for [SciChart.js: High Performance JavaScript Chart Library](https://www.scichart.com/javascript-chart-features/)
+
+scichart-react is the official React component for SciChart.js. See [React charts](https://www.scichart.com/react-charts/) for features and benchmarks, the [100+ React chart demos with source code](https://www.scichart.com/demo/react), and the [React tutorials](https://www.scichart.com/documentation/js/current/get-started/tutorials-react/tutorial-01-setting-up-project-with-scichart-react/).
 
 SciChart.React requires core [SciChart.js](https://www.npmjs.com/package/scichart) package to work and uses it as a peer dependency.
 
 The SciChartReact itself is MIT licensed, find the core library licensing info at [https://www.scichart.com/licensing-scichart-js/](https://www.scichart.com/licensing-scichart-js/).
 
-:ledger: [Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
+:chart_with_upwards_trend: [100+ React Chart Demos with source code](https://www.scichart.com/demo/react)
+
+:ledger: [React Tutorials](https://www.scichart.com/documentation/js/current/get-started/tutorials-react/tutorial-01-setting-up-project-with-scichart-react/)
+
+:books: [Component API (Storybook)](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 
 ## Getting Started
 
@@ -33,7 +39,7 @@ configured `wasmUrl`, so copy the directory rather than naming individual files.
 new CopyPlugin({ patterns: [{ from: "node_modules/scichart/_wasm/", to: "" }] });
 ```
 
-Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/v6/2d-charts/surface/deploying-wasm/)
+Find detailed info at [Deploying Wasm Docs](https://www.scichart.com/documentation/js/current/2d-charts/surface/deploying-wasm/)
 
 By default scichart-react applies the equivalent of:
 
@@ -49,12 +55,12 @@ It is applied only while your app has not configured wasm loading itself (`SciCh
 
 ### Using
 
-**<span style="color: black;background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">For detailed examples of all provided components check out [Docs](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs).</span>**
+**<span style="color: black;background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">For detailed examples of all provided components check out the [React Chart Demos](https://www.scichart.com/demo/react) and [React Tutorials](https://www.scichart.com/documentation/js/current/get-started/tutorials-react/tutorial-01-setting-up-project-with-scichart-react/). Component API reference: [Storybook](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs).</span>**
 
 There are two chart components:
 
 -   **`SciChartReact`** — takes an initialization function via the `initChart` prop. This is the primary component for code-first apps and produces the smallest bundles.
--   **`SciChartDeclarative`** — takes a chart definition (object or JSON string) via the `config` prop and creates the chart with the [Builder API](https://www.scichart.com/documentation/js/v6/2d-charts/builder-api/builder-api-overview/). The Builder API is only bundled by apps that use this component. It registers every built-in chart type, so any definition works with no setup.
+-   **`SciChartDeclarative`** — takes a chart definition (object or JSON string) via the `config` prop and creates the chart with the [Builder API](https://www.scichart.com/documentation/js/current/2d-charts/builder-api/builder-api-overview/). The Builder API is only bundled by apps that use this component. It registers every built-in chart type, so any definition works with no setup.
 
 #### With Initialization Function (SciChartReact)
 
@@ -117,7 +123,7 @@ function App() {
 
 #### With Config (SciChartDeclarative)
 
-Alternatively, pass a config object that will be used to generate a chart via the [Builder API](https://www.scichart.com/documentation/js/v6/2d-charts/builder-api/builder-api-overview/).
+Alternatively, pass a config object that will be used to generate a chart via the [Builder API](https://www.scichart.com/documentation/js/current/2d-charts/builder-api/builder-api-overview/).
 
 ```tsx
 import { EAxisType, EChart2DModifierType, ESeriesType, SciChartSurface } from "scichart";
@@ -156,6 +162,11 @@ function App() {
     );
 }
 ```
+
+The surface type in callbacks such as `onInit` follows the `type` of the `config` object: an
+`ESciChartSurfaceType.Default3D` definition gives a `SciChart3DSurface`, with no type argument needed.
+A JSON string config gives the base surface type; name the surface explicitly with
+`<SciChartDeclarative<SciChart3DSurface> config={json} />`.
 
 **NOTE** Make sure that in both cases `initChart` and `config` props do not change, as they should be only used for initial chart render.
 
@@ -271,16 +282,15 @@ type-registration change that the points below depend on. See also
 
 ### Features & benefits
 
--   Learn about [features of SciChart.js](https://scichart.com/react-charts) here
-
--   [SciChartReact Documentation and examples](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
+-   [SciChart React charts: features, performance and 100+ demos](https://www.scichart.com/react-charts/)
 
 ### Onboarding
 
--   [Tutorials](https://www.scichart.com/documentation/js/v6/get-started/tutorials-js-npm-webpack/tutorial-01-setting-up-npm-project-with-scichart-js/)
+-   [React Tutorials](https://www.scichart.com/documentation/js/current/get-started/tutorials-react/tutorial-01-setting-up-project-with-scichart-react/)
 -   [Getting Started Guide](https://scichart.com/getting-started/scichart-javascript/)
--   [SciChart.JS Documentation](https://www.scichart.com/documentation/js/v6/intro/)
--   [SciChart.React Documentation](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
+-   [100+ React Chart Demos](https://www.scichart.com/demo/react)
+-   [SciChart.JS Documentation](https://www.scichart.com/documentation/js/current/intro/)
+-   [Component API (Storybook)](https://abtsoftware.github.io/scichart-react/?path=/docs/example-scichartreact--docs)
 -   [CodePen, JSFiddle support](https://www.scichart.com/blog/codepen-codesandbox-and-jsfiddle-support-in-scichart-js/)
 
 ### Support

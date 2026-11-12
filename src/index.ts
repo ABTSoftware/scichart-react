@@ -21,5 +21,6 @@ export type { IStateClassNames } from "./types";
 export type { IChartComponentPropsCore } from "./types";
 export type { TChartComponentPropsWithInit } from "./types";
 export type { TChartComponentPropsWithConfig } from "./types";
+export type { TSurfaceFromConfig } from "./types";
 export type { TChartComponentProps } from "./types";
 export type { TResolvedReturnType } from "./types";

@@ -8,6 +8,25 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This file is not shipped in the npm package — the tarball root is `lib/`, which carries
 `README_NPM.md` as its readme.
 
+## [2.3.0]
+
+### Added
+
+-   `TSurfaceFromConfig` type, which maps a Builder API config type to its surface type.
+
+### Changed
+
+-   `SciChartDeclarative` infers the surface type passed to its callbacks from the `type` of the
+    `config` object (3D, pie, polar or 2D). A JSON string config gives the base surface type, and an
+    explicit type argument still works.
+
+### Fixed
+
+-   When `onInit` throws, the surface is now deleted, its `destructor` is called and the error goes
+    to `onInitError`, as with a failed init function. Previously the surface was never deleted.
+-   An init error handled by `onInitError`, of the chart or of its group, no longer also surfaces as
+    an unhandled promise rejection.
+
 ## [2.2.0]
 
 ### Added

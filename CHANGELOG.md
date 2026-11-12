@@ -8,13 +8,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This file is not shipped in the npm package — the tarball root is `lib/`, which carries
 `README_NPM.md` as its readme.
 
-## [Unreleased]
+## [2.3.0]
+
+### Added
+
+-   `TSurfaceFromConfig` type, which maps a Builder API config type to its surface type.
 
 ### Changed
 
 -   `SciChartDeclarative` infers the surface type passed to its callbacks from the `type` of the
     `config` object (3D, pie, polar or 2D). A JSON string config gives the base surface type, and an
-    explicit type argument still works. The new `TSurfaceFromConfig` type exposes the mapping.
+    explicit type argument still works.
 
 ### Fixed
 

@@ -159,6 +159,11 @@ function App() {
 }
 ```
 
+The surface type in callbacks such as `onInit` follows the `type` of the `config` object: an
+`ESciChartSurfaceType.Default3D` definition gives a `SciChart3DSurface`, with no type argument needed.
+A JSON string config gives the base surface type; name the surface explicitly with
+`<SciChartDeclarative<SciChart3DSurface> config={json} />`.
+
 **NOTE** Make sure that in both cases `initChart` and `config` props do not change, as they should be only used for initial chart render.
 
 ## Lifecycle callbacks and cleanup

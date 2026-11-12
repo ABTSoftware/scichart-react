@@ -71,8 +71,10 @@ export function generateTypedExportsFile(allExports: TExport[], fileName: string
         // interfaces and type aliases must be re-exported with "export type" to keep the barrel isolatedModules-safe
         let isTypeOnly = false;
         if (ts.isFunctionDeclaration(statement)) {
-            // console.log("isFunctionDeclaration");
-            name = statement.name!.text;
+            // overload signatures have no body; only the implementation is exported, once
+            if (statement.body) {
+                name = statement.name!.text;
+            }
         } else if (ts.isVariableStatement(statement)) {
             // console.log("isVariableStatement");
             name = statement!.declarationList.declarations[0].name.getText(sourceFile);

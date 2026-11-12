@@ -1,5 +1,13 @@
 import type { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
-import type { ISciChartSurfaceBase, SciChartSurface, TSurfaceDefinition } from "scichart";
+import type {
+    ESciChartSurfaceType,
+    ISciChartSurfaceBase,
+    SciChart3DSurface,
+    SciChartPieSurface,
+    SciChartPolarSurface,
+    SciChartSurface,
+    TSurfaceDefinition
+} from "scichart";
 
 /** Describes the core return type of a chart initialization function */
 export interface IInitResult<TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase> {
@@ -96,6 +104,21 @@ export type TChartComponentPropsWithConfig<TSurface extends ISciChartSurfaceBase
      */
     config: string | TSurfaceDefinition;
 };
+
+/**
+ * The surface type a Builder API chart definition creates, chosen by its `type` field.
+ * A definition without `type` creates a 2D {@link SciChartSurface}.
+ * A JSON string is opaque at compile time, so it maps to {@link ISciChartSurfaceBase}.
+ */
+export type TSurfaceFromConfig<TConfig extends string | TSurfaceDefinition> = TConfig extends string
+    ? ISciChartSurfaceBase
+    : TConfig extends { type: ESciChartSurfaceType.Default3D }
+    ? SciChart3DSurface
+    : TConfig extends { type: ESciChartSurfaceType.Pie2D }
+    ? SciChartPieSurface
+    : TConfig extends { type: ESciChartSurfaceType.Polar2D }
+    ? SciChartPolarSurface
+    : SciChartSurface;
 
 /**
  * Describes allowed properties for either {@link SciChartReact} or {@link SciChartDeclarative}

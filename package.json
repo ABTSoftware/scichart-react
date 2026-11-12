@@ -36,7 +36,7 @@
         "storybook-docs": "storybook dev --docs",
         "build-storybook-docs": "storybook build --docs",
         "tsc": "tsc --watch",
-        "typecheck": "tsc --noEmit",
+        "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.typetests.json",
         "test:stories": "test-storybook --url http://127.0.0.1:6106",
         "test:stories:ci": "concurrently -k -s first -n \"SB,TEST\" \"npm run build-storybook -- --quiet && http-server storybook-static -a 127.0.0.1 --port 6106 --silent\" \"wait-on tcp:127.0.0.1:6106 && npm run test:stories\"",
         "test:e2e": "playwright test",

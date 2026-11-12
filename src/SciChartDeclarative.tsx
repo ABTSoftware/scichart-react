@@ -2,19 +2,32 @@
 
 import { JSX } from "react";
 import { buildChart, registerAllTypes } from "scichart";
-import type { ISciChartSurfaceBase, TSurfaceDefinition } from "scichart";
+import type {
+    ISciChartSurfaceBase,
+    SciChartPieSurface,
+    TSurfaceDefinition,
+    TWebAssemblyChart,
+    TWebAssemblyChart3D
+} from "scichart";
 import { SciChartReact } from "./SciChart";
-import { IInitResult, TChartComponentPropsWithConfig, TInitFunction } from "./types";
+import { TChartComponentPropsWithConfig, TInitFunction, TSurfaceFromConfig } from "./types";
 import { initChartOnDeclarativeMessage, missingConfigMessage } from "./constants";
+
+/**
+ * {@link buildChart} for any definition. Its overloads each accept one surface kind, so none
+ * takes the `string | TSurfaceDefinition` union; this signature is the union of all of them.
+ */
+const buildAnyChart = buildChart as (
+    divElementId: string | HTMLDivElement,
+    definition: string | TSurfaceDefinition
+) => Promise<TWebAssemblyChart | TWebAssemblyChart3D | SciChartPieSurface>;
 
 /**
  * Creates a chart initialization function from a Builder API config.
  * @remarks This module is the only one in the package referencing the Builder API,
  * so apps that only use {@link SciChartReact} don't bundle it.
  */
-function createChartFromConfig<TSurface extends ISciChartSurfaceBase>(
-    config: string | TSurfaceDefinition
-): TInitFunction<TSurface, IInitResult<TSurface>> {
+function createChartFromConfig(config: string | TSurfaceDefinition): TInitFunction<ISciChartSurfaceBase> {
     return async (chartRoot: string | HTMLDivElement) => {
         // Since SciChart v6 the Builder API registers nothing on import: a chart type named only as
         // a string in a definition cannot pull its class into the bundle. Registering here rather
@@ -23,20 +36,19 @@ function createChartFromConfig<TSurface extends ISciChartSurfaceBase>(
         // drop a module-scope call. registerAllTypes is idempotent.
         registerAllTypes();
 
-        // Potentially should return 2D, 3D, or Pie Chart
-        // TODO add better type handling
-        const chart = (await buildChart(chartRoot, config as string)) as any;
+        const chart = await buildAnyChart(chartRoot, config);
 
         if ("sciChartSurface" in chart) {
-            // 2D Chart
-            return { sciChartSurface: chart.sciChartSurface as TSurface };
-        } else if ("sciChart3DSurface" in chart) {
-            // 3D Chart
-            return { sciChartSurface: chart.sciChart3DSurface as TSurface };
-        } else {
-            // Pie Chart
-            return { sciChartSurface: chart as TSurface };
+            // 2D and polar
+            return { sciChartSurface: chart.sciChartSurface };
         }
+
+        if ("sciChart3DSurface" in chart) {
+            return { sciChartSurface: chart.sciChart3DSurface };
+        }
+
+        // Pie
+        return { sciChartSurface: chart };
     };
 }
 
@@ -58,17 +70,31 @@ function validateArgs<TSurface extends ISciChartSurfaceBase>(props: TChartCompon
  * convenience means the whole type universe is bundled — to avoid it, use {@link SciChartReact}
  * with an `initChart` function, which does not involve the Builder API at all.
  *
+ * The surface type passed to callbacks follows the `type` field of a `config` object
+ * (see {@link TSurfaceFromConfig}); a JSON string gives {@link ISciChartSurfaceBase}.
+ *
  * @param props {@link TChartComponentPropsWithConfig}
  * @returns a React wrapper component that contains a chart
  */
-export function SciChartDeclarative<TSurface extends ISciChartSurfaceBase = ISciChartSurfaceBase>(
+export function SciChartDeclarative<TConfig extends string | TSurfaceDefinition>(
+    props: TChartComponentPropsWithConfig<TSurfaceFromConfig<TConfig>> & { config: TConfig }
+): JSX.Element;
+/**
+ * The component for rendering a chart surface from a Builder API config,
+ * with the surface type given explicitly as `TSurface`.
+ *
+ * @param props {@link TChartComponentPropsWithConfig}
+ * @returns a React wrapper component that contains a chart
+ */
+export function SciChartDeclarative<TSurface extends ISciChartSurfaceBase>(
     props: TChartComponentPropsWithConfig<TSurface>
-): JSX.Element {
+): JSX.Element;
+export function SciChartDeclarative(props: TChartComponentPropsWithConfig<ISciChartSurfaceBase>): JSX.Element {
     const { config, ...chartComponentProps } = props;
 
     validateArgs(props);
 
-    const initChart = createChartFromConfig<TSurface>(config);
+    const initChart = createChartFromConfig(config);
 
-    return <SciChartReact<TSurface, IInitResult<TSurface>> {...chartComponentProps} initChart={initChart} />;
+    return <SciChartReact<ISciChartSurfaceBase> {...chartComponentProps} initChart={initChart} />;
 }

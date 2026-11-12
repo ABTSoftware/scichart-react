@@ -1,0 +1,6 @@
+{
+    // Compile-time type tests for the public API (tests/types); checked by `npm run typecheck`.
+    "extends": "./tsconfig.json",
+    "include": ["tests/types/**/*"],
+    "exclude": ["node_modules"]
+}

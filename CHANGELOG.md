@@ -10,6 +10,12 @@ This file is not shipped in the npm package — the tarball root is `lib/`, whic
 
 ## [Unreleased]
 
+### Changed
+
+-   `SciChartDeclarative` infers the surface type passed to its callbacks from the `type` of the
+    `config` object (3D, pie, polar or 2D). A JSON string config gives the base surface type, and an
+    explicit type argument still works. The new `TSurfaceFromConfig` type exposes the mapping.
+
 ### Fixed
 
 -   When `onInit` throws, the surface is now deleted, its `destructor` is called and the error goes
